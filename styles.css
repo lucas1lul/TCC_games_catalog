@@ -6,56 +6,132 @@
 }
 
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    font-family: 'Arial', sans-serif;
+    background-color: #fff; /* Fundo branco para harmonizar com a logo */
     color: #333;
-}
-
-header {
-    background-color: #333;
-    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     padding: 20px;
+}
+
+/* Estilização do cabeçalho */
+/* Estilização do cabeçalho */
+header {
+    background: #fff;
+    padding: 10px 0; /* Reduzido o padding */
     text-align: center;
-}
-
-header h1 {
-    margin-bottom: 10px;
-}
-
-header nav {
-    margin-bottom: 10px;
-}
-
-header nav .tab-button {
-    background-color: #555;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    margin: 5px;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-}
-
-header nav .tab-button.active {
-    background-color: #007BFF;
-}
-
-header nav .tab-button:hover {
-    background-color: #0056b3;
-}
-
-header input {
-    padding: 10px;
+    position: fixed;
+    top: 0;
     width: 100%;
-    max-width: 400px;
+    z-index: 1000;
+    border-bottom: 3px solid #008000; /* Linha verde para destacar */
+}
+
+header .logo {
+    width: 100px; /* Reduzido o tamanho da logo */
+    display: block;
+    margin: 0 auto 5px auto; /* Ajuste na margem para centralizar */
+}
+
+nav ul li a {
+    color: #008000; /* Verde principal do Instituto Federal */
+    text-decoration: none;
+    font-size: 16px; /* Reduzido o tamanho da fonte */
+    font-weight: bold;
+    transition: 0.3s;
+    margin: 0 10px; /* Reduzido o espaço entre os itens do menu */
+}
+
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin: 0 15px;
+}
+
+nav ul li a:hover {
+    color: #004d00;
+}
+
+/* Ajuste no login-container para não ficar escondido atrás do menu */
+
+/* Estiliza a logo na página de login */
+.logo-login {
+    width: auto;
+    max-width: 200px; /* Ajuste conforme necessário */
+    height: 130px; /* Mesmo tamanho do menu */
+    display: block;
+    margin: 0 auto 15px auto; /* Centraliza e adiciona espaçamento abaixo */
+}
+
+.login-container {
+    margin-top: 100px;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    width: 350px;
+}
+
+/* Estilos para a página de login */
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.login-container h1 {
+    font-size: 22px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.login-container p {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 15px;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
     border: none;
     border-radius: 5px;
     font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
 }
 
+button:first-of-type {
+    background-color: #008000;
+    color: white;
+}
+
+button:last-of-type {
+    background-color: #004d00;
+    color: white;
+}
+
+button:hover {
+    opacity: 0.8;
+}
+
+/* Estiliza a página principal */
 main {
     padding: 20px;
+    margin-top: 80px; /* Evita que o conteúdo fique atrás do menu fixo */
 }
 
 .tab-content {
@@ -74,7 +150,8 @@ main {
 }
 
 .game-card {
-    background-color: #fff;
+    background-color: #f0fff0; /* Verde bem claro para harmonizar */
+    border: 2px solid #008000;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     overflow: hidden;
@@ -104,9 +181,10 @@ main {
     padding: 0 10px 10px;
 }
 
+/* Rodapé */
 footer {
-    background-color: #333;
-    color: #fff;
+    background-color: #008000;
+    color: white;
     text-align: center;
     padding: 10px;
     position: fixed;
@@ -114,100 +192,93 @@ footer {
     bottom: 0;
 }
 
-/* Estilos para a página de login */
-body {
-    background: linear-gradient(135deg, #007bff, #6610f2);
-    font-family: Arial, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+/* Reset básico para outras partes do código */
+* {
     margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-.login-container {
-    background: rgba(255, 255, 255, 0.9);
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+/* Estilização do conteúdo */
+.content {
+    background: white;
     padding: 30px;
     border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 800px;
+    margin-top: 20px;
     text-align: center;
-    width: 350px;
 }
 
-.login-container h1 {
-    font-size: 22px;
-    color: #333;
-    margin-bottom: 20px;
-}
-
-.login-container p {
-    font-size: 16px;
-    color: #555;
+h1 {
+    font-size: 28px;
     margin-bottom: 15px;
-}
-
-button {
-    width: 100%;
-    padding: 10px;
-    margin: 5px 0;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-button:first-of-type {
-    background-color: #007bff;
-    color: white;
-}
-
-button:last-of-type {
-    background-color: #6610f2;
-    color: white;
-}
-
-button:hover {
-    opacity: 0.8;
-}
-
-
-/* Estilos para o menu */
-header {
-    background: #333;
-    padding: 15px 0;
-    text-align: center;
-    position: fixed;
-    top: 0;
-    width: 100%;
-    z-index: 1000;
-}
-
-nav ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-nav ul li {
-    display: inline;
-    margin: 0 15px;
-}
-
-nav ul li a {
-    color: white;
-    text-decoration: none;
-    font-size: 18px;
-    font-weight: bold;
-    transition: 0.3s;
-}
-
-nav ul li a:hover {
     color: #007bff;
 }
 
-/* Ajuste no login-container para não ficar escondido atrás do menu */
-.login-container {
-    margin-top: 70px;
+h2 {
+    font-size: 22px;
+    margin-top: 20px;
+    color: #555;
+}
+
+p {
+    font-size: 16px;
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+/* Adicionando bordas e espaçamento para listas */
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+ul li {
+    background: #e6f2ff;
+    margin: 5px 0;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 16px;
+    color: #333;
+}
+
+/* Estilização para imagens */
+.content img {
+    width: 100%;
+    max-width: 400px;
+    margin: 20px 0;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsividade */
+@media (max-width: 600px) {
+    .content {
+        width: 95%;
+        padding: 20px;
+    }
+
+    h1 {
+        font-size: 24px;
+    }
+
+    h2 {
+        font-size: 20px;
+    }
+
+    p, ul li {
+        font-size: 14px;
+    }
 }
