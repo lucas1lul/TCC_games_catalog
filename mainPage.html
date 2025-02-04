@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vitrine</title>
+    <link rel="stylesheet" href="mainPage.css">
+</head>
+<body>
+    <header>
+        <h1>Página principal</h1>
+        <input type="text" id="searchInput" placeholder="Pesquisar jogos..." oninput="filterGames()">
+    </header>
+
+    <div class="carousel">
+        <div class="carousel-content">
+            <div class="carousel-item">🔹 Item 1 </div>
+            <div class="carousel-item">🔹 Item 2 </div>
+            <div class="carousel-item">🔹 Item 3 </div>
+            <div class="carousel-item">🔹 Item 4 </div>
+        </div>
+        <div class="carousel-buttons">
+            <button onclick="prevSlide()">⬅️</button>
+            <button onclick="nextSlide()">➡️</button>
+        </div>
+    </div>
+
+    <main>
+        <div class="games-container" id="gamesContainer">
+            <!-- Cards de jogos serão gerados dinamicamente via JavaScript -->
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2023 Catálogo de Jogos. Todos os direitos reservados.</p>
+    </footer>
+
+    <script src="scripts.js"></script>
+</body>
+</html>
