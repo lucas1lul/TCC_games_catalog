@@ -1,40 +1,79 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vitrine</title>
-    <link rel="stylesheet" href="mainPage.css">
+    <title>Catálogo de Jogos</title>
+    <link rel="stylesheet" href="styles_mainPage.css">
 </head>
 <body>
-    <header>
-        <h1>Página principal</h1>
-        <input type="text" id="searchInput" placeholder="Pesquisar jogos..." oninput="filterGames()">
+
+    <!-- Cabeçalho -->
+    <header class="cabecalho">
+        <img id="logo" src="./imagens/logoIFF.png" alt="Logotipo do batman">
+        <nav>
+            <ul>
+                <a href="./index.html">
+                    <li>Home</li>
+                </a>
+                <a href="./contato.html">
+                    <li>Contato</li>
+                </a>
+                <a href="./fotos.html">
+                    <li>Fotos</li>
+                </a>
+                <a href="./comentarios.html">
+                    <li>Comentários</li>
+                </a>
+            </ul>
+        </nav>
     </header>
 
-    <div class="carousel">
+    <!-- Vitrine Rotativa -->
+    <section class="carousel">
         <div class="carousel-content">
-            <div class="carousel-item">🔹 Item 1 </div>
-            <div class="carousel-item">🔹 Item 2 </div>
-            <div class="carousel-item">🔹 Item 3 </div>
-            <div class="carousel-item">🔹 Item 4 </div>
+            <div class="carousel-item"><img src="img1.jpg" alt="Jogo 1"></div>
+            <div class="carousel-item"><img src="img2.jpg" alt="Jogo 2"></div>
+            <div class="carousel-item"><img src="img3.jpg" alt="Jogo 3"></div>
+            <div class="carousel-item"><img src="img4.jpg" alt="Jogo 4"></div>
         </div>
         <div class="carousel-buttons">
             <button onclick="prevSlide()">⬅️</button>
             <button onclick="nextSlide()">➡️</button>
         </div>
-    </div>
+    </section>
 
-    <main>
-        <div class="games-container" id="gamesContainer">
-            <!-- Cards de jogos serão gerados dinamicamente via JavaScript -->
-        </div>
-    </main>
+    <!-- Filtro -->
+    <section class="filtro">
+        <h2>Filtrar Jogos</h2>
+        <label for="nome">Nome:</label>
+        <input type="text" id="nome" placeholder="Digite o nome do jogo">
 
+        <label for="tipo">Tipo:</label>
+        <select id="tipo">
+            <option value="">Selecione</option>
+            <option value="Ação">Ação</option>
+            <option value="Estratégia">Estratégia</option>
+            <option value="Aventura">Aventura</option>
+        </select>
+
+        <label for="habilidade">Habilidade Trabalhada:</label>
+        <select id="habilidade">
+            <option value="">Selecione</option>
+            <option value="Raciocínio">Raciocínio</option>
+            <option value="Coordenação Motora">Coordenação Motora</option>
+            <option value="Criatividade">Criatividade</option>
+        </select>
+
+        <button onclick="filtrarJogos()">Filtrar</button>
+    </section>
+
+    <!-- Rodapé -->
     <footer>
-        <p>&copy; 2023 Catálogo de Jogos. Todos os direitos reservados.</p>
+        <p>&copy; 2025 Catálogo de Jogos. Todos os direitos reservados.</p>
     </footer>
 
-    <script src="scripts.js"></script>
+    <script src="script.js"></script>
+
 </body>
 </html>

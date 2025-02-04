@@ -43,3 +43,31 @@ function filterGames() {
 document.addEventListener('DOMContentLoaded', () => {
     renderGames();
 });
+let index = 0;
+const slides = document.querySelectorAll('.carousel-item');
+const totalSlides = slides.length;
+
+function showSlide(i) {
+    const content = document.querySelector('.carousel-content');
+    index = (i + totalSlides) % totalSlides;
+    content.style.transform = `translateX(${-index * 100}%)`;
+}
+
+function nextSlide() {
+    showSlide(index + 1);
+}
+
+function prevSlide() {
+    showSlide(index - 1);
+}
+
+setInterval(nextSlide, 3000);
+
+// Filtro de Jogos (Simulação)
+function filtrarJogos() {
+    const nome = document.getElementById("nome").value.toLowerCase();
+    const tipo = document.getElementById("tipo").value;
+    const habilidade = document.getElementById("habilidade").value;
+
+    alert(`Filtrando jogos por:\nNome: ${nome}\nTipo: ${tipo}\nHabilidade: ${habilidade}`);
+}
