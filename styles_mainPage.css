@@ -26,7 +26,7 @@ ul {
 
 li{
     list-style: none;
-    color: aliceblue;
+    color: black;
     cursor: pointer;
     font-size: 19px;
     transition: .5s;
