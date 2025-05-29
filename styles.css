@@ -55,6 +55,14 @@ nav ul li {
     margin: 0 15px;
 }
 
+nav ul li a {
+    color: #008000; /* Verde principal do Instituto Federal */
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
 nav ul li a:hover {
     color: #004d00;
 }
