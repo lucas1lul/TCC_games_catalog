@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const jogoController = require('../controllers/jogoController');
+const jogoController = require('../jogoController');
 
 router.post('/login', jogoController.login);
 router.post('/register', jogoController.register);
