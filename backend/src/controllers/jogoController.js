@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt');
 
 let usuarios = [];  // Nosso "banco fake"
+let games = [];  // SEMPRE um array!
 
 // Apenas para testes, adicione alguns usuários iniciais para não começar vazio toda vez que o servidor reiniciar
 // Em um sistema real, você teria um banco de dados persistente.
@@ -61,10 +62,107 @@ exports.listUsers = (req, res) => {
     res.status(200).json(usersWithoutPassword);
 };
 
-// Adicionei isso apenas para que você possa registrar um usuário de teste e saber a senha.
-// REMOVA EM PRODUÇÃO!
-// exports.testHash = async (req, res) => {
-//     const { senha } = req.body;
-//     const hash = await bcrypt.hash(senha, 10);
-//     res.json({ hash });
-// };
+// --- CONTATAR DESENVOLVEDOR ---
+exports.contactDeveloper = (req, res) => {
+    console.log("Mensagem enviada ao dev:", req.body);
+    res.json({ mensagem: "Mensagem enviada ao desenvolvedor!" });
+};
+
+const { readGames, saveGames } = require('../models/gamesModel');
+
+// --- LISTAR JOGOS COM FILTROS ---
+exports.getGames = (req, res) => {
+    try {
+        const games = readGames();  // SEMPRE lê do arquivo
+        const { curso, componente, nivel, habilidade, plataforma } = req.query;
+
+        let resultados = games;
+
+        if (curso) {
+            resultados = resultados.filter(j => j.curso?.toLowerCase().includes(curso.toLowerCase()));
+        }
+        if (componente) {
+            resultados = resultados.filter(j => j.componente?.toLowerCase().includes(componente.toLowerCase()));
+        }
+        if (nivel) {
+            resultados = resultados.filter(j => j.nivel?.toLowerCase().includes(nivel.toLowerCase()));
+        }
+        if (habilidade) {
+            resultados = resultados.filter(j => j.habilidade?.toLowerCase().includes(habilidade.toLowerCase()));
+        }
+        if (plataforma) {
+            resultados = resultados.filter(j => j.plataforma?.toLowerCase().includes(plataforma.toLowerCase()));
+        }
+
+        res.status(200).json(resultados);
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ mensagem: "Erro ao listar jogos" });
+    }
+};
+
+// --- DETALHES DO JOGO ---
+exports.getGameById = (req, res) => {
+    try {
+        const games = readGames();
+        const game = games.find(g => g.id == req.params.id);
+
+        if (!game) return res.status(404).json({ mensagem: "Jogo não encontrado" });
+
+        res.json(game);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ mensagem: "Erro ao obter jogo" });
+    }
+};
+
+// --- CADASTRAR JOGO ---
+exports.addGame = (req, res) => {
+    try {
+        const games = readGames();
+
+        const novo = {
+            id: Date.now(),
+            nome: req.body.nome,
+            descricao: req.body.descricao,
+            curso: req.body.curso,
+            componente: req.body.componente,
+            habilidades: req.body.habilidades,
+            plataforma: req.body.plataforma,
+            link: req.body.link,
+            desenvolvedor_email: req.body.desenvolvedor_email,
+            imagem: req.body.imagem
+        };
+
+        games.push(novo);
+        saveGames(games);
+
+        res.status(201).json({ mensagem: "Jogo cadastrado com sucesso", jogo: novo });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ mensagem: "Erro ao cadastrar jogo" });
+    }
+};
+
+exports.deleteGame = (req, res) => {
+    try {
+        let games = readGames();
+        const id = req.params.id;
+
+        const existe = games.find(g => g.id == id);
+        if (!existe) {
+            return res.status(404).json({ mensagem: "Jogo não encontrado" });
+        }
+
+        games = games.filter(g => g.id != id);
+
+        saveGames(games);
+
+        res.status(200).json({ mensagem: "Jogo deletado com sucesso!" });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ mensagem: "Erro ao deletar jogo" });
+    }
+};
+

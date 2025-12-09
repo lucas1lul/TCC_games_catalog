@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "nome": "Algoritmo Runner",
+    "curso": "Engenharia da Computação",
+    "componente": "Algoritmos",
+    "nivel": "Superior",
+    "habilidade": "Raciocínio lógico",
+    "plataforma": "Windows",
+    "link": "https://exemplo.com/jogo"
+  },
+  {
+    "id": 1765244731335,
+    "nome": "ABI-DOS",
+    "curso": "Engenharia da Computação",
+    "componente": "Programação",
+    "plataforma": "Windows",
+    "link": "https://exemplo.com/abidos"
+  }
+]
