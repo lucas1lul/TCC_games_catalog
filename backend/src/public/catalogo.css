@@ -1,0 +1,243 @@
+/* catalogo.css */
+
+/* --- Variáveis IFF (Ajustadas para Vermelho e Verde) --- */
+:root {
+    --iff-red-dark: #990000;      /* Vermelho Institucional (Destaque principal) */
+    --iff-green-dark: #6cb333;    /* Verde Institucional (Fundo de Seções) */
+    --iff-gray-light: #f0f0f0;    /* Cinza claro para o fundo do body */
+    --iff-border: #ddd;
+    --iff-text-dark: #333;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: var(--iff-gray-light);
+    color: var(--iff-text-dark);
+    margin: 0;
+    padding: 20px;
+}
+
+h1 {
+    color: var(--iff-red-dark);
+    border-bottom: 3px solid var(--iff-green-dark);
+    padding-bottom: 10px;
+    margin-bottom: 30px;
+    text-align: left;
+    font-size: 2em;
+}
+
+/* --- Estilo dos Filtros (Responsivo Aprimorado) --- */
+#filtros {
+    display: flex;
+    flex-wrap: wrap; 
+    gap: 10px 15px;
+    padding: 15px;
+    margin-bottom: 30px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+#filtros label {
+    font-weight: bold;
+    color: var(--iff-text-dark);
+    margin-top: 5px;
+}
+
+#filtros input, #filtros button {
+    padding: 10px;
+    border: 1px solid var(--iff-border);
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+#filtros input {
+    flex-grow: 1; 
+    min-width: 150px;
+}
+
+#filtros button {
+    background-color: var(--iff-red-dark);
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s;
+    white-space: nowrap;
+}
+
+#filtros button:hover {
+    background-color: var(--iff-green-dark);
+}
+
+/* NOVO: Media Query para telas pequenas (< 600px) */
+@media (max-width: 600px) {
+    #filtros {
+        flex-direction: column; /* Empilha os filtros verticalmente */
+        gap: 15px;
+    }
+
+    #filtros input, #filtros button {
+        width: 100%; /* Força inputs e botão a ocuparem toda a largura */
+        min-width: auto;
+    }
+}
+
+
+/* --- Estilo da Lista de Jogos (Container Grid) --- */
+#lista {
+    display: grid;
+    gap: 25px;
+    
+    /* FIXO: 3 COLUNAS MÁXIMAS PARA EVITAR QUEBRA */
+    grid-template-columns: repeat(3, 1fr); 
+}
+
+/* --- MEDIA QUERIES PARA GARANTIR A RESPONSIVIDADE FIXA DOS CARDS --- */
+
+/* Para Tablets ou Telas Médias (Máximo 2 Colunas) */
+@media (max-width: 1200px) {
+    #lista {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Para Smartphones ou Telas Pequenas (Máximo 1 Coluna) */
+@media (max-width: 768px) {
+    #lista {
+        grid-template-columns: 1fr; /* 1 coluna */
+    }
+    
+    /* Ajusta a quebra dos detalhes dentro do card para telas muito pequenas */
+    .detalhes-grid {
+        grid-template-columns: 1fr; 
+    }
+    .detalhe-item.completo {
+        grid-column: span 1;
+    }
+}
+
+
+/* Estilo do Card Individual */
+.jogo-card {
+    background-color: #fff;
+    border: 1px solid var(--iff-border);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+    display: flex;
+    flex-direction: column;
+}
+
+.jogo-card:hover {
+    transform: translateY(-5px);
+}
+
+.card-header {
+    background-color: var(--iff-red-dark); /* Header em Vermelho */
+    color: white;
+    padding: 15px;
+}
+
+.jogo-titulo {
+    margin: 0 0 5px 0;
+    font-size: 1.4em;
+}
+
+.jogo-componente {
+    display: block;
+    font-size: 0.85em;
+    opacity: 0.9;
+}
+
+.card-body {
+    padding: 15px;
+    flex-grow: 1;
+}
+
+.jogo-descricao {
+    font-size: 0.9em;
+    color: var(--iff-text-dark);
+    margin-bottom: 15px;
+    max-height: 80px; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Estilo do Grid de Detalhes */
+.detalhes-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Padrão: 2 colunas */
+    gap: 8px 15px;
+    font-size: 0.85em;
+    border-top: 1px dashed var(--iff-border);
+    padding-top: 10px;
+}
+
+.detalhe-item strong {
+    color: var(--iff-red-dark); /* Destaque dos labels em vermelho */
+}
+
+.detalhe-item.completo {
+    grid-column: span 2; 
+}
+
+
+.card-footer {
+    background-color: var(--iff-gray-light);
+    padding: 15px;
+    text-align: right;
+    border-top: 1px solid var(--iff-border);
+}
+
+.card-footer a {
+    color: var(--iff-red-dark);
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+
+.card-footer a:hover {
+    color: var(--iff-green-dark); 
+    text-decoration: underline;
+}
+
+/* Estilo da Paginação */
+#paginacao button {
+    padding: 8px 15px;
+    border: 1px solid var(--iff-red-dark);
+    background-color: white;
+    color: var(--iff-red-dark);
+    cursor: pointer;
+    border-radius: 4px;
+    margin: 0 5px;
+    transition: background-color 0.3s;
+}
+
+#paginacao button:hover:not(:disabled) {
+    background-color: var(--iff-red-dark);
+    color: white;
+}
+
+#paginacao button:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+    border-color: #ccc;
+    color: #999;
+}
+
+#infoPagina {
+    font-weight: bold;
+    margin: 0 10px;
+}
+
+/* Estilo para Mensagens de Status/Erro */
+#lista > p {
+    grid-column: 1 / -1; 
+    text-align: center;
+    font-size: 1.2em;
+    padding: 20px;
+    background-color: #fff8e1; 
+    border: 1px solid #ffc107;
+    border-radius: 5px;
+}

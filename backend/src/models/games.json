@@ -16,5 +16,764 @@
     "componente": "Programação",
     "plataforma": "Windows",
     "link": "https://exemplo.com/abidos"
+  },
+  {
+    "id": 1765500905732
+  },
+  {
+    "id": 1765501404775,
+    "buscador": "N/A",
+    "autor": "N/A",
+    "generos": [],
+    "habilidades": [],
+    "modelo_custo": "N/A",
+    "ano_lancamento": null,
+    "descricao": "Sem descrição.",
+    "url": "N/A",
+    "plataforma": [],
+    "idioma": "N/A",
+    "pais_origem": "N/A"
+  },
+  {
+    "id": 1765501476823,
+    "buscador": "N/A",
+    "autor": "N/A",
+    "generos": [],
+    "habilidades": [],
+    "modelo_custo": "N/A",
+    "ano_lancamento": null,
+    "descricao": "Sem descrição.",
+    "url": "N/A",
+    "plataforma": [],
+    "idioma": "N/A",
+    "pais_origem": "N/A"
+  },
+  {
+    "id": 1765501548676,
+    "buscador": "N/A",
+    "autor": "N/A",
+    "generos": [],
+    "habilidades": [],
+    "modelo_custo": "N/A",
+    "ano_lancamento": null,
+    "descricao": "Sem descrição.",
+    "url": "N/A",
+    "plataforma": [],
+    "idioma": "N/A",
+    "pais_origem": "N/A"
+  },
+  {
+    "id": 1765501689165,
+    "titulo": "Jogo Teste de Adição",
+    "buscador": "Postman",
+    "autor": "Eu",
+    "generos": [
+      "Simulação"
+    ],
+    "habilidades": [
+      "C1"
+    ],
+    "modelo_custo": "Totalmente Gratuito",
+    "ano_lancamento": 2025,
+    "descricao": "Este é o primeiro jogo adicionado corretamente via POST.",
+    "url": "http://teste.com",
+    "plataforma": [
+      "Windows"
+    ],
+    "idioma": "Português",
+    "pais_origem": "Brasil",
+    "componente": "Programação"
+  },
+  {
+    "id": 1765501890646.493,
+    "titulo": "ABI-DOS",
+    "buscador": "Steam",
+    "autor": "SteamSimABI.DOS.SOFTWARE",
+    "generos": [
+      "Casual",
+      "Indie",
+      "Simulação",
+      "Estratégia"
+    ],
+    "habilidades": [
+      "C3",
+      "C1"
+    ],
+    "modelo_custo": "Totalmente Gratuito",
+    "ano_lancamento": 2024,
+    "descricao": "Crie o sistema operacional mais avançado já feito! Consegue dominar a linguagem assembly dessa máquina incrível? Desenhe circuitos, automatize os UBITS (blocos de dados coloridos) e otimize o sistema. O Administrador está de olho, mas ele não é o que parece.",
+    "url": "https://store.steampowered.com/app/2180700/ABIDOS/",
+    "plataforma": [
+      "Windows"
+    ],
+    "idioma": "Inglês",
+    "pais_origem": "Programação",
+    "componente": "Programação"
+  },
+  {
+    "id": 1765501890646.2397,
+    "titulo": "Active Neurons - Wonders Of The World",
+    "buscador": "Steam",
+    "autor": "SteamSimNikolai Usachev",
+    "generos": [
+      "Casual",
+      "Indie",
+      "Estratégia"
+    ],
+    "habilidades": [
+      "E1",
+      "E4",
+      "E8"
+    ],
+    "modelo_custo": "Totalmente Gratuito",
+    "ano_lancamento": 2020,
+    "descricao": "Um jogo de quebra-cabeças que treina o raciocínio espacial e lógico. Dê energia ao seu cérebro!",
+    "url": "https://store.steampowered.com/app/1422630/Active_Neurons__Wonders_Of_The_World/",
+    "plataforma": [
+      "Windows"
+    ],
+    "idioma": "Inglês",
+    "pais_origem": "Rússia",
+    "componente": "Lógica"
+  },
+  {
+    "id": 1765501890646.635,
+    "titulo": "Anonymous Hacker Simulator: Prologue",
+    "buscador": "Steam",
+    "autor": "SteamSimSicarius",
+    "generos": [
+      "Indie",
+      "Simulação",
+      "Cibersegurança"
+    ],
+    "habilidades": [
+      "C2",
+      "C6",
+      "E8",
+      "EC1",
+      "EC2",
+      "EC3",
+      "EC7",
+      "EC10"
+    ],
+    "modelo_custo": "Parcialmente Gratuito",
+    "ano_lancamento": 2023,
+    "descricao": "Coloque-se no lugar de um habilidoso hacker anônimo e embarque em uma missão para revelar a verdade escondida por trás dos planos sinistros de uma organização para monitorar dados civis e impor uma vigilância em massa.",
+    "url": "https://store.steampowered.com/app/2487070/Anonymous_Hacker_Simulator_Prologue/",
+    "plataforma": [
+      "Windows"
+    ],
+    "idioma": "Português",
+    "pais_origem": "Australia",
+    "componente": "Segurança da informação"
+  },
+  {
+    "id": 1765501890646.412,
+    "titulo": "Aprenda Física & Jogos",
+    "buscador": "Google Play",
+    "autor": "SimQuizApp",
+    "generos": [
+      "Simulação",
+      "Puzzle/Lógica",
+      "Física",
+      "Trivia"
+    ],
+    "habilidades": [
+      "E1",
+      "E2",
+      "E4",
+      "E8",
+      "C10"
+    ],
+    "modelo_custo": "Parcialmente Gratuito",
+    "ano_lancamento": 2020,
+    "descricao": "Foca em ensinar física através de minijogos gamificados e quebra-cabeças. Os jogadores aplicam conceitos físicos (como gravidade, força, momentum) para resolver desafios lúdicos. Ex.: lançar projéteis, construir pontes, resolver puzzles de energia.",
+    "url": "https://play.google.com/store/apps/details?id=com.quizapp.physics",
+    "plataforma": [
+      "Android"
+    ],
+    "idioma": "Português",
+    "pais_origem": "Islândia",
+    "componente": "Física"
+  },
+  {
+    "id": 1765501890646.618,
+    "titulo": "Aprenda Python e Programação",
+    "buscador": "Google Play",
+    "autor": "SimCoding and Programming",
+    "generos": [
+      "Programação",
+      "Puzzle/Lógica"
+    ],
+    "habilidades": [
+      "E1",
+      "E3",
+      "E4",
+      "C1",
+      "C2",
+      "C3",
+      "C9",
+      "EC1"
+    ],
+    "modelo_custo": "Parcialmente Gratuito",
+    "ano_lancamento": 2021,
+    "descricao": "É um aplicativo móvel educativo projetado para ensinar programação em Python e conceitos fundamentais de ciência da computação de forma interativa e acessível. Diferente de um jogo tradicional, ele usa elementos de gamificação (como quizzes, conquistas e lições curtas) para engajar usuários iniciantes.",
+    "url": "https://play.google.com/store/apps/details?id=python.learnpython.learn.pythonx.coding.programming.python3.tutorials.codingx",
+    "plataforma": [
+      "Android",
+      "iOS"
+    ],
+    "idioma": "Português",
+    "pais_origem": "Espanha",
+    "componente": "Programação"
+  },
+  {
+    "id": 1765501890646.641,
+    "titulo": "Ball Sort Puzzle",
+    "buscador": "App Store",
+    "autor": "SimSpica Game Studio",
+    "generos": [
+      "Puzzle/Lógica"
+    ],
+    "habilidades": [
+      "E1",
+      "E4",
+      "E8",
+      "C10"
+    ],
+    "modelo_custo": "Totalmente Gratuito",
+    "ano_lancamento": 2022,
+    "descricao": "Ball Sort Puzzle é um jogo desafiador que vai mantê-lo entretido por horas! Classifique as bolas coloridas nos tubos até que todas as bolas da mesma cor estejam no mesmo tubo. Um jogo desafiador que é ao mesmo tempo difícil e relaxante! INSTRUÇÕES DE JOGO: - Toque em qualquer tubo para mover a bola que está em cima dele para um tubo diferente. - Você só pode colocar uma bola em cima de outra bola se todas elas forem da mesma cor e se o tubo para o qual você deseja movê-la tiver espaço suficiente. - Tente não ficar preso, mas se isso acontecer, não se preocupe; você sempre pode reiniciar o nível.",
+    "url": "https://apps.apple.com/br/app/ball-sort-puzzle/id1494648714?l=en-GB",
+    "plataforma": [
+      "iOS",
+      "Android"
+    ],
+    "idioma": "Inglês",
+    "pais_origem": "Singapura",
+    "componente": "Lógica"
+  },
+  {
+    "id": 1765501890646.062,
+    "titulo": "Banker Simulator: Prologue",
+    "buscador": "Steam",
+    "autor": "SimSoi Games",
+    "generos": [
+      "Casual",
+      "Indie",
+      "Simulação",
+      "Estratégia"
+    ],
+    "habilidades": [
+      "E1",
+      "E2",
+      "E3",
+      "E4",
+      "E8"
+    ],
+    "modelo_custo": "Parcialmente Gratuito",
+    "ano_lancamento": 2025,
+    "descricao": "Banker Simulator é um jogo onde você revive um banco falido. Com jogabilidade ativa e passiva (idle), tome decisões estratégicas para expandir, satisfazer clientes e superar crises.",
+    "url": "https://store.steampowered.com/app/3451020/Banker_Simulator_Prologue/",
+    "plataforma": [
+      "Windows"
+    ],
+    "idioma": "Inglês",
+    "pais_origem": "Turquia",
+    "componente": "Economia"
+  },
+  {
+    "id": 1765501890646.113,
+    "titulo": "Beer Factory - Prologue",
+    "buscador": "Steam",
+    "autor": "SimAKEL",
+    "generos": [
+      "Indie",
+      "Simulação"
+    ],
+    "habilidades": [
+      "E1",
+      "E2",
+      "E3",
+      "E4",
+      "E8"
+    ],
+    "modelo_custo": "Parcialmente Gratuito",
+    "ano_lancamento": 2023,
+    "descricao": "Beer Factory - Prologue é um jogo de simulação e gerenciamento de negócios. Aceite o desafio e gerencie sua própria fábrica de cerveja, funcionários, linhas de produção, bem como a importação e exportação de mercadorias.",
+    "url": "https://store.steampowered.com/app/2173600/Beer_Factory__Prologue/",
+    "plataforma": [
+      "Windows"
+    ],
+    "idioma": "Português",
+    "pais_origem": "Arábia Saudita",
+    "componente": "Gerenciamento"
+  },
+  {
+    "id": 1765501890646.3967,
+    "titulo": "Bitburner",
+    "buscador": "Steam",
+    "autor": "SimFulcrum Games, Hydroflame, over 250 github contributors",
+    "generos": [
+      "Simulação",
+      "Programação"
+    ],
+    "habilidades": [
+      "E1",
+      "E4",
+      "E6",
+      "E8",
+      "C1",
+      "C3",
+      "C6",
+      "C10",
+      "EC1",
+      "EC2",
+      "EC7",
+      "EC8"
+    ],
+    "modelo_custo": "Totalmente Gratuito",
+    "ano_lancamento": 2021,
+    "descricao": "Bitburner é um jogo incremental baseado em programação. Escreva scripts em JavaScript para automatizar a jogabilidade, aprender habilidades, jogar minijogos, resolver quebra-cabeças e muito mais neste RPG incremental cyberpunk baseado em texto.",
+    "url": "https://store.steampowered.com/app/1812820/Bitburner/",
+    "plataforma": [
+      "Windows"
+    ],
+    "idioma": "Inglês",
+    "pais_origem": "Polônia",
+    "componente": "Programação"
+  },
+  {
+    "id": 1765501890646.822,
+    "titulo": "Brain Code: Puzzles de Lógica",
+    "buscador": "Google Play",
+    "autor": "Sim.kk",
+    "generos": [
+      "Puzzle/Lógica"
+    ],
+    "habilidades": [
+      "E1",
+      "E4",
+      "E8"
+    ],
+    "modelo_custo": "Totalmente Gratuito",
+    "ano_lancamento": 2025,
+    "descricao": "Brain Code é um jogo de quebra-cabeças lógicos que desafia o jogador a pensar fora da caixa. Com 50 níveis únicos, o jogo utiliza uma interface minimalista inspirada em sistemas de linha de comando, proporcionando uma experiência imersiva e focada. Cada nível apresenta soluções inesperadas, que podem exigir o uso de pistas de níveis anteriores, dispositivos de amigos ou até mesmo locais do mundo real.",
+    "url": "https://play.google.com/store/apps/details?id=com.kk.braincode&hl=pt_BR",
+    "plataforma": [
+      "Android",
+      "iOS"
+    ],
+    "idioma": "Português",
+    "pais_origem": "Ucrânia",
+    "componente": "Lógica"
+  },
+  {
+    "id": 1765501890646.8862,
+    "titulo": "Brain Test: Tricky Puzzles",
+    "buscador": "App Store",
+    "autor": "SimUnico Studio",
+    "generos": [
+      "Trivia",
+      "Puzzle/Lógica"
+    ],
+    "habilidades": [
+      "E1",
+      "E4",
+      "E8",
+      "C10"
+    ],
+    "modelo_custo": "Totalmente Gratuito",
+    "ano_lancamento": 2019,
+    "descricao": "Brain Test: Tricky Puzzles é uma coleção de quebra-cabeças inteligentes e surpreendentes, criados para entreter através de distração e lógica lúdica. Cada nível apresenta um desafio inesperado, recompensando aqueles que gostam de pensar fora da caixa. O jogo não segue os formatos típicos de quebra-cabeças. Em vez disso, incentiva a experimentação e a criatividade de uma forma casual e acessível. Quer esteja a passar o tempo ou a partilhar a diversão com outras pessoas, cada quebra-cabeças foi concebido para entreter com humor e originalidade.",
+    "url": "https://apps.apple.com/br/app/brain-test-tricky-puzzles/id1486214495?l=en-GB",
+    "plataforma": [
+      "iOS",
+      "Android"
+    ],
+    "idioma": "Português",
+    "pais_origem": "Estados Unidos",
+    "componente": "Lógica"
+  },
+  {
+    "id": 1765501890646.0889,
+    "titulo": "BrainSpot: Raciocínio Lógico",
+    "buscador": "Google Play",
+    "autor": "SimMASSIANA LTDA",
+    "generos": [
+      "Puzzle/Lógica"
+    ],
+    "habilidades": [
+      "E1",
+      "E4",
+      "E8"
+    ],
+    "modelo_custo": "Totalmente Gratuito",
+    "ano_lancamento": 2020,
+    "descricao": "BrainSpot: Fun logic games é um jogo de quebra-cabeças lógicos e treinamento cerebral que reúne mais de 2.500 desafios projetados para desenvolver memória, raciocínio crítico, atenção e capacidade de resolução de problemas. Com níveis de dificuldade que variam do básico ao expert, o jogador enfrenta enigmas que incluem pensamento 3D, sequências, Sudoku, padrões, rebus e problemas matemáticos, promovendo exercícios mentais diários de 15 a 20 minutos",
+    "url": "https://play.google.com/store/apps/details?id=com.logicapp&hl=pt_BR",
+    "plataforma": [
+      "iOS",
+      "Android"
+    ],
+    "idioma": "Português",
+    "pais_origem": "Chipre",
+    "componente": "Lógica"
+  },
+  {
+    "id": 1765501890646.3457,
+    "titulo": "Brilliant: Learn by doing",
+    "buscador": "App Store",
+    "autor": "SimBrilliant.org",
+    "generos": [
+      "Educacional",
+      "Trivia"
+    ],
+    "habilidades": [
+      "E1",
+      "E3",
+      "E4",
+      "C1",
+      "C2",
+      "C3",
+      "C9",
+      "EC1",
+      "C10",
+      "E8"
+    ],
+    "modelo_custo": "Totalmente Gratuito",
+    "ano_lancamento": 2025,
+    "descricao": "Aprimore suas habilidades em matemática, dados e ciência da computação em poucos minutos por dia com o Brilliant. Para profissionais, estudantes e alunos ao longo da vida, o Brilliant é a melhor maneira de aprender. Junte-se a mais de 10 milhões de pessoas e explore milhares de lições interativas e curtas que o colocam em contato com conceitos básicos em tudo, desde matemática e ciência da computação até análise de dados e ciências físicas. A equipe de professores e pesquisadores premiados do Brilliant cria aulas interativas sobre uma variedade de tópicos de STEM. Desenvolva suas habilidades matemáticas com cursos introdutórios e avançados que abrangem álgebra, geometria, cálculo, probabilidade e estatística, trigonometria, álgebra linear e muito mais. Explore tópicos de ponta como IA, redes neurais, algoritmos, python, mecânica quântica e muito mais. Seja qual for o tópico de matemática, dados, ciência da computação ou ciências que você deseja aprimorar, a Brilliant tem o que você precisa. Faça o primeiro capítulo de qualquer curso gratuitamente e tenha acesso a todos os cursos com uma assinatura Premium.",
+    "url": "https://apps.apple.com/br/app/brilliant-learn-by-doing/id913335252?l=en-GB",
+    "plataforma": [
+      "iOS",
+      "Android"
+    ],
+    "idioma": "Inglês",
+    "pais_origem": "Estados Unidos",
+    "componente": "Programação"
+  },
+  {
+    "id": 1765501890646.5466,
+    "titulo": "Car Manufacture: Prologue",
+    "buscador": "Steam",
+    "autor": "SimSTEREO GAMES S.A.",
+    "generos": [
+      "Indie",
+      "Simulação",
+      "Estratégia"
+    ],
+    "habilidades": [
+      "E1",
+      "E3",
+      "E4",
+      "E8",
+      "C5",
+      "C11"
+    ],
+    "modelo_custo": "Parcialmente Gratuito",
+    "ano_lancamento": 2023,
+    "descricao": "Construa uma fábrica de carros no início do século XX. Descubra novos carros e tecnologias, gerencie funcionários, ganhe dinheiro e mantenha-se no topo. Car Manufacture: Prologue, versão reduzida do jogo completo, é ideal para experimentar este jogo de magnata automotivo.",
+    "url": "https://store.steampowered.com/app/1785980/Car_Manufacture_Prologue/",
+    "plataforma": [
+      "Windows"
+    ],
+    "idioma": "Português",
+    "pais_origem": "Polônia",
+    "componente": "Gerência de tempo"
+  },
+  {
+    "id": 1765501890646.3142,
+    "titulo": "Chemistry & Physics simulation",
+    "buscador": "Google Play",
+    "autor": "SimKiwix",
+    "generos": [
+      "Simulação",
+      "Física"
+    ],
+    "habilidades": [
+      "E1",
+      "E2",
+      "E4",
+      "E8",
+      "C10"
+    ],
+    "modelo_custo": "Totalmente Gratuito",
+    "ano_lancamento": 2023,
+    "descricao": "Um aplicativo de simulação interativa que permite aos usuários realizar experimentos virtuais de química e física em um ambiente seguro e controlado. Ideal para visualizar conceitos complexos (ex.: reações químicas, leis de Newton, eletromagnetismo) através de modelos dinâmicos e manipuláveis.",
+    "url": "https://play.google.com/store/apps/details?id=org.kiwix.kiwixcustomphet",
+    "plataforma": [
+      "Android"
+    ],
+    "idioma": "Português",
+    "pais_origem": "Reino Unido",
+    "componente": "Física"
+  },
+  {
+    "id": 1765501890646.0066,
+    "titulo": "Circuit Simulator Logic Sim",
+    "buscador": "Google Play",
+    "autor": "SimKunhar Games Studios",
+    "generos": [
+      "Simulação",
+      "Educacional",
+      "Eletrônica"
+    ],
+    "habilidades": [
+      "E1",
+      "E2",
+      "E3",
+      "E4",
+      "E8",
+      "EC9",
+      "EC11"
+    ],
+    "modelo_custo": "Totalmente Gratuito",
+    "ano_lancamento": 2023,
+    "descricao": "Aplicativo que permite criar, testar e simular circuitos digitais com diversos componentes.",
+    "url": "https://play.google.com/store/apps/details?id=com.kunhargamesstudios.circuit.simulator.game&hl=pt_BR",
+    "plataforma": [
+      "Windows",
+      "Android"
+    ],
+    "idioma": "Inglês",
+    "pais_origem": "Inglaterra",
+    "componente": "Eletrônica Analógica"
+  },
+  {
+    "id": 1765501890646.04,
+    "titulo": "Code the Robot. Save the Cat",
+    "buscador": "Google Play",
+    "autor": "SimPlanet Factory",
+    "generos": [
+      "Puzzle/Lógica",
+      "Programação"
+    ],
+    "habilidades": [
+      "E1",
+      "C1",
+      "C3",
+      "EC1",
+      "C5"
+    ],
+    "modelo_custo": "Totalmente Gratuito",
+    "ano_lancamento": 2021,
+    "descricao": "Jogo educativo que ensina conceitos básicos de programação, como ações, loops, funções e condições, através de uma história divertida.",
+    "url": "https://play.google.com/store/apps/details?id=com.learnyland.thecatandtherobot",
+    "plataforma": [
+      "Windows",
+      "Android"
+    ],
+    "idioma": "Português",
+    "pais_origem": "Espanha",
+    "componente": "Programação"
+  },
+  {
+    "id": 1765501890646.001,
+    "titulo": "Codeacademy Go",
+    "buscador": "App Store",
+    "autor": "SimCodecademy",
+    "generos": [
+      "Programação",
+      "Trivia"
+    ],
+    "habilidades": [
+      "E1",
+      "E3",
+      "E4",
+      "C1",
+      "C2",
+      "C3",
+      "C9",
+      "EC1",
+      "C10"
+    ],
+    "modelo_custo": "Parcialmente Gratuito",
+    "ano_lancamento": 2023,
+    "descricao": "É o aplicativo móvel da famosa plataforma de ensino de programação Codecademy. Ele não substitui a experiência completa do site, mas é projetado para ajudar os usuários a revisar conceitos, praticar código e manter a consistência nos estudos diretamente do celular.",
+    "url": "https://apps.apple.com/br/app/codecademy-go/id1376029326?l=en-GB",
+    "plataforma": [
+      "iOS",
+      "Android"
+    ],
+    "idioma": "Português",
+    "pais_origem": "Estados Unidos",
+    "componente": "Programação"
+  },
+  {
+    "id": 1765501890646.3254,
+    "titulo": "CodeLand: Programação e lógica",
+    "buscador": "Google Play",
+    "autor": "SimLearny Land",
+    "generos": [
+      "Programação",
+      "Trivia"
+    ],
+    "habilidades": [
+      "E1",
+      "C1",
+      "C3",
+      "EC1",
+      "C5"
+    ],
+    "modelo_custo": "Totalmente Gratuito",
+    "ano_lancamento": 2022,
+    "descricao": "Aplicativo educacional que ensina programação, lógica e resolução de problemas",
+    "url": "https://play.google.com/store/apps/details?id=com.learnyland.codeland",
+    "plataforma": [
+      "Windows",
+      "Android",
+      "iOS"
+    ],
+    "idioma": "Português",
+    "pais_origem": "Espanha",
+    "componente": "Programação"
+  },
+  {
+    "id": 1765501890646.2844,
+    "titulo": "Coding Game - Hacker binário",
+    "buscador": "App Store",
+    "autor": "SimDaniel Reicher",
+    "generos": [
+      "Educacional",
+      "Cibersegurança"
+    ],
+    "habilidades": [
+      "E1",
+      "E4",
+      "E8",
+      "C2",
+      "C3",
+      "EC2",
+      "EC10",
+      "C6"
+    ],
+    "modelo_custo": "Totalmente Gratuito",
+    "ano_lancamento": 2023,
+    "descricao": "Pronto para testar suas habilidades mentais e capacidades de resolução de problemas? Mergulhe no mundo dos números binários com o CodingGame, o desafiador aplicativo que coloca suas habilidades de conversão decimal-binário à prova! Jogue contra amigos e estabeleça novos recordes! Mais de 85.000 downloads em mais de 52 países! - Aprenda o sistema binário e melhore suas habilidades matemáticas mentais! Compita nas tabelas de classificação e suba de posição! Desbloqueie novos temas com chaves obtidas e salve papéis de parede em sua biblioteca de fotos! Neste jogo viciantemente divertido de QI, cada posição no código binário representa um número, começando por 1, 2, 4, 8, 16 e assim por diante. O objetivo é converter os números fornecidos em binários, coletando pontos a cada conversão bem-sucedida. Quanto mais rápido você converte, maior sua pontuação - consegue vencer seus amigos e conquistar o topo?",
+    "url": "https://apps.apple.com/br/app/coding-game-hacker-binário/id1263212152",
+    "plataforma": [
+      "iOS"
+    ],
+    "idioma": "Inglês",
+    "pais_origem": "Brasil",
+    "componente": "Eletrônica Digital"
+  },
+  {
+    "id": 1765501890646.813,
+    "titulo": "CodingX :Aprenda a programação",
+    "buscador": "Google Play",
+    "autor": "SimCodingX",
+    "generos": [
+      "Programação",
+      "Trivia"
+    ],
+    "habilidades": [
+      "E1",
+      "E3",
+      "E4",
+      "C1",
+      "C2",
+      "C3",
+      "C9",
+      "EC1",
+      "C10"
+    ],
+    "modelo_custo": "Totalmente Gratuito",
+    "ano_lancamento": 2021,
+    "descricao": "Aplicativo que oferece cursos de programação em diversas linguagens como C, C++, Python e Java, com foco em hacking ético e desenvolvimento de software.",
+    "url": "https://play.google.com/store/apps/details?id=codingx.coding.programming.learn.learntocode.code.java.python.program.delevopment.it.apps.dev&hl=pt_BR",
+    "plataforma": [
+      "Android",
+      "iOS"
+    ],
+    "idioma": "Português",
+    "pais_origem": "Brasil",
+    "componente": "Programação"
+  },
+  {
+    "id": 1765501890646.1978,
+    "titulo": "Console Tycoon",
+    "buscador": "Google Play",
+    "autor": "SimRoastery Games",
+    "generos": [
+      "Simulação",
+      "Estratégia"
+    ],
+    "habilidades": [
+      "E1",
+      "E3",
+      "E4",
+      "E8",
+      "C11"
+    ],
+    "modelo_custo": "Totalmente Gratuito",
+    "ano_lancamento": 2025,
+    "descricao": "Console Tycoon é um simulador empolgante onde você constrói seu próprio império de consoles de videogame. A jornada começa em 1980, com o surgimento da indústria de jogos. O jogador projeta e lança consoles domésticos, dispositivos portáteis, gamepads e headsets de realidade virtual, definindo tanto o design quanto as especificações técnicas por meio de um editor com mais de 10.000 opções.",
+    "url": "https://play.google.com/store/apps/details?id=com.roasterygames.consoletycoon",
+    "plataforma": [
+      "Windows",
+      "Android"
+    ],
+    "idioma": "Inglês",
+    "pais_origem": "Portugal",
+    "componente": "Gerenciamento"
+  },
+  {
+    "id": 1765501890646.959,
+    "titulo": "Cross Logic Puzzle Game",
+    "buscador": "App Store",
+    "autor": "SimHitapps Inc.",
+    "generos": [
+      "Puzzle/Lógica"
+    ],
+    "habilidades": [
+      "E1",
+      "E4",
+      "E8",
+      "C10"
+    ],
+    "modelo_custo": "Totalmente Gratuito",
+    "ano_lancamento": 2021,
+    "descricao": "Exercite seu cérebro e prepare seu dedo para tocar na tela. É hora de resolver os quebra-cabeças lógicos e vencer o jogo. Este é o Cross Logic, um jogo cerebral que irá entretê-lo por muito tempo. E isso não é tudo! Os quebra-cabeças lógicos são como levar sua mente para a academia. Aumente sua capacidade cerebral e divirta-se ao mesmo tempo. Jogue quebra-cabeças cerebrais, resolva mistérios lógicos e complete os níveis para vencer o jogo. Como funciona este jogo de lógica? - Baixe e abra o aplicativo - Resolva quebra-cabeças e enigmas - Avance pelos níveis (há muitos para jogar!) - Aumente sua capacidade cerebral - Vença o jogo! Simples!",
+    "url": "https://apps.apple.com/br/app/cross-logic-puzzle-game/id1561830495?l=en-GB",
+    "plataforma": [
+      "iOS",
+      "Android"
+    ],
+    "idioma": "Português",
+    "pais_origem": "Estado Unidos",
+    "componente": "Lógica"
+  },
+  {
+    "id": 1765501890646.718,
+    "titulo": "Crypto Miner Tycoon Simulator Starter Edition",
+    "buscador": "Steam",
+    "autor": "SimBigosaur",
+    "generos": [
+      "Simulação",
+      "Economia"
+    ],
+    "habilidades": [
+      "E1",
+      "E3",
+      "E4",
+      "E7",
+      "EC6",
+      "EC9",
+      "EC11",
+      "C4",
+      "C10"
+    ],
+    "modelo_custo": "Totalmente Gratuito",
+    "ano_lancamento": 2023,
+    "descricao": "Comece em seu quarto no ano de 2010. Construa sondas para extrair as moedas Bitcoin, Ethereum e outras moedas criptográficas. Comercializar no mercado para aumentar a riqueza. Expandir seus negócios para novos escritórios. Contrate funcionários qualificados e atribua tarefas.",
+    "url": "https://store.steampowered.com/app/2304990/Crypto_Miner_Tycoon_Simulator_Starter_Edition/",
+    "plataforma": [
+      "Windows"
+    ],
+    "idioma": "Inglês",
+    "pais_origem": "Sérvia",
+    "componente": "Hardware"
   }
 ]
