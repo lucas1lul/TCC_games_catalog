@@ -68,7 +68,7 @@ exports.contactDeveloper = (req, res) => {
     res.json({ mensagem: "Mensagem enviada ao desenvolvedor!" });
 };
 
-const { readGames, saveGames } = require('../models/gamesModel');
+const { readGames, saveGames } = require('../../models/gamesModel');
 
 // --- Função Auxiliar para Mapeamento e Validação de um ÚNICO JOGO ---
 // Esta função garante que cada item tenha os campos necessários e a estrutura correta.
