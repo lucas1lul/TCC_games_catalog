@@ -1,0 +1,16 @@
+[
+  {
+    "id": 1,
+    "nome": "victor",
+    "email": "victor@gmail.com",
+    "senha": "$2b$10$u3aUsBS.BRLgF0AOMvLBCeGD79ceqvuuS.5QdSscfoG7rRpKOkStm",
+    "perfil": "administrador"
+  },
+  {
+    "id": 2,
+    "nome": "lucas",
+    "email": "lucascorrado@hotmail.com",
+    "senha": "$2b$10$THOmOu7mT2WxWTzztWRmeupDZ3H/aICVzN7XYqlhVawryBqp/nB4K",
+    "perfil": "administrador"
+  }
+]

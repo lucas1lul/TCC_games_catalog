@@ -5,44 +5,26 @@
     box-sizing: border-box;
 }
 
+/* --- ESTILOS GERAIS/BODY CONSOLIDADOS (para páginas de conteúdo, se aplicável) --- */
 body {
     font-family: 'Arial', sans-serif;
-    background-color: #fff; /* Fundo branco para harmonizar com a logo */
     color: #333;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
+    padding: 0; /* Remove padding global */
+    margin: 0;
+    min-height: 100vh;
 }
 
 /* Estilização do cabeçalho */
-/* Estilização do cabeçalho */
 header {
     background: #fff;
-    padding: 10px 0; /* Reduzido o padding */
+    padding: 10px 0; 
     text-align: center;
     position: fixed;
     top: 0;
     width: 100%;
     z-index: 1000;
-    border-bottom: 3px solid #008000; /* Linha verde para destacar */
+    border-bottom: 3px solid #008000;
 }
-
-header .logo {
-    width: 100px; /* Reduzido o tamanho da logo */
-    display: block;
-    margin: 0 auto 5px auto; /* Ajuste na margem para centralizar */
-}
-
-nav ul li a {
-    color: #008000; /* Verde principal do Instituto Federal */
-    text-decoration: none;
-    font-size: 16px; /* Reduzido o tamanho da fonte */
-    font-weight: bold;
-    transition: 0.3s;
-    margin: 0 10px; /* Reduzido o espaço entre os itens do menu */
-}
-
 
 nav ul {
     list-style: none;
@@ -56,7 +38,7 @@ nav ul li {
 }
 
 nav ul li a {
-    color: #008000; /* Verde principal do Instituto Federal */
+    color: #008000;
     text-decoration: none;
     font-size: 18px;
     font-weight: bold;
@@ -67,35 +49,35 @@ nav ul li a:hover {
     color: #004d00;
 }
 
-/* Ajuste no login-container para não ficar escondido atrás do menu */
-
-/* Estiliza a logo na página de login */
+/* Estiliza a logo na página de login/registro */
 .logo-login {
     width: auto;
-    max-width: 200px; /* Ajuste conforme necessário */
-    height: 130px; /* Mesmo tamanho do menu */
+    max-width: 200px; 
+    height: 130px; 
     display: block;
-    margin: 0 auto 15px auto; /* Centraliza e adiciona espaçamento abaixo */
+    margin: 0 auto 15px auto; 
+}
+
+/* --- ESTILOS DE LOGIN E REGISTRO (Páginas login.html e register.html) --- */
+
+/* Regras de Centralização para a página de Login/Registro */
+/* Usa :has(.login-container) para aplicar a centralização vertical apenas onde esta box existe */
+body:has(.login-container) {
+    background-color: #f4f4f4; /* Fundo cinza claro para a área externa */
+    display: flex;
+    justify-content: center; /* Centraliza horizontalmente */
+    align-items: center; /* Centraliza verticalmente */
+    min-height: 100vh; /* Garante que body ocupe a altura total */
 }
 
 .login-container {
-    margin-top: 100px;
     background: rgba(255, 255, 255, 0.9);
     padding: 30px;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     text-align: center;
-    width: 350px;
-}
-
-/* Estilos para a página de login */
-body {
-    font-family: Arial, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
+    width: 350px; 
+    margin: 0; /* Garante a centralização correta */
 }
 
 .login-container h1 {
@@ -110,37 +92,111 @@ body {
     margin-bottom: 15px;
 }
 
-button {
+/* NOVO: Estilização dos grupos de input (Nome, Email, Senha, Perfil) */
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px; 
+    margin-bottom: 15px; 
+    text-align: left; /* Alinha labels à esquerda */
+}
+
+.input-group label {
+    font-weight: bold;
+}
+
+/* Estiliza todos os inputs e o SELECT para terem 100% de largura */
+.login-container input[type="text"],
+.login-container input[type="email"],
+.login-container input[type="password"],
+.login-container select { 
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%; 
+    box-sizing: border-box; 
+}
+
+/* Estilo do Botão de Registrar / Entrar */
+.login-container button[type="submit"] {
     width: 100%;
     padding: 10px;
-    margin: 5px 0;
+    margin-top: 10px;
     border: none;
     border-radius: 5px;
     font-size: 16px;
     font-weight: bold;
     cursor: pointer;
     transition: 0.3s;
-}
-
-button:first-of-type {
-    background-color: #008000;
-    color: white;
-}
-
-button:last-of-type {
     background-color: #004d00;
     color: white;
 }
 
-button:hover {
+.login-container button[type="submit"]:hover {
     opacity: 0.8;
 }
 
-/* Estiliza a página principal */
+
+/* Estilos de Formulário de Login (Quando é exibido via JS no login.html) */
+#loginForm {
+    display: flex; 
+    flex-direction: column; 
+    gap: 15px;
+    padding-top: 10px;
+}
+
+#loginForm label {
+    align-self: flex-start;
+    font-weight: bold;
+}
+
+/* Estilos dos Botões de Seleção de Perfil (no login.html antes da seleção) */
+.perfil-botoes {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.perfil-botoes .perfil-btn {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+    background-color: #008000;
+    color: white;
+}
+
+.perfil-botoes .perfil-btn:hover {
+    background-color: #004d00;
+    opacity: 1;
+}
+
+
+/* --- ESTILOS DA PÁGINA PRINCIPAL / CONTEÚDO (Não Login/Registro) --- */
+
 main {
     padding: 20px;
-    margin-top: 80px; /* Evita que o conteúdo fique atrás do menu fixo */
+    /* Ajusta para dar espaço ao header fixo */
+    margin-top: 80px; 
 }
+
+.content {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 800px;
+    margin: 20px auto; 
+    text-align: center;
+}
+
+/* Estilos para cards, rodapé e responsividade (Mantidos) */
 
 .tab-content {
     display: none;
@@ -158,7 +214,7 @@ main {
 }
 
 .game-card {
-    background-color: #f0fff0; /* Verde bem claro para harmonizar */
+    background-color: #f0fff0; 
     border: 2px solid #008000;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -198,77 +254,6 @@ footer {
     position: fixed;
     width: 100%;
     bottom: 0;
-}
-
-/* Reset básico para outras partes do código */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: 'Arial', sans-serif;
-    background-color: #f4f4f4;
-    color: #333;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-}
-
-/* Estilização do conteúdo */
-.content {
-    background: white;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 90%;
-    max-width: 800px;
-    margin-top: 20px;
-    text-align: center;
-}
-
-h1 {
-    font-size: 28px;
-    margin-bottom: 15px;
-    color: #007bff;
-}
-
-h2 {
-    font-size: 22px;
-    margin-top: 20px;
-    color: #555;
-}
-
-p {
-    font-size: 16px;
-    line-height: 1.6;
-    margin-bottom: 15px;
-}
-
-/* Adicionando bordas e espaçamento para listas */
-ul {
-    list-style: none;
-    padding: 0;
-}
-
-ul li {
-    background: #e6f2ff;
-    margin: 5px 0;
-    padding: 10px;
-    border-radius: 5px;
-    font-size: 16px;
-    color: #333;
-}
-
-/* Estilização para imagens */
-.content img {
-    width: 100%;
-    max-width: 400px;
-    margin: 20px 0;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* Responsividade */

@@ -4,17 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro - Catálogo de Serious Games</title>
-    <link rel="stylesheet" href="styles.css"> </head>
+    <link rel="stylesheet" href="styles.css"> 
+</head>
 <body>
     <header>
         <nav>
             <ul>
                 <li><a href="introducao.html">Objetivo</a></li>
-                <li><a href="login.html">Login</a></li> </ul>
+                <li><a href="index.html">Login</a></li> 
+            </ul>
         </nav>
     </header>
 
-    <div class="login-container"> <img src="images/iff.jpeg" alt="Instituto Federal" class="logo-login">
+    <div class="login-container"> 
+        <img src="images/iff.jpeg" alt="Instituto Federal" class="logo-login">
         <h1>Registrar no Catálogo de Serious Games</h1>
         
         <form id="registerForm">
@@ -22,21 +25,37 @@
                 <label for="nome">Nome:</label>
                 <input type="text" id="nome" name="nome" required>
             </div>
+            
+            <div class="input-group">
+                <label for="perfil">Selecione o Perfil:</label>
+                <select id="perfil" name="perfil" required>
+                    <option value="" disabled selected>-- Escolha seu perfil --</option>
+                    <option value="aluno">Aluno</option>
+                    <option value="professor">Professor</option>
+                    <option value="administrador">Administrador</option>
+                    <option value="profissional_ti">Profissional de TI</option>
+                </select>
+            </div>
+            
             <div class="input-group">
                 <label for="email">Email:</label>
                 <input type="email" id="email" name="email" required>
             </div>
+            
             <div class="input-group">
                 <label for="senha">Senha:</label>
                 <input type="password" id="senha" name="senha" required>
             </div>
+            
             <button type="submit">Registrar</button>
-            <p id="mensagem" style="color: green; margin-top: 10px;"></p> </form>
+            <p id="mensagem" style="color: green; margin-top: 10px;"></p> 
+        </form>
 
         <div id="opcoesLogin" style="margin-top: 20px;">
-            <p>Já tem conta? <a href="login.html">Faça login aqui</a></p>
+            <p>Já tem conta? <a href="index.html">Faça login aqui</a></p>
         </div>
     </div>
     
-    <script src="register.js"></script> </body>
+    <script src="register.js"></script> 
+</body>
 </html>

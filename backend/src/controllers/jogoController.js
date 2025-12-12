@@ -1,103 +1,128 @@
 const bcrypt = require('bcrypt');
 
-let usuarios = [];  // Nosso "banco fake"
-let games = [];  // SEMPRE um array!
+// --- IMPORTAÇÃO DOS MODELS ---
+const { readUsers, saveUsers } = require('../models/usersModel'); // Novo model de persistência
+const { readGames, saveGames } = require('../models/gamesModel'); // Model de persistência existente
 
-// Apenas para testes, adicione alguns usuários iniciais para não começar vazio toda vez que o servidor reiniciar
-// Em um sistema real, você teria um banco de dados persistente.
-usuarios.push({ id: 1, nome: "Professor Teste", email: "professor@iff.com", senha: "$2b$10$abcdefghijklmnopqrstuv" }); // Senha hash genérica
-usuarios.push({ id: 2, nome: "Aluno Teste", email: "aluno@iff.com", senha: "$2b$10$abcdefghijklmnopqrstuv" }); // Senha hash genérica
-// Lembre-se: essas senhas não são válidas para login sem o bcrypt.compare real.
-// Para testar login, você pode gerar um hash de uma senha real:
-// console.log(bcrypt.hashSync("minhasenha123", 10)); e usar o hash gerado.
-
-
+// --- FUNÇÃO DE REGISTRO (register) ---
 exports.register = async (req, res) => {
-  const { nome, email, senha } = req.body;
+    const { nome, email, senha, perfil } = req.body;
+    let usuarios = readUsers(); // Usa a função do Model
 
-  // Verifica se já existe
-  const existe = usuarios.find(u => u.email === email);
-  if (existe) {
-    return res.status(409).json({ mensagem: 'Email já registrado!' });
-  }
+    const perfisValidos = ["aluno", "professor", "administrador", "profissional_ti"];
+    if (!perfil || !perfisValidos.includes(perfil)) {
+        return res.status(400).json({ mensagem: 'Perfil inválido ou ausente.' });
+    }
 
-  const hash = await bcrypt.hash(senha, 10);
+    const existe = usuarios.find(u => u.email === email);
+    if (existe) {
+        return res.status(409).json({ mensagem: 'Email já registrado!' });
+    }
 
-  const novoUsuario = {
-    id: usuarios.length + 1,
-    nome,
-    email,
-    senha: hash // Armazena o hash da senha
-  };
+    const hash = await bcrypt.hash(senha, 10);
+    const proximoId = usuarios.length > 0 ? Math.max(...usuarios.map(u => u.id)) + 1 : 1;
 
-  usuarios.push(novoUsuario);
+    const novoUsuario = {
+        id: proximoId,
+        nome,
+        email,
+        senha: hash,
+        perfil: perfil 
+    };
 
-  res.status(201).json({ mensagem: 'Usuário registrado!', usuario: { id: novoUsuario.id, nome: novoUsuario.nome, email: novoUsuario.email } });
+    usuarios.push(novoUsuario);
+    saveUsers(usuarios); // Usa a função do Model para salvar
+
+    res.status(201).json({ 
+        mensagem: 'Usuário registrado!', 
+        usuario: { 
+            id: novoUsuario.id, 
+            nome: novoUsuario.nome, 
+            email: novoUsuario.email,
+            perfil: novoUsuario.perfil
+        } 
+    });
 };
 
+// --- FUNÇÃO DE LOGIN (login) ---
 exports.login = async (req, res) => {
-  const { email, senha } = req.body;
+    const { email, senha } = req.body;
+    const usuarios = readUsers(); // Usa a função do Model
 
-  const usuario = usuarios.find(u => u.email === email);
-  if (!usuario) {
-    return res.status(401).json({ mensagem: 'Credenciais inválidas!' });
-  }
+    const usuario = usuarios.find(u => u.email === email);
+    if (!usuario) {
+        return res.status(401).json({ mensagem: 'Credenciais inválidas!' });
+    }
 
-  const match = await bcrypt.compare(senha, usuario.senha);
-  if (!match) {
-    return res.status(401).json({ mensagem: 'Credenciais inválidas!' });
-  }
+    const match = await bcrypt.compare(senha, usuario.senha);
+    if (!match) {
+        return res.status(401).json({ mensagem: 'Credenciais inválidas!' });
+    }
 
-  res.status(200).json({ mensagem: 'Login bem-sucedido!', usuario: { id: usuario.id, nome: usuario.nome, email: usuario.email } });
+    // Login bem-sucedido
+    res.status(200).json({ 
+        mensagem: 'Login bem-sucedido!', 
+        usuario: { 
+            id: usuario.id, 
+            nome: usuario.nome, 
+            email: usuario.email,
+            perfil: usuario.perfil 
+        } 
+    });
 };
 
-// NOVA FUNÇÃO: Listar todos os usuários (para fins de teste/administração)
+// --- FUNÇÃO: Listar todos os usuários (Endpoint de teste) ---
 exports.listUsers = (req, res) => {
+    const usuarios = readUsers(); // Usa a função do Model
+    
     // Retorna os usuários sem o hash da senha por segurança!
     const usersWithoutPassword = usuarios.map(u => ({
         id: u.id,
         nome: u.nome,
-        email: u.email
+        email: u.email,
+        perfil: u.perfil
     }));
     res.status(200).json(usersWithoutPassword);
 };
 
+
+// -------------------------------------------------------------------
+// RESTANTE DO CÓDIGO (Game Functions) - MANTIDO
+// -------------------------------------------------------------------
+
 // --- CONTATAR DESENVOLVEDOR ---
 exports.contactDeveloper = (req, res) => {
-    console.log("Mensagem enviada ao dev:", req.body);
-    res.json({ mensagem: "Mensagem enviada ao desenvolvedor!" });
+    console.log("Mensagem enviada ao dev:", req.body);
+    res.json({ mensagem: "Mensagem enviada ao desenvolvedor!" });
 };
 
-const { readGames, saveGames } = require('../models/gamesModel');
-
-// --- Função Auxiliar para Mapeamento e Validação de um ÚNICO JOGO ---
-// Esta função garante que cada item tenha os campos necessários e a estrutura correta.
+// --- Função Auxiliar para Mapeamento e Validação de um ÚNICO JOGO (MANTIDO) ---
 const mapAndValidateGame = (gameData) => {
-    // 1. Validação mínima para garantir que campos essenciais existem
-    if (!gameData.titulo || !gameData.componente) {
-        // Lançamos um erro customizado para sabermos qual jogo falhou
-        throw new Error(`Validação falhou: Título ou Componente são obrigatórios para um dos jogos.`);
-    }
+    // 1. Validação mínima para garantir que campos essenciais existem
+    if (!gameData.titulo || !gameData.componente) {
+        // Lançamos um erro customizado para sabermos qual jogo falhou
+        throw new Error(`Validação falhou: Título ou Componente são obrigatórios para um dos jogos.`);
+    }
 
-    // 2. Mapeamento dos campos de entrada
-    return {
-        id: Date.now() + Math.random(), // Adiciona random para IDs mais únicas em lote
-        titulo: gameData.titulo,
-        buscador: gameData.buscador || "N/A",
-        autor: gameData.autor || "N/A",
-        generos: Array.isArray(gameData.generos) ? gameData.generos : [],
-        habilidades: Array.isArray(gameData.habilidades) ? gameData.habilidades : [],
-        modelo_custo: gameData.modelo_custo || "N/A",
-        ano_lancamento: gameData.ano_lancamento ? parseInt(gameData.ano_lancamento, 10) : null,
-        descricao: gameData.descricao || "Sem descrição.",
-        url: gameData.url || "N/A",
-        plataforma: Array.isArray(gameData.plataforma) ? gameData.plataforma : [],
-        idioma: gameData.idioma || "N/A",
-        pais_origem: gameData.pais_origem || "N/A",
-        componente: gameData.componente,
-    };
+    // 2. Mapeamento dos campos de entrada
+    return {
+        titulo: gameData.titulo,
+        buscador: gameData.buscador || "N/A",
+        autor: gameData.autor || "N/A",
+        generos: Array.isArray(gameData.generos) ? gameData.generos : [],
+        habilidades: Array.isArray(gameData.habilidades) ? gameData.habilidades : [],
+        modelo_custo: gameData.modelo_custo || "N/A",
+        ano_lancamento: gameData.ano_lancamento ? parseInt(gameData.ano_lancamento, 10) : null,
+        descricao: gameData.descricao || "Sem descrição.",
+        url: gameData.url || "N/A",
+        plataforma: Array.isArray(gameData.plataforma) ? gameData.plataforma : [],
+        idioma: gameData.idioma || "N/A",
+        pais_origem: gameData.pais_origem || "N/A",
+        componente: gameData.componente,
+    };
 };
 
+// --- FUNÇÃO GET GAMES (MANTIDO) ---
 exports.getGames = (req, res) => {
     try {
         const games = readGames();  // Lendo do gamesModel
@@ -121,8 +146,8 @@ exports.getGames = (req, res) => {
                 Array.isArray(j.habilidades) && j.habilidades.some(h => h.toLowerCase().includes(hab))
             );
         }
-        
-        // Filtro por GÊNERO (busca em array)
+        
+        // Filtro por GÊNERO (busca em array)
         if (genero) {
             const gen = genero.toLowerCase();
             resultados = resultados.filter(j => 
@@ -137,22 +162,22 @@ exports.getGames = (req, res) => {
                 Array.isArray(j.plataforma) && j.plataforma.some(p => p.toLowerCase().includes(plat))
             );
         }
-        
-        // Filtro por ANO_LANCAMENTO (comparação exata ou parcial, dependendo da necessidade)
-        if (ano_lancamento) {
-            // Se for string, tenta converter para número para comparação exata (recomendado)
-            const ano = parseInt(ano_lancamento, 10);
-            if (!isNaN(ano)) {
-                resultados = resultados.filter(j => j.ano_lancamento === ano);
-            }
-        }
-        
-        // Filtro por IDIOMA
-        if (idioma) {
-            resultados = resultados.filter(j => 
-                j.idioma && j.idioma.toLowerCase().includes(idioma.toLowerCase())
-            );
-        }
+        
+        // Filtro por ANO_LANCAMENTO (comparação exata ou parcial, dependendo da necessidade)
+        if (ano_lancamento) {
+            // Se for string, tenta converter para número para comparação exata (recomendado)
+            const ano = parseInt(ano_lancamento, 10);
+            if (!isNaN(ano)) {
+                resultados = resultados.filter(j => j.ano_lancamento === ano);
+            }
+        }
+        
+        // Filtro por IDIOMA
+        if (idioma) {
+            resultados = resultados.filter(j => 
+                j.idioma && j.idioma.toLowerCase().includes(idioma.toLowerCase())
+            );
+        }
 
         res.status(200).json(resultados);
 
@@ -178,53 +203,65 @@ exports.getGameById = (req, res) => {
     }
 };
 
-// --- CADASTRAR JOGO (AJUSTADO PARA NOVAS COLUNAS) ---
-// --- CADASTRAR JOGO (SUPORTA OBJETO ÚNICO OU ARRAY DE OBJETOS) ---
+// --- CADASTRAR JOGO (MANTIDO) ---
 exports.addGame = (req, res) => {
     try {
-        const games = readGames();
+        const games = readGames(); 
         let novosJogosParaAdicionar = [];
         let jogosProcessados = [];
         
-        // 1. Determina se é um objeto único ou um array
+        // ... (Verifica se é array ou objeto único) ...
+
         if (Array.isArray(req.body)) {
             novosJogosParaAdicionar = req.body;
         } else if (typeof req.body === 'object' && req.body !== null) {
-            // Se for um objeto, trata como um array de um único item
             novosJogosParaAdicionar = [req.body];
         } else {
             return res.status(400).json({ mensagem: "O corpo da requisição deve ser um objeto JSON ou um array de objetos JSON." });
         }
 
-        // 2. Processa cada item (mapeamento e validação)
+        // --- CÁLCULO DE ID SEQUENCIAL GARANTINDO INTEIRO ---
+        // 1. Encontra o ID máximo
+        const idsExistentes = games.map(g => g.id || 0);
+        let maxId = idsExistentes.length > 0 ? Math.max(...idsExistentes) : 0;
+        
+        // 2. Garante que o ID inicial é um inteiro, arredondando qualquer float grande.
+        // Se games.json estiver limpo, maxId será 0.
+        let proximoId = Math.floor(maxId); 
+        
+        // ----------------------------------------------------
+        
+        // 3. Processa cada item (mapeamento e validação)
         for (const jogoData of novosJogosParaAdicionar) {
-            // Tenta mapear/validar, captura o erro se algum jogo falhar
             const novoJogo = mapAndValidateGame(jogoData);
+            
+            // ATRIBUIÇÃO DO NOVO ID SEQUENCIAL:
+            proximoId++;
+            novoJogo.id = proximoId; // ATRIBUI O INTEIRO CORRETO
+
             jogosProcessados.push(novoJogo);
         }
 
-        // 3. Adiciona os jogos processados à lista existente
+        // 4. Adiciona e salva
         games.push(...jogosProcessados);
-        
-        // 4. Salva no arquivo
         saveGames(games);
 
-        // 5. Retorna o sucesso
+        // ... (Retorno de sucesso)
         const totalAdicionados = jogosProcessados.length;
         if (totalAdicionados === 1) {
-             res.status(201).json({ mensagem: "Jogo cadastrado com sucesso", jogo: jogosProcessados[0] });
+            res.status(201).json({ mensagem: "Jogo cadastrado com sucesso", jogo: jogosProcessados[0] });
         } else {
-             res.status(201).json({ mensagem: `${totalAdicionados} jogos cadastrados com sucesso`, jogos_adicionados: jogosProcessados });
+            res.status(201).json({ mensagem: `${totalAdicionados} jogos cadastrados com sucesso`, jogos_adicionados: jogosProcessados });
         }
 
     } catch (error) {
-        console.error("Erro ao cadastrar jogo(s):", error.message);
-        // Retorna 400 se a validação customizada falhar
-        if (error.message.startsWith("Validação falhou")) {
-            return res.status(400).json({ mensagem: error.message });
-        }
-        res.status(500).json({ mensagem: "Erro interno ao cadastrar jogo(s)" });
-    }
+        console.error("Erro ao cadastrar jogo(s):", error.message);
+        // Retorna 400 se a validação customizada falhar
+        if (error.message.startsWith("Validação falhou")) {
+            return res.status(400).json({ mensagem: error.message });
+        }
+        res.status(500).json({ mensagem: "Erro interno ao cadastrar jogo(s)" });
+    }
 };
 
 // --- DELETAR JOGO (MANTIDO) ---

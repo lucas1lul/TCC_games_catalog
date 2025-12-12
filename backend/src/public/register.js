@@ -8,16 +8,28 @@ document.addEventListener('DOMContentLoaded', () => {
             event.preventDefault(); // Impede o envio padrão do formulário
 
             const nome = document.getElementById('nome').value;
+            // NOVO: Captura o valor do perfil selecionado
+            const perfil = document.getElementById('perfil').value; 
             const email = document.getElementById('email').value;
             const senha = document.getElementById('senha').value;
 
+            // Validação simples para o campo perfil
+            if (!perfil) {
+                mensagemElement.style.color = 'red';
+                mensagemElement.textContent = 'Por favor, selecione um perfil.';
+                return;
+            }
+
             try {
+                // NOVO: Inclui o campo 'perfil' no body da requisição
+                const requestBody = JSON.stringify({ nome, email, senha, perfil });
+
                 const response = await fetch('/api/register', { // Endpoint de registro no seu backend
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ nome, email, senha }),
+                    body: requestBody, // Envia o perfil
                 });
 
                 const data = await response.json();
@@ -26,9 +38,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     // Registro bem-sucedido
                     mensagemElement.style.color = 'green';
                     mensagemElement.textContent = data.mensagem || 'Registro bem-sucedido! Redirecionando para o login...';
-                    // Opcional: Redirecionar para a página de login após alguns segundos
+                    
                     setTimeout(() => {
-                        window.location.href = 'login.html';
+                        window.location.href = 'index.html';
                     }, 2000); 
                 } else {
                     // Registro falhou
