@@ -12,5 +12,12 @@
     "email": "lucascorrado@hotmail.com",
     "senha": "$2b$10$THOmOu7mT2WxWTzztWRmeupDZ3H/aICVzN7XYqlhVawryBqp/nB4K",
     "perfil": "administrador"
+  },
+  {
+    "id": 3,
+    "nome": "victor soares",
+    "email": "victor@hotmail.com",
+    "senha": "$2b$10$/ervrEfeEgUq4GmpqMK6b.BlTR0y13OGQkLHbVbvjyLh0yahPKexm",
+    "perfil": "professor"
   }
 ]
