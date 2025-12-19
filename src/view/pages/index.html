@@ -4,40 +4,40 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Catálogo de Serious Games</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
     <header>
         <nav>
             <ul>
-                <li><a href="introducao.html">Objetivo</a></li>
+                <li><a href="/introducao.html">Objetivo</a></li>
             </ul>
         </nav>
     </header>
 
     <div class="login-container">
-        <img src="images/iff.jpeg" alt="Instituto Federal" class="logo-login">
+        <img src="/images/iff.jpeg" alt="Instituto Federal" class="logo-login">
+        
         <h1>Bem-vindo ao Catálogo de Serious Games</h1>
         
         <form id="loginForm">
             <div class="input-group">
                 <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
+                <input type="email" id="email" name="email" required autocomplete="email">
             </div>
             <div class="input-group">
                 <label for="senha">Senha:</label>
-                <input type="password" id="senha" name="senha" required>
+                <input type="password" id="senha" name="senha" required autocomplete="current-password">
             </div>
             <button type="submit">Entrar</button>
-            <p id="mensagemErro" style="color: red; margin-top: 10px;"></p>
+            <p id="mensagemErro" style="color: red; margin-top: 10px; min-height: 20px;"></p>
         </form>
 
         <div id="opcoesRegistro" style="margin-top: 20px;">
-            <p>Não tem conta? <a href="register.html">Registre-se aqui</a></p>
+            <p>Não tem conta? <a href="/register.html">Registre-se aqui</a></p>
         </div>
     </div>
     
-    <script src="index.js"></script>
-    <script src="js/register.js"></script>
+    <script src="/js/index.js"></script>
 </body>
 </html>

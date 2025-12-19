@@ -16,6 +16,8 @@ router.get('/games/:id', jogoController.getGameById);
 router.post('/games', jogoController.addGame);
 router.delete('/games/:id', jogoController.deleteGame);
 
-
+//ROTAS DE FAVORITOS
+router.post('/favoritos', jogoController.toggleFavorito);
+router.get('/usuarios/:id/favoritos', jogoController.getUserFavorites);
 
 module.exports = router;

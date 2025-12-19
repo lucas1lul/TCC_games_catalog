@@ -1,23 +1,12 @@
 [
   {
     "id": 1,
-    "nome": "victor",
-    "email": "victor@gmail.com",
-    "senha": "$2b$10$u3aUsBS.BRLgF0AOMvLBCeGD79ceqvuuS.5QdSscfoG7rRpKOkStm",
-    "perfil": "administrador"
-  },
-  {
-    "id": 2,
     "nome": "lucas",
     "email": "lucascorrado@hotmail.com",
-    "senha": "$2b$10$THOmOu7mT2WxWTzztWRmeupDZ3H/aICVzN7XYqlhVawryBqp/nB4K",
-    "perfil": "administrador"
-  },
-  {
-    "id": 3,
-    "nome": "victor soares",
-    "email": "victor@hotmail.com",
-    "senha": "$2b$10$/ervrEfeEgUq4GmpqMK6b.BlTR0y13OGQkLHbVbvjyLh0yahPKexm",
-    "perfil": "professor"
+    "senha": "$2b$10$f8yB8aqDGJmGeTlJet.X/OS/Bfk1LPA8LZaKTYEspmS9/B2ZqjNyW",
+    "perfil": "administrador",
+    "favoritos": [
+      1
+    ]
   }
 ]

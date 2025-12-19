@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meus Jogos | Catálogo de Serious Games</title>
+    
+    <link rel="stylesheet" href="/css/styles.css"> 
+    <link rel="stylesheet" href="/css/catalogo.css">
+    
+    <style>
+        /* Estilos específicos para as ações de Admin e Professor */
+        .admin-actions {
+            display: flex;
+            gap: 5px;
+            margin-top: 10px;
+        }
+        .admin-actions button {
+            padding: 5px;
+            cursor: pointer;
+            border: none;
+            border-radius: 4px;
+            background-color: #f0f0f0;
+            transition: background 0.2s;
+        }
+        .admin-actions button:hover {
+            background-color: #ddd;
+        }
+        .check-jogo {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 20px;
+            height: 20px;
+            z-index: 10;
+        }
+        .card-jogo {
+            position: relative; /* Para posicionar o checkbox */
+        }
+        .secao-privada {
+            margin-bottom: 40px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    
+    <header>
+        <nav class="navbar">
+            <div class="user-info">
+                <p>Usuário: <strong id="nomeDisplay">Carregando...</strong></p>
+                <p>Perfil: <span id="perfilDisplay" class="badge">...</span></p>
+            </div>
+            <div class="nav-links">
+                <a href="/catalogo.html" class="btn-link">← Voltar ao Catálogo</a>
+                <button onclick="logout()" class="btn-sair">Sair</button>
+            </div>
+        </nav>
+        <h1>Minha Área Personalizada</h1>
+    </header>
+
+    <main>
+        <section id="secaoFiltros">
+            <h2>Filtros</h2>
+            <div id="filtros">
+                <input id="filtroCurso" placeholder="Curso">
+                <input id="filtroComponente" placeholder="Componente">
+                <input id="filtroHabilidade" placeholder="Habilidade">
+                <input id="filtroPlataforma" placeholder="Plataforma">
+                
+                <button class="btn-principal" onclick="filtrarMeusJogos()">Filtrar Meus Dados</button>
+            </div>
+        </section>
+
+        <section id="secaoProfessor" class="secao-privada" style="display: none;">
+            <h2>🛠️ Ferramentas de Gestão</h2>
+            <div class="botoes-acao">
+                <button class="btn-secundario" onclick="exportarLista()">📥 Exportar Selecionados (CSV)</button>
+                <button class="btn-secundario" onclick="sugerirJogo()">➕ Sugerir Novo Jogo</button>
+                <span id="contadorSelecao" style="margin-left: 15px; font-style: italic;">Nenhum jogo selecionado</span>
+            </div>
+        </section>
+
+        <section id="secaoFavoritos">
+            <h2>❤️ Meus Jogos Favoritos</h2>
+            <div id="listaFavoritos" class="grid-jogos">
+                <p>Carregando seus jogos...</p>
+            </div>
+        </section>
+
+        <section id="secaoAvaliacoes" class="secao-privada" style="display: none;">
+            <h2>⭐ Jogos que eu Avaliei</h2>
+            <div id="listaAvaliados" class="grid-jogos">
+                <p>Você ainda não avaliou nenhum jogo.</p>
+            </div>
+        </section>
+    </main>
+
+    <script src="/js/my_games.js"></script>
+    
+</body>
+</html>

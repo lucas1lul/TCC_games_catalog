@@ -85,10 +85,63 @@ exports.listUsers = (req, res) => {
     res.status(200).json(usersWithoutPassword);
 };
 
+// --- FUNÇÃO: Favoritar/Desfavoritar Jogo (toggleFavorito) ---
+exports.toggleFavorito = async (req, res) => {
+    try {
+        const { usuarioId, jogoId } = req.body;
+        let usuarios = readUsers(); // Usa seu model de persistência
 
-// -------------------------------------------------------------------
-// RESTANTE DO CÓDIGO (Game Functions) - MANTIDO
-// -------------------------------------------------------------------
+        // 1. Encontra o usuário pelo ID
+        const index = usuarios.findIndex(u => u.id == usuarioId);
+        if (index === -1) {
+            return res.status(404).json({ mensagem: "Usuário não encontrado" });
+        }
+
+        // 2. Inicializa o array de favoritos se não existir
+        if (!usuarios[index].favoritos) {
+            usuarios[index].favoritos = [];
+        }
+
+        // 3. Lógica de Toggle (Adiciona se não tem, remove se tem)
+        const favIndex = usuarios[index].favoritos.indexOf(jogoId);
+        
+        if (favIndex === -1) {
+            usuarios[index].favoritos.push(jogoId);
+        } else {
+            usuarios[index].favoritos.splice(favIndex, 1);
+        }
+
+        // 4. Salva as alterações usando seu model
+        saveUsers(usuarios);
+
+        res.status(200).json({ 
+            mensagem: "Favoritos atualizados!", 
+            favoritos: usuarios[index].favoritos 
+        });
+    } catch (error) {
+        console.error("Erro em toggleFavorito:", error);
+        res.status(500).json({ mensagem: "Erro ao atualizar favoritos" });
+    }
+};
+
+// --- FUNÇÃO: Buscar Favoritos do Usuário ---
+exports.getUserFavorites = (req, res) => {
+    try {
+        const { id } = req.params; // Pega o ID da URL
+        const usuarios = readUsers();
+        
+        const usuario = usuarios.find(u => u.id == id);
+        
+        if (!usuario) {
+            return res.status(404).json({ mensagem: "Usuário não encontrado" });
+        }
+
+        // Retorna apenas a lista de IDs de favoritos
+        res.status(200).json(usuario.favoritos || []);
+    } catch (error) {
+        res.status(500).json({ mensagem: "Erro ao buscar favoritos" });
+    }
+};
 
 // --- CONTATAR DESENVOLVEDOR ---
 exports.contactDeveloper = (req, res) => {
