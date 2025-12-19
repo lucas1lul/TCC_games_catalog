@@ -11,6 +11,9 @@ app.use(express.json());
 
 // --- Configuração para servir arquivos estáticos do frontend ---
 // A pasta 'public' deve estar no mesmo nível que 'app.js'
+app.use(express.static(path.join(__dirname, 'src', 'view', 'pages')));
+
+// Opcional: Se você tiver CSS ou Imagens na pasta public, mantenha essa também:
 app.use(express.static(path.join(__dirname, 'public')));
 
 // --- Rotas da API (backend) ---

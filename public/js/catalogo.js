@@ -154,5 +154,5 @@ function atualizarControlesPaginacao() {
 
 // Funções auxiliares (mantidas)
 function verDetalhes(id) {
-    window.location.href = "detalhes.html?id=" + id; 
+    window.location.href = "../../view/partials/detalhes.html?id=" + id; 
 }
