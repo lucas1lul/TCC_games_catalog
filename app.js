@@ -1,6 +1,8 @@
 // app.js
 const express = require('express');
-const authRoutes = require('./src/controllers/routes/jogoRoutes');
+const authRoutes = require('./src/controllers/routes/authRoutes');
+const userRoutes = require('./src/controllers/routes/userRoutes');
+const gameRoutes = require('./src/controllers/routes/gameRoutes');
 const cors = require('cors');
 const path = require('path'); // Certifique-se de que está importado
 
@@ -15,6 +17,16 @@ app.use(express.static(path.join(__dirname, 'src', 'view', 'pages')));
 
 // Opcional: Se você tiver CSS ou Imagens na pasta public, mantenha essa também:
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Definindo os prefixos das URLs
+app.use('/', authRoutes);      // Acessa /login, /register
+app.use('/users', userRoutes); // Acessa /users/perfil, /users/lista
+app.use('/games', gameRoutes); // Acessa /games, /games/1
+
+// Rota Home
+app.get('/', (req, res) => {
+    res.redirect('/games'); // Redireciona para o catálogo ao abrir o site
+});
 
 // --- Rotas da API (backend) ---
 app.use('/api', authRoutes);
