@@ -1,8 +1,8 @@
 const bcrypt = require('bcrypt');
 
 // --- IMPORTAÇÃO DOS MODELS ---
-const { readUsers, saveUsers } = require('../models/usersModel'); // Novo model de persistência
-const { readGames, saveGames } = require('../models/gamesModel'); // Model de persistência existente
+const { readUsers, saveUsers } = require('../../models/usersModel'); // Novo model de persistência
+const { readGames, saveGames } = require('../../models/gamesModel'); // Model de persistência existente
 
 // --- FUNÇÃO DE REGISTRO (register) ---
 exports.register = async (req, res) => {
