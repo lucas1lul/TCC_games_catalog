@@ -20,7 +20,7 @@
   },
   "name": "teste",
   "version": "1.0.0",
-  "main": "backend/src/app.js",
+  "main": "app.js",
   "directories": {
     "test": "tests"
   },

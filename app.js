@@ -1,6 +1,6 @@
 // app.js
 const express = require('express');
-const authRoutes = require('./controllers/routes/jogoRoutes');
+const authRoutes = require('./src/controllers/routes/jogoRoutes');
 const cors = require('cors');
 const path = require('path'); // Certifique-se de que está importado
 

@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const jogoController = require('../jogoController');
+const jogoController = require('./jogoController');
 
 //ROTAS DE SESSÃO
 router.post('/login', jogoController.login);
