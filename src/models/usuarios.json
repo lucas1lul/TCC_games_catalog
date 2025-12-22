@@ -8,5 +8,15 @@
     "favoritos": [
       1
     ]
+  },
+  {
+    "id": 2,
+    "nome": "barbara",
+    "email": "b@gmail.com",
+    "senha": "$2b$10$CXpJ2kBSzry011iQiGosfOPTZ7q5MCGgS/u358DdIK2CTnKcHz5pe",
+    "perfil": "administrador",
+    "favoritos": [
+      1
+    ]
   }
 ]
