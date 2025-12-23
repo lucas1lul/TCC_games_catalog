@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const authController = require('../controllers/authController'); // Controller específico
+const authController = require('../authController'); // Controller específico
 const bcrypt = require('bcrypt');
-const { readUsers, saveUsers } = require('../models/usersModel');
+const { readUsers, saveUsers } = require('../../models/usersModel');
 
 router.get('/login', authController.loginPage);      // Renderiza a página de login
 router.post('/login', authController.loginAuth);     // Processa o login (POST)

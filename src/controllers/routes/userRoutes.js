@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const userController = require('../controllers/userController');
-const authMiddleware = require('../middlewares/authMiddleware'); // Importante!
+const userController = require('../userController');
+const auth = require('../../middlewares/auth');
 
 // Todas as rotas abaixo exigem estar logado
-router.use(authMiddleware); 
+router.use(auth); 
 
 // Renderiza a página user.ejs (que criamos antes)
 router.get('/perfil', userController.showProfile); 

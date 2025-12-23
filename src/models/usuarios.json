@@ -19,5 +19,12 @@
     "email": "victor@hotmail.com",
     "senha": "$2b$10$/ervrEfeEgUq4GmpqMK6b.BlTR0y13OGQkLHbVbvjyLh0yahPKexm",
     "perfil": "professor"
+  },
+  {
+    "id": 4,
+    "nome": "Roverto",
+    "email": "robs@email.com",
+    "senha": "$2b$10$g6OssoaXchJ/qvlUFgW5TOzlQt5hWXg1wILRXGeZe/Pa4pUYPT/xm",
+    "perfil": "profissional_ti"
   }
 ]
