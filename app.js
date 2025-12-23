@@ -1,5 +1,6 @@
 // app.js
 const express = require('express');
+const session = require('express-session');
 const authRoutes = require('./src/controllers/routes/authRoutes');
 const userRoutes = require('./src/controllers/routes/userRoutes');
 const gameRoutes = require('./src/controllers/routes/gameRoutes');
@@ -17,6 +18,12 @@ app.use(express.static(path.join(__dirname, 'src', 'view', 'pages')));
 
 // Opcional: Se você tiver CSS ou Imagens na pasta public, mantenha essa também:
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(session({
+    secret: 'tcc-games-secret',
+    resave: false,
+    saveUninitialized: false
+}));
 
 // Definindo os prefixos das URLs
 app.use('/', authRoutes);      // Acessa /login, /register

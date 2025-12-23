@@ -10,4 +10,15 @@ router.get('/register', authController.registerPage);// Renderiza página de reg
 router.post('/register', authController.registerAuth); // Cria o usuário
 router.get('/logout', authController.logout);        // Destrói a sessão
 
+router.get('/me', (req, res) => {
+    if (!req.session || !req.session.usuario) {
+        return res.status(401).json({ logado: false });
+    }
+
+    res.json({
+        logado: true,
+        usuario: req.session.usuario
+    });
+});
+
 module.exports = router;
