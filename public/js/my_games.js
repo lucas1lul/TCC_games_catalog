@@ -69,32 +69,50 @@ function filtrarMeusJogos() {
 
 // --- RENDERIZAÇÃO ---
 
+// Atualize a sua função renderizarJogos
 function renderizarJogos(lista) {
     const container = document.getElementById('listaFavoritos');
     if (!container) return;
 
-    container.innerHTML = ''; // Limpa o "Carregando..."
+    container.innerHTML = '';
+
+    const perfil = usuarioLogado.perfil.toLowerCase();
+    const ehPoderoso = perfil === 'professor' || perfil === 'administrador';
 
     lista.forEach(jogo => {
         const card = document.createElement('div');
         card.className = 'card-jogo';
         
-        // Mantém suas lógicas de checkbox e botões de admin aqui...
-        
+        // Checkbox agora configurado para a direita via CSS
+        const checkboxHtml = ehPoderoso 
+            ? `<input type="checkbox" class="check-jogo" data-id="${jogo.id}" onchange="atualizarContador()">` 
+            : '';
+
         card.innerHTML = `
-            <div class="card-header">
-                <h3>${jogo.titulo}</h3>
+            ${checkboxHtml}
+            <div class="card-header-vermelho">
+                <h3 style="margin: 0;">${jogo.titulo}</h3>
             </div>
-            <div class="card-body">
+            <div class="card-body" style="padding: 15px; text-align: center;">
                 <p><strong>Componente:</strong> ${jogo.componente || 'N/A'}</p>
-                <p>${jogo.descricao ? jogo.descricao.substring(0, 80) + '...' : ''}</p>
             </div>
-            <div class="card-footer">
-                <a href="/detalhes.html?id=${jogo.id}" class="btn-link">Ver Detalhes</a>
+            <div class="card-footer" style="text-align: center; padding: 10px; background: #f9f9f9;">
+                <a href="detalhes.html?id=${jogo.id}" style="color: #8B0000; font-weight: bold; text-decoration: none;">Ver Detalhes</a>
             </div>
         `;
         container.appendChild(card);
     });
+}
+
+// Função para atualizar o texto de quantos jogos estão marcados
+function atualizarContador() {
+    const selecionados = document.querySelectorAll('.check-jogo:checked').length;
+    const info = document.getElementById('contadorSelecao');
+    if (info) {
+        info.textContent = selecionados > 0 
+            ? `${selecionados} jogo(s) selecionado(s)` 
+            : 'Nenhum jogo selecionado';
+    }
 }
 
 // --- COMUNICAÇÃO COM API ---
@@ -150,4 +168,36 @@ function sugerirJogo() {
 function logout() {
     localStorage.removeItem('usuarioLogado');
     window.location.href = 'index.html';
+}
+
+function exportarLista() {
+    const checkboxes = document.querySelectorAll('.check-jogo:checked');
+    const idsSelecionados = Array.from(checkboxes).map(cb => parseInt(cb.dataset.id));
+
+    if (idsSelecionados.length === 0) {
+        alert("Por favor, selecione ao menos um jogo para exportar.");
+        return;
+    }
+
+    // Filtra os dados completos apenas dos jogos selecionados
+    const dadosParaExportar = meusJogosOriginais.filter(j => idsSelecionados.includes(j.id));
+
+    // Cria o cabeçalho do CSV
+    let csvContent = "ID;Titulo;Componente;URL\n";
+
+    // Adiciona as linhas
+    dadosParaExportar.forEach(j => {
+        csvContent += `${j.id};${j.titulo};${j.componente};${j.url}\n`;
+    });
+
+    // Cria o download do arquivo
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement("a");
+    const url = URL.createObjectURL(blob);
+    link.setAttribute("href", url);
+    link.setAttribute("download", "meus_jogos_selecionados.csv");
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
 }
