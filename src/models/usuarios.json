@@ -21,9 +21,9 @@
   },
   {
     "id": 3,
-    "nome": "jao",
-    "email": "jao@gmail.com",
-    "senha": "$2b$10$RHfC5zd6iBaKaEbmCzoeT.ZPjVAh26ZEEEthHwjK9YOcY9aS83IHe",
+    "nome": "OLA",
+    "email": "victor@gmail.com",
+    "senha": "$2b$10$BUL4pBUoL9EHkxngI9r7FOdy/vfwWHZ7JWejo3WNRESZAbLKN0yfO",
     "perfil": "profissional_ti",
     "favoritos": [
       1
@@ -31,12 +31,19 @@
   },
   {
     "id": 4,
-    "nome": "lul",
-    "email": "lul@gmail.com",
-    "senha": "$2b$10$taDuDTbPjdDKnXX.eJkOPeHlcjd3GS4zGcNh9QRT9xhxNhgbKaLg2",
-    "perfil": "professor",
+    "nome": "ju",
+    "email": "JUJU@gmail.com",
+    "senha": "$2b$10$eAx2TLnobo80d0ZpanNo/uoVAFfY3I8NCCIZgb1XEwmTACPu/2vzy",
+    "perfil": "administrador",
     "favoritos": [
       1
     ]
+  },
+  {
+    "id": 5,
+    "nome": "eusou",
+    "email": "eusou@gmail.com",
+    "senha": "$2b$10$OpTWOxzH3FXopxjcjeJNk.ee3NG39COTC3F2ZX.W0M1FD/A4Voouy",
+    "perfil": "administrador"
   }
 ]

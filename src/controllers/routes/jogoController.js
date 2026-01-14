@@ -1,8 +1,9 @@
 const bcrypt = require('bcrypt');
+const db = require('../../config/db');
 
 // --- IMPORTAÇÃO DOS MODELS ---
 const { readUsers, saveUsers } = require('../../models/usersModel'); // Novo model de persistência
-const { readGames, saveGames } = require('../../models/gamesModel'); // Model de persistência existente
+//const { readGames, saveGames } = require('../../models/gamesModel'); // Model de persistência existente
 
 // --- FUNÇÃO DE REGISTRO (register) ---
 exports.register = async (req, res) => {
@@ -66,7 +67,8 @@ exports.login = async (req, res) => {
             id: usuario.id, 
             nome: usuario.nome, 
             email: usuario.email,
-            perfil: usuario.perfil 
+            perfil: usuario.perfil,
+            favoritos: usuario.favoritos || []
         } 
     });
 };
@@ -175,166 +177,80 @@ const mapAndValidateGame = (gameData) => {
     };
 };
 
-// --- FUNÇÃO GET GAMES (MANTIDO) ---
-exports.getGames = (req, res) => {
-    try {
-        const games = readGames();  // Lendo do gamesModel
-        // Campos de filtro ajustados para a nova estrutura:
-        const { componente, habilidade, plataforma, genero, ano_lancamento, idioma } = req.query;
-
-        let resultados = games;
-
-        // Filtro por COMPONENTE (Area de conhecimento)
-        if (componente) {
-            resultados = resultados.filter(j => 
-                j.componente && j.componente.toLowerCase().includes(componente.toLowerCase())
-            );
-        }
-
-        // Filtro por HABILIDADE (busca em array)
-        if (habilidade) {
-            // Garante que j.habilidades é um array antes de usar some()
-            const hab = habilidade.toLowerCase();
-            resultados = resultados.filter(j => 
-                Array.isArray(j.habilidades) && j.habilidades.some(h => h.toLowerCase().includes(hab))
-            );
-        }
-        
-        // Filtro por GÊNERO (busca em array)
-        if (genero) {
-            const gen = genero.toLowerCase();
-            resultados = resultados.filter(j => 
-                Array.isArray(j.generos) && j.generos.some(g => g.toLowerCase().includes(gen))
-            );
-        }
-
-        // Filtro por PLATAFORMA (busca em array)
-        if (plataforma) {
-            const plat = plataforma.toLowerCase();
-            resultados = resultados.filter(j => 
-                Array.isArray(j.plataforma) && j.plataforma.some(p => p.toLowerCase().includes(plat))
-            );
-        }
-        
-        // Filtro por ANO_LANCAMENTO (comparação exata ou parcial, dependendo da necessidade)
-        if (ano_lancamento) {
-            // Se for string, tenta converter para número para comparação exata (recomendado)
-            const ano = parseInt(ano_lancamento, 10);
-            if (!isNaN(ano)) {
-                resultados = resultados.filter(j => j.ano_lancamento === ano);
-            }
-        }
-        
-        // Filtro por IDIOMA
-        if (idioma) {
-            resultados = resultados.filter(j => 
-                j.idioma && j.idioma.toLowerCase().includes(idioma.toLowerCase())
-            );
-        }
-
-        res.status(200).json(resultados);
-
-    } catch (error) {
-        console.error("Erro em getGames:", error);
-        res.status(500).json({ mensagem: "Erro ao listar jogos" });
-    }
-};
-
-// --- DETALHES DO JOGO (MANTIDO) ---
-exports.getGameById = (req, res) => {
-    try {
-        const games = readGames();
-        // Note: req.params.id é string. As IDs no JSON são números. Use == para comparação flexível.
-        const game = games.find(g => g.id == req.params.id);
-
-        if (!game) return res.status(404).json({ mensagem: "Jogo não encontrado" });
-
-        res.json(game);
-    } catch (error) {
-        console.error("Erro em getGameById:", error);
-        res.status(500).json({ mensagem: "Erro ao obter jogo" });
-    }
-};
-
-// --- CADASTRAR JOGO (MANTIDO) ---
-exports.addGame = (req, res) => {
+exports.getGames = async (req, res) => {
     try {
-        const games = readGames(); 
-        let novosJogosParaAdicionar = [];
-        let jogosProcessados = [];
+        const { curso, componente, habilidade, plataforma, idioma } = req.query;
         
-        // ... (Verifica se é array ou objeto único) ...
+        // DISTINCT evita jogos duplicados se eles tiverem mais de um curso/habilidade
+        let query = "SELECT DISTINCT J.* FROM JOGOS J";
+        const params = [];
 
-        if (Array.isArray(req.body)) {
-            novosJogosParaAdicionar = req.body;
-        } else if (typeof req.body === 'object' && req.body !== null) {
-            novosJogosParaAdicionar = [req.body];
-        } else {
-            return res.status(400).json({ mensagem: "O corpo da requisição deve ser um objeto JSON ou um array de objetos JSON." });
+        // Adicionando as junções (JOINs) dinamicamente conforme os filtros enviados
+        if (curso) query += " JOIN JOGOS_CURSO JC ON J.IDJOGO = JC.IDJOGO JOIN CURSO C ON JC.IDCURSO = C.IDCURSO";
+        if (componente) query += " JOIN JOGOS_COMPONENTES JCOMP ON J.IDJOGO = JCOMP.IDJOGO JOIN COMPONENTES COMP ON JCOMP.IDCOMPONENTE = COMP.IDCOMPONENTE";
+        if (habilidade) query += " JOIN JOGOS_HABILIDADES JH ON J.IDJOGO = JH.IDJOGO JOIN HABILIDADES H ON JH.habilidadeID = H.habilidadeID";
+        if (plataforma) query += " JOIN JOGOS_PLATAFORMA JP ON J.IDJOGO = JP.IDJOGO JOIN PLATAFORMA P ON JP.IDPLATAFORMA = P.IDPLATAFORMA";
+
+        query += " WHERE 1=1";
+
+        if (curso) {
+            query += " AND C.DESCRICAO LIKE ?";
+            params.push(`%${curso}%`);
+        }
+        if (componente) {
+            // No banco da Carol, COMPONENTES tem a coluna 'DISCIPLINA'
+            query += " AND COMP.DISCIPLINA LIKE ?";
+            params.push(`%${componente}%`);
+        }
+        if (habilidade) {
+            query += " AND H.descricaoHabilidade LIKE ?";
+            params.push(`%${habilidade}%`);
+        }
+        if (plataforma) {
+            query += " AND P.DESCRICAO LIKE ?";
+            params.push(`%${plataforma}%`);
+        }
+        if (idioma) {
+            query += " AND J.IDIOMA LIKE ?";
+            params.push(`%${idioma}%`);
         }
 
-        // --- CÁLCULO DE ID SEQUENCIAL GARANTINDO INTEIRO ---
-        // 1. Encontra o ID máximo
-        const idsExistentes = games.map(g => g.id || 0);
-        let maxId = idsExistentes.length > 0 ? Math.max(...idsExistentes) : 0;
-        
-        // 2. Garante que o ID inicial é um inteiro, arredondando qualquer float grande.
-        // Se games.json estiver limpo, maxId será 0.
-        let proximoId = Math.floor(maxId); 
-        
-        // ----------------------------------------------------
-        
-        // 3. Processa cada item (mapeamento e validação)
-        for (const jogoData of novosJogosParaAdicionar) {
-            const novoJogo = mapAndValidateGame(jogoData);
-            
-            // ATRIBUIÇÃO DO NOVO ID SEQUENCIAL:
-            proximoId++;
-            novoJogo.id = proximoId; // ATRIBUI O INTEIRO CORRETO
-
-            jogosProcessados.push(novoJogo);
-        }
-
-        // 4. Adiciona e salva
-        games.push(...jogosProcessados);
-        saveGames(games);
-
-        // ... (Retorno de sucesso)
-        const totalAdicionados = jogosProcessados.length;
-        if (totalAdicionados === 1) {
-            res.status(201).json({ mensagem: "Jogo cadastrado com sucesso", jogo: jogosProcessados[0] });
-        } else {
-            res.status(201).json({ mensagem: `${totalAdicionados} jogos cadastrados com sucesso`, jogos_adicionados: jogosProcessados });
-        }
-
+        const [rows] = await db.promise().query(query, params);
+        res.status(200).json(rows);
     } catch (error) {
-        console.error("Erro ao cadastrar jogo(s):", error.message);
-        // Retorna 400 se a validação customizada falhar
-        if (error.message.startsWith("Validação falhou")) {
-            return res.status(400).json({ mensagem: error.message });
-        }
-        res.status(500).json({ mensagem: "Erro interno ao cadastrar jogo(s)" });
-    }
+        console.error("Erro no SQL:", error);
+        res.status(500).json({ mensagem: "Erro ao buscar jogos no banco" });
+    }
 };
 
-// --- DELETAR JOGO (MANTIDO) ---
-exports.deleteGame = (req, res) => {
-    try {
-        let games = readGames();
-        const id = req.params.id;
+exports.getGameById = async (req, res) => {
+    try {
+        const [rows] = await db.promise().query("SELECT * FROM JOGOS WHERE IDJOGO = ?", [req.params.id]);
+        if (rows.length === 0) return res.status(404).json({ mensagem: "Jogo não encontrado" });
+        res.json(rows[0]);
+    } catch (error) {
+        res.status(500).json({ mensagem: "Erro ao obter jogo" });
+    }
+};
 
-        const existe = games.find(g => g.id == id);
-        if (!existe) {
-            return res.status(404).json({ mensagem: "Jogo não encontrado" });
-        }
+exports.addGame = async (req, res) => {
+    try {
+        const { NOME, LINKIMAGEM, LINK, IDIOMA, INTERACAO, LICENSA } = req.body;
+        
+        const sql = `INSERT INTO JOGOS (NOME, LINKIMAGEM, LINK, IDIOMA, INTERACAO, LICENSA) VALUES (?, ?, ?, ?, ?, ?)`;
+        const [result] = await db.promise().query(sql, [NOME, LINKIMAGEM, LINK, IDIOMA, INTERACAO, LICENSA]);
 
-        games = games.filter(g => g.id != id);
+        res.status(201).json({ mensagem: "Jogo cadastrado no SQL!", id: result.insertId });
+    } catch (error) {
+        res.status(500).json({ mensagem: "Erro ao salvar no banco SQL" });
+    }
+};
 
-        saveGames(games);
-
-        res.status(200).json({ mensagem: "Jogo deletado com sucesso!" });
-    } catch (error) {
-        console.error("Erro em deleteGame:", error);
-        res.status(500).json({ mensagem: "Erro ao deletar jogo" });
-    }
+exports.deleteGame = async (req, res) => {
+    try {
+        await db.promise().query("DELETE FROM JOGOS WHERE IDJOGO = ?", [req.params.id]);
+        res.status(200).json({ mensagem: "Jogo deletado do SQL!" });
+    } catch (error) {
+        res.status(500).json({ mensagem: "Erro ao deletar jogo" });
+    }
 };
