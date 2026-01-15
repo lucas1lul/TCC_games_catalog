@@ -6,7 +6,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const usuario = JSON.parse(usuarioSessao);
         const header = document.querySelector('h1'); 
         const saudacao = document.createElement('p');
-        saudacao.innerHTML = `Olá, <strong>${usuario.nome}</strong>! Você está logado como ${usuario.perfil}.`;
         saudacao.style.fontSize = '1rem';
         saudacao.style.color = '#555';
         header.insertAdjacentElement('afterend', saudacao);

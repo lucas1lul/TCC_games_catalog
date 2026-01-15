@@ -2,35 +2,36 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Catálogo de Serious Games | IFF</title>
-    
-  <link rel="stylesheet" href="/css/styles.css"> 
-<link rel="stylesheet" href="/css/catalogo.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo de Serious Games | IFF</title>
+    <link rel="stylesheet" href="/css/styles.css"> 
+    <link rel="stylesheet" href="/css/catalogo.css">
+    <link rel="stylesheet" href="/css/navbar.css">
 </head>
 <body>
-    
-    <h1>Catálogo de Serious Games</h1>
+    <div id="navbar-placeholder"></div>
 
-    <div id="filtros">
-        <input id="filtroCurso" placeholder="Curso">
-        <input id="filtroComponente" placeholder="Componente">
-        <input id="filtroHabilidade" placeholder="Habilidade">
-        <input id="filtroPlataforma" placeholder="Plataforma">
-        
-        <button onclick="carregarJogos()">Filtrar</button>
-    </div>
+    <main style="padding: 20px;">
+        <h1>Explorar Jogos Educativos</h1>
 
-    <div id="lista">
-        Aguardando clique em 'Filtrar'...
-    </div>
+        <div id="filtros">
+            <input id="filtroCurso" placeholder="Curso">
+            <input id="filtroComponente" placeholder="Componente">
+            <input id="filtroHabilidade" placeholder="Habilidade">
+            <input id="filtroPlataforma" placeholder="Plataforma">
+            <button onclick="carregarJogos()">Filtrar</button>
+        </div>
 
-    <div id="paginacao" style="text-align: center; margin-top: 20px;">
-        <button id="btnAnterior" onclick="mudarPagina(-1)" disabled>Anterior</button>
-        <span id="infoPagina">Página 1 de 1</span>
-        <button id="btnProximo" onclick="mudarPagina(1)" disabled>Próxima</button>
-    </div>
+        <div id="lista">Aguardando clique em 'Filtrar'...</div>
 
+        <div id="paginacao" style="text-align: center; margin-top: 20px;">
+            <button id="btnAnterior" onclick="mudarPagina(-1)" disabled>Anterior</button>
+            <span id="infoPagina">Página 1 de 1</span>
+            <button id="btnProximo" onclick="mudarPagina(1)" disabled>Próxima</button>
+        </div>
+    </main>
+
+    <script src="/js/navbar.js"></script>
     <script src="/js/catalogo.js"></script>
-    
 </body>
 </html>
