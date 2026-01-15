@@ -36,6 +36,7 @@ async function carregarJogos() {
 
     lista.innerHTML = "Carregando resultados...";
 
+    // O servidor agora busca no SQL usando esses parâmetros
     let url = "/api/games?"; 
     if (curso) url += `curso=${encodeURIComponent(curso)}&`;
     if (componente) url += `componente=${encodeURIComponent(componente)}&`;
@@ -59,8 +60,8 @@ async function carregarJogos() {
         renderizarJogosDaPagina();
         
     } catch (error) {
-        console.error("Erro ao buscar jogos:", error);
-        lista.innerHTML = `❌ Erro ao carregar dados: ${error.message}`;
+        console.error("Erro ao buscar jogos no SQL:", error);
+        lista.innerHTML = `❌ Erro ao carregar dados do banco SQL.`;
         atualizarControlesPaginacao();
     }
 }
@@ -73,39 +74,42 @@ function renderizarJogosDaPagina() {
     const fim = inicio + jogosPorPagina;
     const jogosDaPagina = jogosCompletos.slice(inicio, fim);
 
-    // Pegamos os favoritos do usuário logado para marcar as estrelas
     const usuarioLogado = JSON.parse(localStorage.getItem('usuarioLogado'));
     const favoritos = usuarioLogado?.favoritos || [];
 
     jogosDaPagina.forEach(jogo => {
-        const generos = (Array.isArray(jogo.generos) && jogo.generos.length > 0) ? jogo.generos.join(' | ') : 'N/A';
-        const habilidades = (Array.isArray(jogo.habilidades) && jogo.habilidades.length > 0) ? jogo.habilidades.join(', ') : 'N/A';
-        const plataforma = (Array.isArray(jogo.plataforma) && jogo.plataforma.length > 0) ? jogo.plataforma.join(', ') : 'N/A';
+        // AJUSTE DE MAPEAMENTO (SQL da Carol usa MAIÚSCULAS)
+        // jogo.NOME, jogo.IDJOGO, jogo.LINK, jogo.IDIOMA, jogo.INTERACAO
         
-        // Verifica se este jogo está nos favoritos para aplicar a classe CSS 'ativa'
-        const classeAtiva = favoritos.includes(jogo.id) ? 'ativa' : '';
+        const classeAtiva = favoritos.includes(jogo.IDJOGO) ? 'ativa' : '';
 
         lista.innerHTML += `
             <div class="jogo-card">
-                <div class="card-header" style="position: relative;">
-                    <h2 class="jogo-titulo">${jogo.titulo}</h2>
-                    <span class="jogo-componente">COMPONENTES: ${jogo.componente || 'N/A'}</span>
-                    <span class="estrela-favorito ${classeAtiva}" onclick="toggleFavorito(${jogo.id}, this)">★</span>
+                <div class="card-header" style="position: relative; background-color: #8B0000; color: white; padding: 15px; border-radius: 8px 8px 0 0;">
+                    <h2 class="jogo-titulo" style="margin: 0; font-size: 1.4rem;">${jogo.NOME}</h2>
+                    <span class="jogo-componente" style="display: block; font-size: 0.8rem; margin-top: 5px; opacity: 0.9;">
+                        INTERAÇÃO: ${jogo.INTERACAO || 'N/A'}
+                    </span>
+                    <span class="estrela-favorito ${classeAtiva}" 
+                          style="position: absolute; top: 10px; right: 15px; cursor: pointer; font-size: 1.5rem;"
+                          onclick="toggleFavorito(${jogo.IDJOGO}, this)">★</span>
                 </div>
                 
-                <div class="card-body">
-                    <p class="jogo-descricao">${jogo.descricao}</p>
-                    <div class="detalhes-grid">
-                        <p class="detalhe-item"><strong>Plataformas:</strong> ${plataforma}</p>
-                        <p class="detalhe-item"><strong>Gêneros:</strong> ${generos}</p>
-                        <p class="detalhe-item"><strong>Habilidades:</strong> ${habilidades}</p>
-                        <p class="detalhe-item"><strong>Ano:</strong> ${jogo.ano_lancamento || 'N/A'}</p>
-                        <p class="detalhe-item"><strong>Idioma:</strong> ${jogo.idioma || 'N/A'}</p>
+                <div class="card-body" style="padding: 15px; background: white; border: 1px solid #ddd; border-top: none;">
+                    <p class="jogo-descricao" style="color: #444; margin-bottom: 15px;">
+                        ${jogo.DESCRICAOIMAGEM || 'Sem descrição disponível.'}
+                    </p>
+                    <div class="detalhes-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 0.9rem;">
+                        <p class="detalhe-item"><strong>Licença:</strong> ${jogo.LICENSA || 'N/A'}</p>
+                        <p class="detalhe-item"><strong>Idioma:</strong> ${jogo.IDIOMA || 'N/A'}</p>
                     </div>
                 </div>
 
-                <div class="card-footer">
-                    <a href="${jogo.url || '#'}" target="_blank" rel="noopener noreferrer">${jogo.url ? 'Acessar Jogo' : 'Link Indisponível'}</a>
+                <div class="card-footer" style="padding: 15px; background: #f9f9f9; border: 1px solid #ddd; border-top: none; border-radius: 0 0 8px 8px; text-align: center;">
+                    <a href="${jogo.LINK || '#'}" target="_blank" rel="noopener noreferrer" 
+                       style="color: #8B0000; font-weight: bold; text-decoration: none;">
+                       ${jogo.LINK ? 'Acessar Jogo' : 'Link Indisponível'}
+                    </a>
                 </div>
             </div>
         `;
@@ -114,7 +118,29 @@ function renderizarJogosDaPagina() {
     atualizarControlesPaginacao();
 }
 
-// Funções de Favorito, Paginação e Navegação (Mantidas conforme sua lógica)
+// ... (Mantenha as funções mudarPagina e atualizarControlesPaginacao iguais) ...
+
+function mudarPagina(direcao) {
+    const totalPaginas = Math.ceil(jogosCompletos.length / jogosPorPagina);
+    const novaPagina = paginaAtual + direcao;
+    if (novaPagina >= 1 && novaPagina <= totalPaginas) {
+        paginaAtual = novaPagina;
+        renderizarJogosDaPagina();
+        document.getElementById("lista").scrollIntoView({ behavior: 'smooth' }); 
+    }
+}
+
+function atualizarControlesPaginacao() {
+    const totalPaginas = Math.ceil(jogosCompletos.length / jogosPorPagina);
+    const btnAnterior = document.getElementById('btnAnterior');
+    const btnProximo = document.getElementById('btnProximo');
+    const infoPagina = document.getElementById('infoPagina');
+
+    if (btnAnterior) btnAnterior.disabled = paginaAtual === 1;
+    if (btnProximo) btnProximo.disabled = paginaAtual === totalPaginas || jogosCompletos.length === 0;
+    if (infoPagina) infoPagina.textContent = `Página ${totalPaginas === 0 ? 0 : paginaAtual} de ${totalPaginas}`;
+}
+
 async function toggleFavorito(jogoId, elementoEstrela) {
     const usuarioLogado = JSON.parse(localStorage.getItem('usuarioLogado'));
     
@@ -137,27 +163,11 @@ async function toggleFavorito(jogoId, elementoEstrela) {
 
         if (response.ok) {
             elementoEstrela.classList.toggle('ativa');
+            // Atualiza o localStorage com o novo IDJOGO vindo do SQL
             usuarioLogado.favoritos = data.favoritos;
             localStorage.setItem('usuarioLogado', JSON.stringify(usuarioLogado));
         }
     } catch (error) {
-        console.error("Erro ao favoritar:", error);
+        console.error("Erro ao favoritar no banco SQL:", error);
     }
-}
-
-function mudarPagina(direcao) {
-    const totalPaginas = Math.ceil(jogosCompletos.length / jogosPorPagina);
-    const novaPagina = paginaAtual + direcao;
-    if (novaPagina >= 1 && novaPagina <= totalPaginas) {
-        paginaAtual = novaPagina;
-        renderizarJogosDaPagina();
-        document.getElementById("lista").scrollIntoView({ behavior: 'smooth' }); 
-    }
-}
-
-function atualizarControlesPaginacao() {
-    const totalPaginas = Math.ceil(jogosCompletos.length / jogosPorPagina);
-    document.getElementById('btnAnterior').disabled = paginaAtual === 1;
-    document.getElementById('btnProximo').disabled = paginaAtual === totalPaginas || jogosCompletos.length === 0;
-    document.getElementById('infoPagina').textContent = `Página ${totalPaginas === 0 ? 0 : paginaAtual} de ${totalPaginas}`;
 }
