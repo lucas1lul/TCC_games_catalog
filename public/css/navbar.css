@@ -1,0 +1,167 @@
+/* css/navbar.css */
+:root {
+    --iff-green: #32A041;
+    --iff-red: #8B0000;
+    --navbar-height: 80px;
+}
+
+.navbar-iff {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: var(--navbar-height);
+    background-color: #ffffff;
+    padding: 0 30px;
+    border-bottom: 5px solid var(--iff-green);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+/* Garante a centralização real do título */
+.nav-section {
+    flex: 1; /* Todos os lados ocupam o mesmo espaço */
+    display: flex;
+    align-items: center;
+}
+
+.nav-center {
+    justify-content: center;
+    flex: 2; /* O título ganha mais espaço priorizado */
+}
+
+.nav-right {
+    justify-content: flex-end;
+}
+
+.navbar-logo {
+    height: 55px;
+    width: auto;
+}
+
+.navbar-title {
+    color: var(--iff-red);
+    font-size: 1.6rem;
+    margin: 0;
+    font-weight: bold;
+    text-align: center;
+}
+
+/* Botão de Login (Modo Deslogado) */
+.btn-login-header {
+    background-color: var(--iff-red);
+    color: white;
+    padding: 10px 25px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.btn-login-header:hover {
+    background-color: #a00000;
+    transform: scale(1.05);
+}
+
+/* Área do Usuário (Modo Logado) */
+.user-dropdown-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.user-info-display {
+    display: flex;
+    flex-direction: column;
+    text-align: right;
+    line-height: 1.2;
+}
+
+.user-name {
+    font-weight: bold;
+    color: #333;
+    font-size: 0.95rem;
+}
+
+.user-role-badge {
+    font-size: 0.75rem;
+    color: var(--iff-green);
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+/* Botão Hambúrguer (Três Riscos) */
+.btn-menu-hamburger {
+    background: none;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-menu-hamburger:hover { background-color: #f4f4f4; }
+
+.btn-menu-hamburger span {
+    display: block;
+    width: 22px;
+    height: 3px;
+    background-color: #555;
+    border-radius: 2px;
+}
+
+/* Dropdown Menu */
+.dropdown { position: relative; }
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 50px;
+    background-color: white;
+    min-width: 180px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+    border-radius: 8px;
+    list-style: none;
+    padding: 8px 0;
+    border: 1px solid #eee;
+}
+
+.dropdown-content.show { display: block; }
+
+.dropdown-content li a, .btn-logout-item {
+    padding: 12px 20px;
+    text-decoration: none;
+    display: block;
+    color: #333;
+    font-size: 0.9rem;
+    transition: 0.2s;
+}
+
+.dropdown-content li a:hover, .btn-logout-item:hover {
+    background-color: #f8f8f8;
+    color: var(--iff-green);
+}
+
+.menu-item-profile {
+    color: var(--iff-red) !important;
+    border-bottom: 1px solid #eee;
+}
+
+.divider { height: 1px; background-color: #eee; margin: 4px 0; }
+
+.btn-logout-item {
+    width: 100%;
+    border: none;
+    background: none;
+    text-align: left;
+    cursor: pointer;
+    font-family: inherit;
+}
