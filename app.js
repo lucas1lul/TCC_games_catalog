@@ -1,4 +1,5 @@
 // app.js
+require('dotenv').config();
 const express = require('express');
 const authRoutes = require('./src/controllers/routes/jogoRoutes');
 const cors = require('cors');
