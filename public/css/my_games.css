@@ -1,0 +1,144 @@
+/* my_games.css */
+
+:root {
+    --iff-red: #990000;
+    --iff-green: #6cb333;
+    --iff-gray-bg: #f8f9fa;
+    --iff-white: #ffffff;
+    --iff-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+body {
+    background-color: var(--iff-gray-bg);
+    margin: 0;
+    font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+}
+
+/* Header de Título */
+.page-header-title {
+    color: #000000 !important;
+    border-bottom: 3px solid var(--iff-green-dark);
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    text-align: left;
+    font-size: 2em;
+}
+.mostrar-gestao {
+    display: block !important;
+}
+main {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 30px; /* Espaço entre os blocos */
+    padding-bottom: 50px;
+}
+.bloco-personalizado {
+    background-color: #ffffff;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    border: 1px solid var(--iff-border);
+}
+#filtroStatus:focus {
+    border-color: var(--iff-green-dark);
+    outline: none;
+}
+
+/* Estilo do Retângulo Moderno (Seções) */
+section {
+    background: var(--iff-white);
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: var(--iff-shadow);
+    border: 1px solid #eee;
+}
+
+/* Container de Filtros Refinado */
+.filtro-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Select na Diagonal (Alinhado à esquerda acima dos inputs) */
+.select-container {
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+}
+
+.select-container label {
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: #666;
+    margin-bottom: 5px;
+    margin-left: 2px;
+}
+
+#filtroStatus {
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    font-weight: 500;
+    color: #000000;
+    cursor: pointer;
+    min-width: 200px;
+}
+
+/* Linha de Inputs do Catálogo */
+.filtros-linha {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+}
+
+.filtros-linha input {
+    flex: 1;
+    min-width: 150px;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+}
+
+.filtros-linha input:focus {
+    border-color: var(--iff-green);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(108, 179, 51, 0.2);
+}
+
+.btn-filtrar {
+    background-color: var(--iff-green);
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.btn-filtrar:hover {
+    background-color: var(--iff-red);
+}
+
+/* Cabeçalhos de Seção */
+h2 {
+    color: #333;
+    font-size: 1.4rem;
+    margin-top: 0;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.grid-jogos {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+}

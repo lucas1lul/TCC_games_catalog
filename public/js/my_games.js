@@ -23,15 +23,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // --- LÓGICA DE INTERFACE ---
 function configurarInterfacePorPerfil(perfil) {
-    const secaoAvaliacoes = document.getElementById('secaoAvaliacoes');
-    const secaoProfessor = document.getElementById('secaoProfessor');
+    console.log("Perfil para interface:", perfil); // Verifique se imprime 'professor'
 
-    if (['aluno', 'professor', 'administrador'].includes(perfil)) {
-        if (secaoAvaliacoes) secaoAvaliacoes.style.display = 'block';
+    const secaoProfessor = document.getElementById('secaoProfessor');
+    
+    if (!secaoProfessor) {
+        console.error("ERRO: O elemento 'secaoProfessor' não existe no HTML.");
+        return;
     }
 
-    if (['professor', 'administrador'].includes(perfil)) {
-        if (secaoProfessor) secaoProfessor.style.display = 'block';
+    // Compara se o texto contém 'prof' ou 'admin' para evitar erros de digitação
+    if (perfil.includes('professor') || perfil.includes('administrador')) {
+        secaoProfessor.classList.add('mostrar-gestao');
+        console.log("Aba de gestão ativada com sucesso!");
+    } else {
+        secaoProfessor.classList.remove('mostrar-gestao');
     }
 }
 
