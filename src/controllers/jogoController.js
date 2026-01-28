@@ -181,6 +181,7 @@ exports.getGames = async (req, res) => {
     try {
         const { curso, componente, habilidade, plataforma, idioma } = req.query;
         
+        console.log("REQ.QUERY:", req.query);
         // DISTINCT evita jogos duplicados se eles tiverem mais de um curso/habilidade
         let query = "SELECT DISTINCT J.* FROM JOGOS J";
         const params = [];
@@ -190,7 +191,7 @@ exports.getGames = async (req, res) => {
         if (componente) query += " JOIN JOGOS_COMPONENTES JCOMP ON J.IDJOGO = JCOMP.IDJOGO JOIN COMPONENTES COMP ON JCOMP.IDCOMPONENTE = COMP.IDCOMPONENTE";
         if (habilidade) query += " JOIN JOGOS_HABILIDADES JH ON J.IDJOGO = JH.IDJOGO JOIN HABILIDADES H ON JH.habilidadeID = H.habilidadeID";
         if (plataforma) query += " JOIN JOGOS_PLATAFORMA JP ON J.IDJOGO = JP.IDJOGO JOIN PLATAFORMA P ON JP.IDPLATAFORMA = P.IDPLATAFORMA";
-
+        
         query += " WHERE 1=1";
 
         if (curso) {
@@ -215,7 +216,11 @@ exports.getGames = async (req, res) => {
             params.push(`%${idioma}%`);
         }
 
+        console.log("SQL FINAL:", query);
+        console.log("PARAMS:", params);
+
         const [rows] = await db.promise().query(query, params);
+        console.log("RESULTADOS:", rows.length);
         res.status(200).json(rows);
     } catch (error) {
         console.error("Erro no SQL:", error);
