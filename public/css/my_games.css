@@ -34,12 +34,17 @@ main {
     gap: 30px; /* Espaço entre os blocos */
     padding-bottom: 50px;
 }
+#listaFavoritos {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 25px;
+    padding: 20px 0;
+}
 .bloco-personalizado {
-    background-color: #ffffff;
-    padding: 25px;
+    background: #fff;
+    padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-    border: 1px solid var(--iff-border);
 }
 #filtroStatus:focus {
     border-color: var(--iff-green-dark);
