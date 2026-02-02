@@ -1,0 +1,91 @@
+.account-page {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 24px 16px 48px;
+}
+
+.account-header h1 {
+  margin: 12px 0 6px;
+  font-size: 1.8rem;
+}
+
+.account-subtitle {
+  margin: 0 0 18px;
+  color: #555;
+}
+
+.account-card {
+  background: #fff;
+  border: 1px solid #e5e5e5;
+  border-radius: 14px;
+  padding: 18px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+}
+
+.status {
+  min-height: 22px;
+  margin-bottom: 10px;
+  color: #555;
+}
+
+.status.success { color: #0a7a2f; }
+.status.error { color: #b00020; }
+
+.account-form {
+  display: grid;
+  gap: 12px;
+}
+
+.form-row {
+  display: grid;
+  gap: 6px;
+}
+
+.form-row label {
+  font-weight: 600;
+  color: #333;
+}
+
+.form-row input {
+  border: 1px solid #d8d8d8;
+  border-radius: 10px;
+  padding: 10px 12px;
+  outline: none;
+}
+
+.form-row input:focus {
+  border-color: #8B0000;
+  box-shadow: 0 0 0 3px rgba(139,0,0,0.12);
+}
+
+.divider {
+  height: 1px;
+  background: #eee;
+  margin: 8px 0;
+}
+
+.section-title {
+  font-weight: 700;
+  color: #333;
+  margin-top: 4px;
+}
+
+.form-actions {
+  margin-top: 6px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn-primary {
+  background: #8B0000;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 14px;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.btn-primary:hover {
+  filter: brightness(1.05);
+}

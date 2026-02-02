@@ -2,6 +2,7 @@
 require('dotenv').config();
 const express = require('express');
 const authRoutes = require('./src/controllers/routes/jogoRoutes');
+const userRoutes = require("./src/controllers/routes/userRoutes");
 const cors = require('cors');
 const path = require('path'); // Certifique-se de que está importado
 
@@ -19,6 +20,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // --- Rotas da API (backend) ---
 app.use('/api', authRoutes);
+
+app.use("/api", userRoutes);
 
 const PORT = process.env.PORT || 3002;
 app.listen(PORT, () => {

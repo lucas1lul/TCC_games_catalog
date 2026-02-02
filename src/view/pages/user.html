@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Minha Conta</title>
+
+  <link rel="stylesheet" href="/css/styles.css">
+  <link rel="stylesheet" href="/css/navbar.css">
+  <link rel="stylesheet" href="/css/user.css">
+</head>
+<body>
+  <div id="navbar-placeholder"></div>
+
+  <main class="account-page">
+    <header class="account-header">
+      <h1>Configurações da conta</h1>
+      <p class="account-subtitle">Atualize seus dados cadastrais.</p>
+    </header>
+
+    <section class="account-card">
+      <div id="status" class="status"></div>
+
+      <form id="formConta" class="account-form">
+        <div class="form-row">
+          <label for="nome">Nome</label>
+          <input id="nome" name="nome" type="text" placeholder="Seu nome" required />
+        </div>
+
+        <div class="form-row">
+          <label for="email">E-mail</label>
+          <input id="email" name="email" type="email" placeholder="seuemail@exemplo.com" required />
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="section-title">Alterar senha (opcional)</div>
+
+        <div class="form-row">
+          <label for="senhaAtual">Senha atual</label>
+          <input id="senhaAtual" name="senhaAtual" type="password" autocomplete="current-password" placeholder="••••••••" />
+        </div>
+
+        <div class="form-row">
+          <label for="novaSenha">Nova senha</label>
+          <input id="novaSenha" name="novaSenha" type="password" autocomplete="new-password" placeholder="mínimo 6 caracteres" />
+        </div>
+
+        <div class="form-row">
+          <label for="confirmarNovaSenha">Confirmar nova senha</label>
+          <input id="confirmarNovaSenha" name="confirmarNovaSenha" type="password" autocomplete="new-password" placeholder="repita a nova senha" />
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn-primary">Salvar alterações</button>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <script src="/js/navbar.js"></script>
+  <script src="/js/user.js"></script>
+</body>
+</html>
