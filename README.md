@@ -55,6 +55,7 @@ DB_PASSWORD=root
 DB_NAME=jogosdb  
 DB_PORT=3306
 ```
+Observação: as variáveis de ambiente devem ser ajustadas de acordo com o seu banco local.
 
 ---
 
