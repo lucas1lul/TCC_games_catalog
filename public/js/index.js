@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     // 4. REDIRECIONA
                     setTimeout(() => {
-                        window.location.href = '/catalogo.html'; 
+                        window.location.href = '/catalogo'; 
                     }, 800); 
                     
                 } else {

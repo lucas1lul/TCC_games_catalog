@@ -8,18 +8,18 @@ document.addEventListener('DOMContentLoaded', function() {
     const navbarHTML = `
         <nav class="navbar-iff">
             <div class="nav-section nav-left">
-                <a href="/catalogo.html">
+                <a href="/catalogo">
                     <img src="/images/iff.jpeg" alt="Logo IFF" class="navbar-logo">
                 </a>
             </div>
             
             <div class="nav-section nav-center">
-                <h1 class="navbar-title">Título Provisório do Catálogo</h1>
+                <h1 class="navbar-title">Catálogo de Jogos Educativos</h1>
             </div>
 
             <div class="nav-section nav-right">
                 ${!usuario ? `
-                    <a href="/index.html" class="btn-login-header">Entrar</a>
+                    <a href="/" class="btn-login-header">Entrar</a>
                 ` : `
                     <div class="user-dropdown-container">
                         <div class="user-info-display">
@@ -35,8 +35,8 @@ document.addEventListener('DOMContentLoaded', function() {
                             </button>
                             
                             <ul id="dropdownMenu" class="dropdown-content">
-                                <li><a href="/user.html" class="menu-item-profile"><strong>${usuario.perfil}</strong></a></li>
-                                <li><a href="/my_games.html">Meus Jogos</a></li>
+                                <li><a href="/user" class="menu-item-profile"><strong>${usuario.perfil}</strong></a></li>
+                                <li><a href="/my_game">Meus Jogos</a></li>
                                 <li class="divider"></li>
                                 <li><button onclick="logoutSistema()" class="btn-logout-item">Sair</button></li>
                             </ul>
@@ -57,7 +57,7 @@ function toggleMenu() {
 
 function logoutSistema() {
     localStorage.removeItem('usuarioLogado');
-    window.location.href = '/index.html';
+    window.location.href = '/';
 }
 
 // Fecha o menu se clicar fora dele

@@ -164,7 +164,7 @@ function exportarLista() {
 
 function logout() {
     localStorage.removeItem('usuarioLogado');
-    window.location.href = 'index.html';
+    window.location.href = 'index';
 }
 
 function exportarLista() {
