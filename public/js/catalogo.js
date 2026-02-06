@@ -1,7 +1,16 @@
 // catalogo.js
 document.addEventListener('DOMContentLoaded', () => {
+    carregarJogos();
     const usuarioSessao = localStorage.getItem('usuarioLogado');
     
+    const formFiltros = document.getElementById("filtros");
+  if (formFiltros) {
+    formFiltros.addEventListener("submit", (e) => {
+      e.preventDefault(); // ⛔ evita recarregar a página
+      carregarJogos();    // ✅ executa filtragem
+    });
+  }
+
     if (usuarioSessao) {
         const usuario = JSON.parse(usuarioSessao);
         const header = document.querySelector('h1'); 
@@ -14,57 +23,49 @@ document.addEventListener('DOMContentLoaded', () => {
 
 let jogosCompletos = []; 
 let paginaAtual = 1;
-const jogosPorPagina = 9; 
+const jogosPorPagina = 10; 
 
 async function carregarJogos() {
-    const curso = document.getElementById("filtroCurso").value;
-    const componente = document.getElementById("filtroComponente").value;
-    const habilidade = document.getElementById("filtroHabilidade").value;
-    const plataforma = document.getElementById("filtroPlataforma").value;
-    
-    const lista = document.getElementById("lista"); 
-    
-    paginaAtual = 1;
-    jogosCompletos = [];
-    lista.innerHTML = ""; 
+  const curso = document.getElementById("filtroCurso").value.trim();
+  const componente = document.getElementById("filtroComponente").value.trim();
+  const habilidade = document.getElementById("filtroHabilidade").value.trim();
+  const plataforma = document.getElementById("filtroPlataforma").value.trim();
 
-    if (!curso && !componente && !habilidade && !plataforma) {
-        lista.innerHTML = "💡 Preencha pelo menos um campo de filtro para buscar os jogos.";
-        atualizarControlesPaginacao(); 
-        return; 
+  const lista = document.getElementById("lista");
+
+  paginaAtual = 1;
+  jogosCompletos = [];
+  lista.innerHTML = "Carregando resultados...";
+
+  // ✅ Se não tiver filtro, busca tudo
+  const params = new URLSearchParams();
+  if (curso) params.set("curso", curso);
+  if (componente) params.set("componente", componente);
+  if (habilidade) params.set("habilidade", habilidade);
+  if (plataforma) params.set("plataforma", plataforma);
+
+  const url = params.toString() ? `/api/games?${params.toString()}` : "/api/games";
+
+  try {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`Erro HTTP! Status: ${res.status}`);
+
+    jogosCompletos = await res.json();
+
+    if (!Array.isArray(jogosCompletos) || jogosCompletos.length === 0) {
+      lista.innerHTML = "⚠️ Nenhum jogo encontrado.";
+      atualizarControlesPaginacao();
+      return;
     }
 
-    lista.innerHTML = "Carregando resultados...";
-
-    // O servidor agora busca no SQL usando esses parâmetros
-    let url = "/api/games?"; 
-    if (curso) url += `curso=${encodeURIComponent(curso)}&`;
-    if (componente) url += `componente=${encodeURIComponent(componente)}&`;
-    if (habilidade) url += `habilidade=${encodeURIComponent(habilidade)}&`;
-    if (plataforma) url += `plataforma=${encodeURIComponent(plataforma)}&`;
-
-    if (url.endsWith('&')) url = url.slice(0, -1);
-    
-    try {
-        const res = await fetch(url);
-        if (!res.ok) throw new Error(`Erro HTTP! Status: ${res.status}`);
-        
-        jogosCompletos = await res.json();
-        
-        if (jogosCompletos.length === 0) {
-            lista.innerHTML = "⚠️ Nenhum jogo encontrado com os filtros selecionados.";
-            atualizarControlesPaginacao(); 
-            return;
-        }
-
-        renderizarJogosDaPagina();
-        
-    } catch (error) {
-        console.error("Erro ao buscar jogos no SQL:", error);
-        lista.innerHTML = `❌ Erro ao carregar dados do banco SQL.`;
-        atualizarControlesPaginacao();
-    }
+    renderizarJogosDaPagina();
+  } catch (error) {
+    console.error("Erro ao buscar jogos:", error);
+    lista.innerHTML = "❌ Erro ao carregar dados.";
+    atualizarControlesPaginacao();
+  }
 }
+
 
 function renderizarJogosDaPagina() {
     const lista = document.getElementById("lista"); 
@@ -171,3 +172,7 @@ async function toggleFavorito(jogoId, elementoEstrela) {
         console.error("Erro ao favoritar no banco SQL:", error);
     }
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+  carregarJogos(); // ✅ mostra todos ao abrir
+});
