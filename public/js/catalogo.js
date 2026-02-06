@@ -19,11 +19,28 @@ document.addEventListener('DOMContentLoaded', () => {
         saudacao.style.color = '#555';
         header.insertAdjacentElement('afterend', saudacao);
     }
+    const lista = document.getElementById("lista");
+  if (!lista) return;
+
+  lista.addEventListener("click", (e) => {
+    const btn = e.target.closest(".btn-ver-mais");
+    if (!btn) return;
+
+    const id = Number(btn.dataset.jogoId);
+    const jogo = jogosCompletos.find(j => Number(j.IDJOGO) === id);
+
+    if (!jogo) {
+      console.warn("Jogo não encontrado para detalhes. ID:", id);
+      return;
+    }
+
+    abrirDetalhes(jogo); // ✅ agora passa o OBJETO real
+  });
 });
 
 let jogosCompletos = []; 
 let paginaAtual = 1;
-const jogosPorPagina = 10; 
+const jogosPorPagina = 12; 
 
 async function carregarJogos() {
   const curso = document.getElementById("filtroCurso").value.trim();
@@ -66,57 +83,83 @@ async function carregarJogos() {
   }
 }
 
-
 function renderizarJogosDaPagina() {
-    const lista = document.getElementById("lista"); 
-    lista.innerHTML = ""; 
+  const lista = document.getElementById("lista");
+  lista.innerHTML = "";
 
-    const inicio = (paginaAtual - 1) * jogosPorPagina;
-    const fim = inicio + jogosPorPagina;
-    const jogosDaPagina = jogosCompletos.slice(inicio, fim);
+  const inicio = (paginaAtual - 1) * jogosPorPagina;
+  const fim = inicio + jogosPorPagina;
+  const jogosDaPagina = jogosCompletos.slice(inicio, fim);
 
-    const usuarioLogado = JSON.parse(localStorage.getItem('usuarioLogado'));
-    const favoritos = usuarioLogado?.favoritos || [];
+  const usuarioLogado = JSON.parse(localStorage.getItem("usuarioLogado"));
+  const favoritos = usuarioLogado?.favoritos || [];
 
-    jogosDaPagina.forEach(jogo => {
-        const classeAtiva = favoritos.includes(jogo.IDJOGO) ? 'ativa' : '';
-        
-        // Lógica da Imagem: Se não houver LINKIMAGEM, usa um placeholder
-        const urlImg = jogo.LINKIMAGEM ? `/images/${jogo.LINKIMAGEM}` : '/images/placeholder.png';
+  jogosDaPagina.forEach((jogo) => {
+    const classeAtiva = favoritos.includes(jogo.IDJOGO) ? "ativa" : "";
 
-        // NOVO CARD MODERNO COM IMAGEM E ESTILO LIMPO
-        lista.innerHTML += `
-    <div class="jogo-card">
+    // Imagem: se não houver LINKIMAGEM, usa placeholder
+    const urlImg = jogo.LINKIMAGEM ? `/images/${jogo.LINKIMAGEM}` : "/images/placeholder.png";
+
+    // Campos adicionais (com fallbacks para nomes diferentes no JSON)
+    const habilidadeTxt =
+      jogo.HABILIDADE || jogo.descricaoHabilidade || jogo.DESCRICAOHABILIDADE || "N/A";
+    const plataformaTxt =
+      jogo.PLATAFORMA || jogo.DESCRICAO_PLATAFORMA || jogo.DESCRICAOPLATAFORMA || "N/A";
+    const componenteTxt =
+      jogo.COMPONENTE || jogo.DISCIPLINA || jogo.COMPONENTES || "N/A";
+
+    // Para o botão de detalhes (evita quebrar HTML por aspas)
+    const jogoJson = JSON.stringify(jogo)
+      .replace(/\\/g, "\\\\")
+      .replace(/'/g, "\\'")
+      .replace(/"/g, "&quot;");
+
+    lista.innerHTML += `
+      <div class="jogo-card">
         <div class="card-image-container">
-            <img src="/images/${jogo.LINKIMAGEM || 'placeholder.png'}" alt="${jogo.NOME}" class="jogo-img">
-            <span class="estrela-favorito ${classeAtiva}" onclick="toggleFavorito(${jogo.IDJOGO}, this)">★</span>
+          <img src="${urlImg}" alt="${jogo.NOME || "Jogo"}" class="jogo-img">
         </div>
 
         <div class="card-content">
-            <div class="card-header-info">
-                <h2 class="jogo-titulo">${jogo.NOME}</h2>
-                <span class="jogo-componente">${jogo.INTERACAO || 'N/A'}</span>
-            </div>
-            
-            <div class="card-body">
-                <p class="jogo-descricao">${jogo.DESCRICAOIMAGEM || 'Sem descrição.'}</p>
-            </div>
+          <div class="card-header-info">
+            <h2 class="jogo-titulo">${jogo.NOME || "Sem título"}</h2>
+            <span class="jogo-componente">INTERAÇÃO: ${jogo.INTERACAO || "N/A"}</span>
+          </div>
 
-            <div class="card-footer" style="display: flex; gap: 10px;">
-                <button onclick='abrirDetalhes(${JSON.stringify(jogo).replace(/'/g, "&apos;")})' class="btn-ver-mais">
-                    🔍 Detalhes
-                </button>
-                
-                <a href="${jogo.LINK || '#'}" target="_blank" class="btn-acessar" style="flex: 1;">
-                    Jogar
-                </a>
+          <div class="card-body">
+            <p class="jogo-descricao">${jogo.DESCRICAOIMAGEM || "Sem descrição disponível."}</p>
+
+            <div class="detalhes-grid">
+              <p class="detalhe-item"><strong>Habilidade:</strong> ${habilidadeTxt}</p>
+              <p class="detalhe-item"><strong>Plataforma:</strong> ${plataformaTxt}</p>
+              <p class="detalhe-item completo"><strong>Componente:</strong> ${componenteTxt}</p>
             </div>
+          </div>
+
+          <div class="card-footer" style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
+            <span class="estrela-favorito ${classeAtiva}"
+                  onclick="toggleFavorito(${jogo.IDJOGO}, this)"
+                  aria-label="Favoritar jogo"
+                  title="Favoritar">★</span>
+
+            <button class="btn-ver-mais" onclick="abrirDetalhes(${jogo.IDJOGO})">
+                🔍 Detalhes
+            </button>
+
+            <a href="${jogo.LINK || "#"}"
+               target="_blank"
+               rel="noopener noreferrer"
+               class="btn-acessar"
+               style="flex:1; text-align:right;">
+              ${jogo.LINK ? "Acessar jogo" : "Link indisponível"}
+            </a>
+          </div>
         </div>
-    </div>
-`;
-    });
+      </div>
+    `;
+  });
 
-    atualizarControlesPaginacao();
+  atualizarControlesPaginacao();
 }
 
 // ... (Mantenha as funções mudarPagina e atualizarControlesPaginacao iguais) ...
@@ -173,6 +216,65 @@ async function toggleFavorito(jogoId, elementoEstrela) {
     }
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  carregarJogos(); // ✅ mostra todos ao abrir
+async function abrirDetalhes(idJogo) {
+  const modal = document.getElementById("modalDetalhes");
+  const body = document.getElementById("detalhesModalBody");
+  if (!modal || !body) {
+    console.error("Modal não encontrado no HTML (modalDetalhes/detalhesModalBody).");
+    return;
+  }
+
+  modal.style.display = "block";
+  body.innerHTML = "Carregando...";
+
+  try {
+    const res = await fetch(`/api/games/${idJogo}`);
+    if (!res.ok) throw new Error(`Erro HTTP: ${res.status}`);
+
+    const jogo = await res.json();
+
+    // Ajuste de nomes: alguns dados podem vir em MAIÚSCULO no seu SQL
+    const nome = jogo.NOME || jogo.nome || "Sem título";
+    const descricao = jogo.DESCRICAO || jogo.descricao || jogo.DESCRICAOIMAGEM || "Sem descrição.";
+    const curso = jogo.CURSO || jogo.curso || "N/A";
+    const componente = jogo.COMPONENTE || jogo.componente || jogo.DISCIPLINA || "N/A";
+    const habilidade = jogo.HABILIDADE || jogo.habilidade || jogo.descricaoHabilidade || "N/A";
+    const plataforma = jogo.PLATAFORMA || jogo.plataforma || "N/A";
+    const link = jogo.LINK || jogo.link || "";
+
+    body.innerHTML = `
+      <h2 style="margin-top:0;">${nome}</h2>
+      <p>${descricao}</p>
+
+      <div class="detalhes-grid" style="margin-top: 12px;">
+        <p class="detalhe-item"><strong>Curso:</strong> ${curso}</p>
+        <p class="detalhe-item"><strong>Plataforma:</strong> ${plataforma}</p>
+        <p class="detalhe-item completo"><strong>Componente:</strong> ${componente}</p>
+        <p class="detalhe-item completo"><strong>Habilidade:</strong> ${habilidade}</p>
+      </div>
+
+      <div style="display:flex; gap:10px; justify-content:flex-end; margin-top: 14px;">
+        ${
+          link
+            ? `<a href="${link}" target="_blank" rel="noopener noreferrer" class="btn-acessar">Acessar jogo</a>`
+            : `<span style="font-weight:700; color:#990000;">Link indisponível</span>`
+        }
+      </div>
+    `;
+  } catch (err) {
+    console.error(err);
+    body.innerHTML = "❌ Não foi possível carregar os detalhes do jogo.";
+  }
+}
+
+function fecharModal() {
+  const modal = document.getElementById("modalDetalhes");
+  if (modal) modal.style.display = "none";
+}
+
+// fecha ao clicar fora do conteúdo
+window.addEventListener("click", (e) => {
+  const modal = document.getElementById("modalDetalhes");
+  if (modal && e.target === modal) modal.style.display = "none";
 });
+

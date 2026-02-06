@@ -17,95 +17,128 @@ body {
     padding: 20px;
 }
 
-h1 {
-    color: var(--iff-red-dark);
-    border-bottom: 3px solid var(--iff-green-dark);
-    padding-bottom: 10px;
-    margin-bottom: 30px;
-    text-align: left;
-    font-size: 2em;
+main .page-title {
+  background: transparent;
+  color: var(--iff-text-dark);
+  border-left: 6px solid var(--iff-green-dark);
+  padding: 6px 12px;
+  border-radius: 8px;
+  margin: 14px 0 12px;
+  font-size: 1.25rem;
+  font-weight: 800;
 }
 
 /* --- Estilo dos Filtros (Responsivo Aprimorado) --- */
 #filtros {
     display: flex;
-    flex-wrap: wrap; 
-    gap: 10px 15px;
-    padding: 15px;
-    margin-bottom: 30px;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 16px;
+    margin-bottom: 18px;
+
     background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+
+    /* ✅ mais destaque */
+    border: 2px solid rgba(108, 179, 51, 0.35); /* verde institucional suave */
+    box-shadow: 0 10px 26px rgba(0, 0, 0, 0.08);
 }
 
 #filtros label {
-    font-weight: bold;
+    font-weight: 700;
     color: var(--iff-text-dark);
-    margin-top: 5px;
+    margin-top: 4px;
 }
 
-#filtros input, #filtros button {
-    padding: 10px;
-    border: 1px solid var(--iff-border);
-    border-radius: 4px;
+#filtros input, 
+#filtros button {
+    padding: 12px;                 /* ✅ maior */
+    border-radius: 10px;           /* ✅ mais moderno */
     box-sizing: border-box;
 }
 
 #filtros input {
-    flex-grow: 1; 
-    min-width: 150px;
+    flex: 1 1 220px;               /* ✅ melhor distribuição */
+    min-width: 220px;
+
+    border: 1px solid #dcdcdc;
+    background: #fafafa;
+    outline: none;
+}
+
+/* ✅ foco evidente para guiar o usuário */
+#filtros input:focus {
+    background: #fff;
+    border-color: var(--iff-green-dark);
+    box-shadow: 0 0 0 3px rgba(108, 179, 51, 0.18);
 }
 
 #filtros button {
+    border: none;                  /* ✅ remove borda "fraca" */
     background-color: var(--iff-red-dark);
     color: white;
     cursor: pointer;
-    font-weight: bold;
-    transition: background-color 0.3s;
+    font-weight: 800;
+    transition: background-color 0.25s, transform 0.05s, box-shadow 0.25s;
     white-space: nowrap;
+
+    /* ✅ destaca o CTA */
+    box-shadow: 0 8px 18px rgba(153, 0, 0, 0.18);
 }
 
 #filtros button:hover {
     background-color: var(--iff-green-dark);
 }
 
-/* NOVO: Media Query para telas pequenas (< 600px) */
+#filtros button:active {
+    transform: translateY(1px);
+}
+
+/* Media Query para telas pequenas (< 600px) */
 @media (max-width: 600px) {
     #filtros {
-        flex-direction: column; /* Empilha os filtros verticalmente */
-        gap: 15px;
+        flex-direction: column;
+        gap: 12px;
     }
 
-    #filtros input, #filtros button {
-        width: 100%; /* Força inputs e botão a ocuparem toda a largura */
+    #filtros input, 
+    #filtros button {
+        width: 100%;
         min-width: auto;
     }
 }
 
-
 /* --- Estilo da Lista de Jogos (Container Grid) --- */
 #lista {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    /* ✅ 4 colunas fixas em telas grandes (4 jogos por linha) */
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 20px;
     align-items: stretch; /* Garante que todos os cards na mesma linha tenham a mesma altura */
 }
 
-/* --- MEDIA QUERIES PARA GARANTIR A RESPONSIVIDADE FIXA DOS CARDS --- */
+/* --- MEDIA QUERIES (responsivo) --- */
 
-/* Para Tablets ou Telas Médias (Máximo 2 Colunas) */
+/* Até 1200px: 3 colunas */
 @media (max-width: 1200px) {
     #lista {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 }
 
-/* Para Smartphones ou Telas Pequenas (Máximo 1 Coluna) */
+/* Até 900px: 2 colunas */
+@media (max-width: 900px) {
+    #lista {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+/* Até 768px: 1 coluna */
 @media (max-width: 768px) {
     #lista {
-        grid-template-columns: 1fr; /* 1 coluna */
+        grid-template-columns: 1fr;
     }
-    
+
     /* Ajusta a quebra dos detalhes dentro do card para telas muito pequenas */
     .detalhes-grid {
         grid-template-columns: 1fr; 
@@ -114,7 +147,6 @@ h1 {
         grid-column: span 1;
     }
 }
-
 
 /* Estilo do Card Individual */
 .jogo-card {
@@ -164,14 +196,15 @@ h1 {
 }
 
 .jogo-titulo {
-    margin: 0 0 5px 0;
-    font-size: 1.4em;
+    margin: 0 0 6px 0;
+    font-size: 1.15rem;
+    font-weight: 800;
 }
 
 .jogo-componente {
     display: block;
     font-size: 0.85em;
-    opacity: 0.9;
+    opacity: 0.95;
 }
 
 .card-body {
@@ -181,16 +214,16 @@ h1 {
 
 .jogo-descricao {
     flex-grow: 1; /* Empurra os detalhes e o botão para o final do card */
-    font-size: 0.9rem;
-    color: #666;
-    margin: 10px 0;
+    font-size: 0.92rem;
+    color: #555;
+    margin: 10px 0 12px;
 }
 /* Estilo do Grid de Detalhes */
 .detalhes-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr); /* Padrão: 2 colunas */
     gap: 8px 15px;
-    font-size: 0.85em;
+    font-size: 0.88em;
     border-top: 1px dashed var(--iff-border);
     padding-top: 10px;
 }
@@ -206,20 +239,23 @@ h1 {
 
 .card-footer {
     background-color: var(--iff-gray-light);
-    padding: 15px;
-    text-align: right;
+    padding: 12px 15px;
     border-top: 1px solid var(--iff-border);
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
 }
 
-.card-footer a {
+.btn-acessar {
     color: var(--iff-red-dark);
     text-decoration: none;
-    font-weight: bold;
-    transition: color 0.3s;
+    font-weight: 800;
 }
 
-.card-footer a:hover {
-    color: var(--iff-green-dark); 
+.btn-acessar:hover {
+    color: var(--iff-green-dark);
     text-decoration: underline;
 }
 
@@ -269,28 +305,19 @@ select {
     width: 100%;
     box-sizing: border-box;
 }
-.card-header {
-    position: relative; /* Necessário para posicionar a estrela */
-}
 
 .estrela-favorito {
-    position: absolute;
-    top: 10px;
-    right: 15px;
+    position: static;
     font-size: 1.8rem;
     cursor: pointer;
-    color: #ccc; /* Cinza apagado */
+    color: #bbb;
     transition: transform 0.2s, color 0.2s;
     user-select: none;
+    line-height: 1;
 }
 
-.estrela-favorito:hover {
-    transform: scale(1.2);
-}
-
-.estrela-favorito.ativa {
-    color: gold; /* Amarelo quando favoritado */
-}
+.estrela-favorito:hover { transform: scale(1.15); }
+.estrela-favorito.ativa { color: gold; }
 
 /* Estilos do Modal */
 .modal {
