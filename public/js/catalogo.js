@@ -79,41 +79,41 @@ function renderizarJogosDaPagina() {
     const favoritos = usuarioLogado?.favoritos || [];
 
     jogosDaPagina.forEach(jogo => {
-        // AJUSTE DE MAPEAMENTO (SQL da Carol usa MAIÚSCULAS)
-        // jogo.NOME, jogo.IDJOGO, jogo.LINK, jogo.IDIOMA, jogo.INTERACAO
-        
         const classeAtiva = favoritos.includes(jogo.IDJOGO) ? 'ativa' : '';
+        
+        // Lógica da Imagem: Se não houver LINKIMAGEM, usa um placeholder
+        const urlImg = jogo.LINKIMAGEM ? `/images/${jogo.LINKIMAGEM}` : '/images/placeholder.png';
 
+        // NOVO CARD MODERNO COM IMAGEM E ESTILO LIMPO
         lista.innerHTML += `
-            <div class="jogo-card">
-                <div class="card-header" style="position: relative; background-color: #8B0000; color: white; padding: 15px; border-radius: 8px 8px 0 0;">
-                    <h2 class="jogo-titulo" style="margin: 0; font-size: 1.4rem;">${jogo.NOME}</h2>
-                    <span class="jogo-componente" style="display: block; font-size: 0.8rem; margin-top: 5px; opacity: 0.9;">
-                        INTERAÇÃO: ${jogo.INTERACAO || 'N/A'}
-                    </span>
-                    <span class="estrela-favorito ${classeAtiva}" 
-                          style="position: absolute; top: 10px; right: 15px; cursor: pointer; font-size: 1.5rem;"
-                          onclick="toggleFavorito(${jogo.IDJOGO}, this)">★</span>
-                </div>
-                
-                <div class="card-body" style="padding: 15px; background: white; border: 1px solid #ddd; border-top: none;">
-                    <p class="jogo-descricao" style="color: #444; margin-bottom: 15px;">
-                        ${jogo.DESCRICAOIMAGEM || 'Sem descrição disponível.'}
-                    </p>
-                    <div class="detalhes-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 0.9rem;">
-                        <p class="detalhe-item"><strong>Licença:</strong> ${jogo.LICENSA || 'N/A'}</p>
-                        <p class="detalhe-item"><strong>Idioma:</strong> ${jogo.IDIOMA || 'N/A'}</p>
-                    </div>
-                </div>
+    <div class="jogo-card">
+        <div class="card-image-container">
+            <img src="/images/${jogo.LINKIMAGEM || 'placeholder.png'}" alt="${jogo.NOME}" class="jogo-img">
+            <span class="estrela-favorito ${classeAtiva}" onclick="toggleFavorito(${jogo.IDJOGO}, this)">★</span>
+        </div>
 
-                <div class="card-footer" style="padding: 15px; background: #f9f9f9; border: 1px solid #ddd; border-top: none; border-radius: 0 0 8px 8px; text-align: center;">
-                    <a href="${jogo.LINK || '#'}" target="_blank" rel="noopener noreferrer" 
-                       style="color: #8B0000; font-weight: bold; text-decoration: none;">
-                       ${jogo.LINK ? 'Acessar Jogo' : 'Link Indisponível'}
-                    </a>
-                </div>
+        <div class="card-content">
+            <div class="card-header-info">
+                <h2 class="jogo-titulo">${jogo.NOME}</h2>
+                <span class="jogo-componente">${jogo.INTERACAO || 'N/A'}</span>
             </div>
-        `;
+            
+            <div class="card-body">
+                <p class="jogo-descricao">${jogo.DESCRICAOIMAGEM || 'Sem descrição.'}</p>
+            </div>
+
+            <div class="card-footer" style="display: flex; gap: 10px;">
+                <button onclick='abrirDetalhes(${JSON.stringify(jogo).replace(/'/g, "&apos;")})' class="btn-ver-mais">
+                    🔍 Detalhes
+                </button>
+                
+                <a href="${jogo.LINK || '#'}" target="_blank" class="btn-acessar" style="flex: 1;">
+                    Jogar
+                </a>
+            </div>
+        </div>
+    </div>
+`;
     });
 
     atualizarControlesPaginacao();

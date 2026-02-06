@@ -54,15 +54,20 @@ function atualizarContador() {
 
 // --- LÓGICA DE FILTRO (Ajustada para os novos nomes do SQL) ---
 function filtrarMeusJogos() {
-    const curso = document.getElementById('filtroCurso')?.value.toLowerCase() || "";
-    const componente = document.getElementById('filtroComponente')?.value.toLowerCase() || "";
+    const status = document.getElementById('filtroStatus').value;
+    const buscaCurso = document.getElementById('filtroCurso').value.toLowerCase();
 
     jogosFiltrados = meusJogosOriginais.filter(jogo => {
-        // Ajustado para usar as colunas em maiúsculo do SQL (Ex: NOME, INTERACAO)
-        const matchNome = jogo.NOME?.toLowerCase().includes(curso) || curso === "";
-        const matchInteracao = jogo.INTERACAO?.toLowerCase().includes(componente) || componente === "";
-        
-        return matchNome && matchInteracao;
+        // Filtro por Status
+        const matchStatus = 
+            status === "tudo" || 
+            (status === "favoritados" && jogo.isFavorito) || 
+            (status === "avaliados" && jogo.isAvaliado);
+
+        // Filtro por Nome/Curso (Exemplo)
+        const matchTexto = jogo.NOME.toLowerCase().includes(buscaCurso);
+
+        return matchStatus && matchTexto;
     });
 
     renderizarJogos(jogosFiltrados);
@@ -73,24 +78,47 @@ function renderizarJogos(lista) {
     const container = document.getElementById('listaFavoritos');
     if (!container) return;
 
-    container.innerHTML = ''; // Limpa o "Carregando..."
+    container.innerHTML = ''; 
+
+    if (lista.length === 0) {
+        container.innerHTML = '<p>Nenhum jogo encontrado.</p>';
+        return;
+    }
 
     lista.forEach(jogo => {
+        // Criamos o elemento do card
         const card = document.createElement('div');
-        card.className = 'card-jogo';
-        
-        // Mantém suas lógicas de checkbox e botões de admin aqui...
-        
+        card.className = 'jogo-card'; // MESMA CLASSE DO CATALOGO.HTML
+
+        // Montamos o HTML interno IGUAL ao do catálogo
         card.innerHTML = `
-            <div class="card-header">
-                <h3>${jogo.titulo}</h3>
+            <div class="card-image-container">
+                <img src="/images/${jogo.LINKIMAGEM || 'placeholder.png'}" alt="${jogo.NOME}" class="jogo-img" onerror="this.src='/images/placeholder.png'">
             </div>
-            <div class="card-body">
-                <p><strong>Componente:</strong> ${jogo.componente || 'N/A'}</p>
-                <p>${jogo.descricao ? jogo.descricao.substring(0, 80) + '...' : ''}</p>
-            </div>
-            <div class="card-footer">
-                <a href="/detalhes.html?id=${jogo.id}" class="btn-link">Ver Detalhes</a>
+
+            <div class="card-content">
+                <div class="card-header-info">
+                    <h2 class="jogo-titulo">${jogo.NOME}</h2>
+                    <span class="jogo-componente">${jogo.INTERACAO || 'N/A'}</span>
+                </div>
+                
+                <div class="card-body">
+                    <p class="jogo-descricao">${jogo.DESCRICAOIMAGEM || 'Sem descrição.'}</p>
+                </div>
+
+                <div class="card-footer" style="display: flex; gap: 10px; align-items: center;">
+                    <button onclick='abrirDetalhes(${JSON.stringify(jogo).replace(/'/g, "&apos;")})' class="btn-ver-mais" style="padding: 8px 12px; font-size: 0.8rem;">
+                        🔍 Detalhes
+                    </button>
+                    
+                    <a href="${jogo.LINK || '#'}" target="_blank" class="btn-acessar" style="flex: 1; text-align: center;">
+                        Jogar
+                    </a>
+
+                    ${(usuarioLogado.perfil.toLowerCase().includes('prof') || usuarioLogado.perfil.toLowerCase().includes('admin')) ? `
+                        <input type="checkbox" class="check-jogo" data-id="${jogo.IDJOGO}" onchange="atualizarContador()" style="width: 20px; height: 20px; cursor: pointer;">
+                    ` : ''}
+                </div>
             </div>
         `;
         container.appendChild(card);
@@ -111,29 +139,35 @@ function atualizarContador() {
 // --- COMUNICAÇÃO COM API ---
 async function carregarMeusDados() {
     const container = document.getElementById('listaFavoritos');
+    
     try {
-        // 1. Busca favoritos (Ajuste o endpoint se necessário para seu novo backend SQL)
+        // 1. Pega favoritos do JSON
         const responseFav = await fetch(`/api/usuarios/${usuarioLogado.id}/favoritos`);
-        const idsFavoritos = await responseFav.json();
+        if (!responseFav.ok) throw new Error("Falha ao carregar favoritos do JSON");
+        const idsFavoritos = await responseFav.json(); 
 
-        if (!idsFavoritos || idsFavoritos.length === 0) {
-            container.innerHTML = '<p>Você ainda não favoritou nenhum jogo. ❤️</p>';
-            return;
-        }
-
-        // 2. Busca jogos do Banco SQL (Endpoint que retorna SELECT * FROM JOGOS)
+        // 2. Pega todos os jogos do SQL
         const responseJogos = await fetch('/api/games');
+        if (!responseJogos.ok) throw new Error("Falha ao carregar jogos do SQL");
         const todosJogos = await responseJogos.json();
 
-        // 3. Filtra usando o novo IDJOGO (vindo do SQL)
-        meusJogosOriginais = todosJogos.filter(jogo => idsFavoritos.includes(jogo.IDJOGO));
+        // 3. Filtra os jogos do SQL usando os IDs que vieram do JSON
+        // IMPORTANTE: No SQL os campos são MAIÚSCULOS (IDJOGO)
+        meusJogosOriginais = todosJogos.filter(jogo => {
+            return idsFavoritos.includes(jogo.IDJOGO) || idsFavoritos.includes(String(jogo.IDJOGO));
+        });
+
         jogosFiltrados = [...meusJogosOriginais];
 
-        renderizarJogos(jogosFiltrados);
+        if (meusJogosOriginais.length === 0) {
+            container.innerHTML = '<p>Você ainda não favoritou nenhum jogo no banco. ❤️</p>';
+        } else {
+            renderizarJogos(jogosFiltrados);
+        }
 
     } catch (error) {
-        console.error("Erro ao carregar dados do SQL:", error);
-        container.innerHTML = '<p>❌ Erro ao conectar ao banco de dados.</p>';
+        console.error("Erro detalhado:", error);
+        container.innerHTML = '<p style="color:red">❌ Erro ao sincronizar JSON com SQL. Verifique o console.</p>';
     }
 }
 

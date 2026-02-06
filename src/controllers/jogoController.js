@@ -129,19 +129,24 @@ exports.toggleFavorito = async (req, res) => {
 // --- FUNÇÃO: Buscar Favoritos do Usuário ---
 exports.getUserFavorites = (req, res) => {
     try {
-        const { id } = req.params; // Pega o ID da URL
-        const usuarios = readUsers();
+        const { id } = req.params;
+        const usuarios = readUsers(); // Lê o seu arquivo JSON
         
+        // Encontra o usuário (usando == para evitar erro de string vs number)
         const usuario = usuarios.find(u => u.id == id);
         
         if (!usuario) {
-            return res.status(404).json({ mensagem: "Usuário não encontrado" });
+            return res.status(404).json({ mensagem: "Usuário não encontrado no JSON" });
         }
 
-        // Retorna apenas a lista de IDs de favoritos
-        res.status(200).json(usuario.favoritos || []);
+        // Garante que retorne um array, mesmo que o campo favoritos não exista
+        const favoritos = usuario.favoritos || [];
+        console.log(`Favoritos do user ${id}:`, favoritos);
+        
+        res.status(200).json(favoritos);
     } catch (error) {
-        res.status(500).json({ mensagem: "Erro ao buscar favoritos" });
+        console.error("Erro ao ler favoritos do JSON:", error);
+        res.status(500).json({ mensagem: "Erro interno ao ler JSON" });
     }
 };
 
@@ -179,51 +184,48 @@ const mapAndValidateGame = (gameData) => {
 
 exports.getGames = async (req, res) => {
     try {
-        const { curso, componente, habilidade, plataforma, idioma } = req.query;
+        const { nome, curso, componente, habilidade, plataforma, idioma } = req.query;
         
-        console.log("REQ.QUERY:", req.query);
-        // DISTINCT evita jogos duplicados se eles tiverem mais de um curso/habilidade
-        let query = "SELECT DISTINCT J.* FROM JOGOS J";
+        let query = `
+            SELECT DISTINCT 
+                J.IDJOGO, J.NOME, J.LINKIMAGEM, J.IDIOMA, J.LICENSA, J.INTERACAO,
+                (SELECT GROUP_CONCAT(G.DESCRICAO SEPARATOR ', ') 
+                 FROM JOGOS_GENERO JG 
+                 JOIN GENERO G ON JG.IDGENERO = G.IDGENERO 
+                 WHERE JG.IDJOGO = J.IDJOGO) AS GENERO_DESCRICAO,
+                (SELECT GROUP_CONCAT(P.DESCRICAO SEPARATOR ', ') 
+                 FROM JOGOS_PLATAFORMA JP 
+                 JOIN PLATAFORMA P ON JP.IDPLATAFORMA = P.IDPLATAFORMA 
+                 WHERE JP.IDJOGO = J.IDJOGO) AS PLATAFORMA_DESCRICAO,
+                (SELECT GROUP_CONCAT(H.descricaoHabilidade SEPARATOR ', ') 
+                 FROM JOGOS_HABILIDADES JH 
+                 JOIN HABILIDADES H ON JH.habilidadeID = H.habilidadeID 
+                 WHERE JH.IDJOGO = J.IDJOGO) AS HABILIDADES
+            FROM JOGOS J
+        `;
+        
         const params = [];
 
-        // Adicionando as junções (JOINs) dinamicamente conforme os filtros enviados
+        // JOINs de Filtro (Mantidos apenas para quando o usuário filtra algo específico)
         if (curso) query += " JOIN JOGOS_CURSO JC ON J.IDJOGO = JC.IDJOGO JOIN CURSO C ON JC.IDCURSO = C.IDCURSO";
         if (componente) query += " JOIN JOGOS_COMPONENTES JCOMP ON J.IDJOGO = JCOMP.IDJOGO JOIN COMPONENTES COMP ON JCOMP.IDCOMPONENTE = COMP.IDCOMPONENTE";
-        if (habilidade) query += " JOIN JOGOS_HABILIDADES JH ON J.IDJOGO = JH.IDJOGO JOIN HABILIDADES H ON JH.habilidadeID = H.habilidadeID";
-        if (plataforma) query += " JOIN JOGOS_PLATAFORMA JP ON J.IDJOGO = JP.IDJOGO JOIN PLATAFORMA P ON JP.IDPLATAFORMA = P.IDPLATAFORMA";
-        
+        if (habilidade) query += " JOIN JOGOS_HABILIDADES JH_F ON J.IDJOGO = JH_F.IDJOGO JOIN HABILIDADES H_F ON JH_F.habilidadeID = H_F.habilidadeID";
+        if (plataforma) query += " JOIN JOGOS_PLATAFORMA JP_F ON J.IDJOGO = JP_F.IDJOGO JOIN PLATAFORMA P_F ON JP_F.IDPLATAFORMA = P_F.IDPLATAFORMA";
+
         query += " WHERE 1=1";
 
-        if (curso) {
-            query += " AND C.DESCRICAO LIKE ?";
-            params.push(`%${curso}%`);
-        }
-        if (componente) {
-            // No banco da Carol, COMPONENTES tem a coluna 'DISCIPLINA'
-            query += " AND COMP.DISCIPLINA LIKE ?";
-            params.push(`%${componente}%`);
-        }
-        if (habilidade) {
-            query += " AND H.descricaoHabilidade LIKE ?";
-            params.push(`%${habilidade}%`);
-        }
-        if (plataforma) {
-            query += " AND P.DESCRICAO LIKE ?";
-            params.push(`%${plataforma}%`);
-        }
-        if (idioma) {
-            query += " AND J.IDIOMA LIKE ?";
-            params.push(`%${idioma}%`);
-        }
-
-        console.log("SQL FINAL:", query);
-        console.log("PARAMS:", params);
+        if (nome) { query += " AND J.NOME LIKE ?"; params.push(`${nome}%`); }
+        if (curso) { query += " AND C.DESCRICAO LIKE ?"; params.push(`%${curso}%`); }
+        if (componente) { query += " AND COMP.DISCIPLINA LIKE ?"; params.push(`%${componente}%`); }
+        if (habilidade) { query += " AND H_F.descricaoHabilidade LIKE ?"; params.push(`%${habilidade}%`); }
+        if (plataforma) { query += " AND P_F.DESCRICAO LIKE ?"; params.push(`%${plataforma}%`); }
+        if (idioma) { query += " AND J.IDIOMA LIKE ?"; params.push(`%${idioma}%`); }
 
         const [rows] = await db.promise().query(query, params);
         console.log("RESULTADOS:", rows.length);
         res.status(200).json(rows);
     } catch (error) {
-        console.error("Erro no SQL:", error);
+        console.error("Erro no SQL detalhado:", error);
         res.status(500).json({ mensagem: "Erro ao buscar jogos no banco" });
     }
 };

@@ -13,11 +13,10 @@
     <div id="navbar-placeholder"></div>
 
     <div style="max-width: 1200px; margin: 0 auto; padding: 20px;">
-        
         <div style="display: none;">
-    <span id="nomeDisplay"></span>
-    <span id="perfilDisplay"></span>
-</div>
+            <span id="nomeDisplay"></span>
+            <span id="perfilDisplay"></span>
+        </div>
     </div>
 
     <main style="max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; gap: 30px; padding: 20px;">
@@ -41,10 +40,18 @@
             </div>
         </section>
 
+        <section class="bloco-personalizado">
+            <h2 style="color: var(--iff-text-dark); margin-bottom: 20px;">Meus Resultados</h2>
+            <div id="listaFavoritos" class="lista-container">
+                <p>Carregando jogos...</p>
+            </div>
+        </section>
+
         <section id="secaoProfessor" class="bloco-personalizado" style="display: none;">
             <h2 style="color: var(--iff-text-dark); border-bottom: 2px solid var(--iff-green-dark); padding-bottom: 8px; margin-bottom: 20px;">
                 🛠️ Ferramentas de Gestão
             </h2>
+            <p id="contadorSelecao" style="font-weight: bold; color: var(--iff-green-dark); margin-bottom: 10px;">Nenhum jogo selecionado</p>
             <p style="margin-bottom: 15px; font-size: 0.9rem; color: #555;">Como professor, você pode exportar a lista atual para CSV:</p>
             <button class="btn-principal" 
                     style="background-color: var(--iff-green-dark); color: white; border: none; padding: 12px 25px; border-radius: 4px; font-weight: bold; cursor: pointer; transition: background 0.3s;" 

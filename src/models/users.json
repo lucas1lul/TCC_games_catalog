@@ -56,6 +56,11 @@
     "nome": "oie",
     "email": "oie@gmail.com",
     "senha": "$2b$10$NxOlIjNb2M6fIMRJ2RehYuYcy6bj3OMR5GlqDFLGxcj/3p5rrMbt2",
-    "perfil": "professor"
+    "perfil": "professor",
+    "favoritos": [
+      83,
+      84,
+      85
+    ]
   }
 ]
