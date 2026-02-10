@@ -1,9 +1,9 @@
 // catalogo.js
 document.addEventListener('DOMContentLoaded', () => {
-    carregarJogos();
-    const usuarioSessao = localStorage.getItem('usuarioLogado');
-    
-    const formFiltros = document.getElementById("filtros");
+  carregarJogos();
+  const usuarioSessao = localStorage.getItem('usuarioLogado');
+
+  const formFiltros = document.getElementById("filtros");
   if (formFiltros) {
     formFiltros.addEventListener("submit", (e) => {
       e.preventDefault(); // ⛔ evita recarregar a página
@@ -11,15 +11,15 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-    if (usuarioSessao) {
-        const usuario = JSON.parse(usuarioSessao);
-        const header = document.querySelector('h1'); 
-        const saudacao = document.createElement('p');
-        saudacao.style.fontSize = '1rem';
-        saudacao.style.color = '#555';
-        header.insertAdjacentElement('afterend', saudacao);
-    }
-    const lista = document.getElementById("lista");
+  if (usuarioSessao) {
+    const usuario = JSON.parse(usuarioSessao);
+    const header = document.querySelector('h1');
+    const saudacao = document.createElement('p');
+    saudacao.style.fontSize = '1rem';
+    saudacao.style.color = '#555';
+    header.insertAdjacentElement('afterend', saudacao);
+  }
+  const lista = document.getElementById("lista");
   if (!lista) return;
 
   lista.addEventListener("click", (e) => {
@@ -38,9 +38,9 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-let jogosCompletos = []; 
+let jogosCompletos = [];
 let paginaAtual = 1;
-const jogosPorPagina = 12; 
+const jogosPorPagina = 12;
 
 async function carregarJogos() {
   const curso = document.getElementById("filtroCurso").value.trim();
@@ -101,12 +101,11 @@ function renderizarJogosDaPagina() {
     const urlImg = jogo.LINKIMAGEM ? `/images/${jogo.LINKIMAGEM}` : "/images/placeholder.png";
 
     // Campos adicionais (com fallbacks para nomes diferentes no JSON)
-    const habilidadeTxt =
-      jogo.HABILIDADE || jogo.descricaoHabilidade || jogo.DESCRICAOHABILIDADE || "N/A";
-    const plataformaTxt =
-      jogo.PLATAFORMA || jogo.DESCRICAO_PLATAFORMA || jogo.DESCRICAOPLATAFORMA || "N/A";
-    const componenteTxt =
-      jogo.COMPONENTE || jogo.DISCIPLINA || jogo.COMPONENTES || "N/A";
+    const habilidadeTxt = jogo.HABILIDADES_CODIGOS || "N/A";
+    const plataformaTxt = jogo.PLATAFORMA_DESCRICAO || "N/A";
+    const componenteTxt = jogo.COMPONENTES || jogo.COMPONENTES_DESCRICAO || "N/A";
+
+
 
     // Para o botão de detalhes (evita quebrar HTML por aspas)
     const jogoJson = JSON.stringify(jogo)
@@ -130,9 +129,9 @@ function renderizarJogosDaPagina() {
             <p class="jogo-descricao">${jogo.DESCRICAOIMAGEM || "Sem descrição disponível."}</p>
 
             <div class="detalhes-grid">
-              <p class="detalhe-item"><strong>Habilidade:</strong> ${habilidadeTxt}</p>
-              <p class="detalhe-item"><strong>Plataforma:</strong> ${plataformaTxt}</p>
-              <p class="detalhe-item completo"><strong>Componente:</strong> ${componenteTxt}</p>
+              <p class="detalhe-item"><strong>Habilidades:</strong> ${habilidadeTxt}</p>
+              <p class="detalhe-item"><strong>Plataformas:</strong> ${plataformaTxt}</p>
+              <p class="detalhe-item completo"><strong>Componentes:</strong> ${componenteTxt}</p>
             </div>
           </div>
 
@@ -165,55 +164,55 @@ function renderizarJogosDaPagina() {
 // ... (Mantenha as funções mudarPagina e atualizarControlesPaginacao iguais) ...
 
 function mudarPagina(direcao) {
-    const totalPaginas = Math.ceil(jogosCompletos.length / jogosPorPagina);
-    const novaPagina = paginaAtual + direcao;
-    if (novaPagina >= 1 && novaPagina <= totalPaginas) {
-        paginaAtual = novaPagina;
-        renderizarJogosDaPagina();
-        document.getElementById("lista").scrollIntoView({ behavior: 'smooth' }); 
-    }
+  const totalPaginas = Math.ceil(jogosCompletos.length / jogosPorPagina);
+  const novaPagina = paginaAtual + direcao;
+  if (novaPagina >= 1 && novaPagina <= totalPaginas) {
+    paginaAtual = novaPagina;
+    renderizarJogosDaPagina();
+    document.getElementById("lista").scrollIntoView({ behavior: 'smooth' });
+  }
 }
 
 function atualizarControlesPaginacao() {
-    const totalPaginas = Math.ceil(jogosCompletos.length / jogosPorPagina);
-    const btnAnterior = document.getElementById('btnAnterior');
-    const btnProximo = document.getElementById('btnProximo');
-    const infoPagina = document.getElementById('infoPagina');
+  const totalPaginas = Math.ceil(jogosCompletos.length / jogosPorPagina);
+  const btnAnterior = document.getElementById('btnAnterior');
+  const btnProximo = document.getElementById('btnProximo');
+  const infoPagina = document.getElementById('infoPagina');
 
-    if (btnAnterior) btnAnterior.disabled = paginaAtual === 1;
-    if (btnProximo) btnProximo.disabled = paginaAtual === totalPaginas || jogosCompletos.length === 0;
-    if (infoPagina) infoPagina.textContent = `Página ${totalPaginas === 0 ? 0 : paginaAtual} de ${totalPaginas}`;
+  if (btnAnterior) btnAnterior.disabled = paginaAtual === 1;
+  if (btnProximo) btnProximo.disabled = paginaAtual === totalPaginas || jogosCompletos.length === 0;
+  if (infoPagina) infoPagina.textContent = `Página ${totalPaginas === 0 ? 0 : paginaAtual} de ${totalPaginas}`;
 }
 
 async function toggleFavorito(jogoId, elementoEstrela) {
-    const usuarioLogado = JSON.parse(localStorage.getItem('usuarioLogado'));
-    
-    if (!usuarioLogado) {
-        alert("Você precisa estar logado para favoritar!");
-        return;
+  const usuarioLogado = JSON.parse(localStorage.getItem('usuarioLogado'));
+
+  if (!usuarioLogado) {
+    alert("Você precisa estar logado para favoritar!");
+    return;
+  }
+
+  try {
+    const response = await fetch('/api/favoritos', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        usuarioId: usuarioLogado.id,
+        jogoId: jogoId
+      })
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      elementoEstrela.classList.toggle('ativa');
+      // Atualiza o localStorage com o novo IDJOGO vindo do SQL
+      usuarioLogado.favoritos = data.favoritos;
+      localStorage.setItem('usuarioLogado', JSON.stringify(usuarioLogado));
     }
-
-    try {
-        const response = await fetch('/api/favoritos', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 
-                usuarioId: usuarioLogado.id, 
-                jogoId: jogoId 
-            })
-        });
-
-        const data = await response.json();
-
-        if (response.ok) {
-            elementoEstrela.classList.toggle('ativa');
-            // Atualiza o localStorage com o novo IDJOGO vindo do SQL
-            usuarioLogado.favoritos = data.favoritos;
-            localStorage.setItem('usuarioLogado', JSON.stringify(usuarioLogado));
-        }
-    } catch (error) {
-        console.error("Erro ao favoritar no banco SQL:", error);
-    }
+  } catch (error) {
+    console.error("Erro ao favoritar no banco SQL:", error);
+  }
 }
 
 async function abrirDetalhes(idJogo) {
@@ -254,11 +253,10 @@ async function abrirDetalhes(idJogo) {
       </div>
 
       <div style="display:flex; gap:10px; justify-content:flex-end; margin-top: 14px;">
-        ${
-          link
-            ? `<a href="${link}" target="_blank" rel="noopener noreferrer" class="btn-acessar">Acessar jogo</a>`
-            : `<span style="font-weight:700; color:#990000;">Link indisponível</span>`
-        }
+        ${link
+        ? `<a href="${link}" target="_blank" rel="noopener noreferrer" class="btn-acessar">Acessar jogo</a>`
+        : `<span style="font-weight:700; color:#990000;">Link indisponível</span>`
+      }
       </div>
     `;
   } catch (err) {

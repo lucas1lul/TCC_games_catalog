@@ -28,20 +28,20 @@ exports.register = async (req, res) => {
         nome,
         email,
         senha: hash,
-        perfil: perfil 
+        perfil: perfil
     };
 
     usuarios.push(novoUsuario);
     saveUsers(usuarios); // Usa a função do Model para salvar
 
-    res.status(201).json({ 
-        mensagem: 'Usuário registrado!', 
-        usuario: { 
-            id: novoUsuario.id, 
-            nome: novoUsuario.nome, 
+    res.status(201).json({
+        mensagem: 'Usuário registrado!',
+        usuario: {
+            id: novoUsuario.id,
+            nome: novoUsuario.nome,
             email: novoUsuario.email,
             perfil: novoUsuario.perfil
-        } 
+        }
     });
 };
 
@@ -61,22 +61,22 @@ exports.login = async (req, res) => {
     }
 
     // Login bem-sucedido
-    res.status(200).json({ 
-        mensagem: 'Login bem-sucedido!', 
-        usuario: { 
-            id: usuario.id, 
-            nome: usuario.nome, 
+    res.status(200).json({
+        mensagem: 'Login bem-sucedido!',
+        usuario: {
+            id: usuario.id,
+            nome: usuario.nome,
             email: usuario.email,
             perfil: usuario.perfil,
             favoritos: usuario.favoritos || []
-        } 
+        }
     });
 };
 
 // --- FUNÇÃO: Listar todos os usuários (Endpoint de teste) ---
 exports.listUsers = (req, res) => {
     const usuarios = readUsers(); // Usa a função do Model
-    
+
     // Retorna os usuários sem o hash da senha por segurança!
     const usersWithoutPassword = usuarios.map(u => ({
         id: u.id,
@@ -106,7 +106,7 @@ exports.toggleFavorito = async (req, res) => {
 
         // 3. Lógica de Toggle (Adiciona se não tem, remove se tem)
         const favIndex = usuarios[index].favoritos.indexOf(jogoId);
-        
+
         if (favIndex === -1) {
             usuarios[index].favoritos.push(jogoId);
         } else {
@@ -116,9 +116,9 @@ exports.toggleFavorito = async (req, res) => {
         // 4. Salva as alterações usando seu model
         saveUsers(usuarios);
 
-        res.status(200).json({ 
-            mensagem: "Favoritos atualizados!", 
-            favoritos: usuarios[index].favoritos 
+        res.status(200).json({
+            mensagem: "Favoritos atualizados!",
+            favoritos: usuarios[index].favoritos
         });
     } catch (error) {
         console.error("Erro em toggleFavorito:", error);
@@ -131,10 +131,10 @@ exports.getUserFavorites = (req, res) => {
     try {
         const { id } = req.params;
         const usuarios = readUsers(); // Lê o seu arquivo JSON
-        
+
         // Encontra o usuário (usando == para evitar erro de string vs number)
         const usuario = usuarios.find(u => u.id == id);
-        
+
         if (!usuario) {
             return res.status(404).json({ mensagem: "Usuário não encontrado no JSON" });
         }
@@ -142,7 +142,7 @@ exports.getUserFavorites = (req, res) => {
         // Garante que retorne um array, mesmo que o campo favoritos não exista
         const favoritos = usuario.favoritos || [];
         console.log(`Favoritos do user ${id}:`, favoritos);
-        
+
         res.status(200).json(favoritos);
     } catch (error) {
         console.error("Erro ao ler favoritos do JSON:", error);
@@ -152,90 +152,150 @@ exports.getUserFavorites = (req, res) => {
 
 // --- CONTATAR DESENVOLVEDOR ---
 exports.contactDeveloper = (req, res) => {
-    console.log("Mensagem enviada ao dev:", req.body);
-    res.json({ mensagem: "Mensagem enviada ao desenvolvedor!" });
+    console.log("Mensagem enviada ao dev:", req.body);
+    res.json({ mensagem: "Mensagem enviada ao desenvolvedor!" });
 };
 
 // --- Função Auxiliar para Mapeamento e Validação de um ÚNICO JOGO (MANTIDO) ---
 const mapAndValidateGame = (gameData) => {
-    // 1. Validação mínima para garantir que campos essenciais existem
-    if (!gameData.titulo || !gameData.componente) {
-        // Lançamos um erro customizado para sabermos qual jogo falhou
-        throw new Error(`Validação falhou: Título ou Componente são obrigatórios para um dos jogos.`);
-    }
+    // 1. Validação mínima para garantir que campos essenciais existem
+    if (!gameData.titulo || !gameData.componente) {
+        // Lançamos um erro customizado para sabermos qual jogo falhou
+        throw new Error(`Validação falhou: Título ou Componente são obrigatórios para um dos jogos.`);
+    }
 
-    // 2. Mapeamento dos campos de entrada
-    return {
-        titulo: gameData.titulo,
-        buscador: gameData.buscador || "N/A",
-        autor: gameData.autor || "N/A",
-        generos: Array.isArray(gameData.generos) ? gameData.generos : [],
-        habilidades: Array.isArray(gameData.habilidades) ? gameData.habilidades : [],
-        modelo_custo: gameData.modelo_custo || "N/A",
-        ano_lancamento: gameData.ano_lancamento ? parseInt(gameData.ano_lancamento, 10) : null,
-        descricao: gameData.descricao || "Sem descrição.",
-        url: gameData.url || "N/A",
-        plataforma: Array.isArray(gameData.plataforma) ? gameData.plataforma : [],
-        idioma: gameData.idioma || "N/A",
-        pais_origem: gameData.pais_origem || "N/A",
-        componente: gameData.componente,
-    };
+    // 2. Mapeamento dos campos de entrada
+    return {
+        titulo: gameData.titulo,
+        buscador: gameData.buscador || "N/A",
+        autor: gameData.autor || "N/A",
+        generos: Array.isArray(gameData.generos) ? gameData.generos : [],
+        habilidades: Array.isArray(gameData.habilidades) ? gameData.habilidades : [],
+        modelo_custo: gameData.modelo_custo || "N/A",
+        ano_lancamento: gameData.ano_lancamento ? parseInt(gameData.ano_lancamento, 10) : null,
+        descricao: gameData.descricao || "Sem descrição.",
+        url: gameData.url || "N/A",
+        plataforma: Array.isArray(gameData.plataforma) ? gameData.plataforma : [],
+        idioma: gameData.idioma || "N/A",
+        pais_origem: gameData.pais_origem || "N/A",
+        componente: gameData.componente,
+    };
 };
 
 exports.getGames = async (req, res) => {
-    try {
-        const { nome, curso, componente, habilidade, plataforma, idioma } = req.query;
-        
-        let query = `
-            SELECT DISTINCT 
-                J.IDJOGO, J.NOME, J.LINKIMAGEM, J.IDIOMA, J.LICENSA, J.INTERACAO,
-                (SELECT GROUP_CONCAT(G.DESCRICAO SEPARATOR ', ') 
-                 FROM JOGOS_GENERO JG 
-                 JOIN GENERO G ON JG.IDGENERO = G.IDGENERO 
-                 WHERE JG.IDJOGO = J.IDJOGO) AS GENERO_DESCRICAO,
-                (SELECT GROUP_CONCAT(P.DESCRICAO SEPARATOR ', ') 
-                 FROM JOGOS_PLATAFORMA JP 
-                 JOIN PLATAFORMA P ON JP.IDPLATAFORMA = P.IDPLATAFORMA 
-                 WHERE JP.IDJOGO = J.IDJOGO) AS PLATAFORMA_DESCRICAO,
-                (SELECT GROUP_CONCAT(H.descricaoHabilidade SEPARATOR ', ') 
-                 FROM JOGOS_HABILIDADES JH 
-                 JOIN HABILIDADES H ON JH.habilidadeID = H.habilidadeID 
-                 WHERE JH.IDJOGO = J.IDJOGO) AS HABILIDADES
-            FROM JOGOS J
-        `;
-        
-        const params = [];
+  try {
+    const { nome, curso, componente, habilidade, plataforma, idioma } = req.query;
+    const params = [];
 
-        // JOINs de Filtro (Mantidos apenas para quando o usuário filtra algo específico)
-        if (curso) query += " JOIN JOGOS_CURSO JC ON J.IDJOGO = JC.IDJOGO JOIN CURSO C ON JC.IDCURSO = C.IDCURSO";
-        if (componente) query += " JOIN JOGOS_COMPONENTES JCOMP ON J.IDJOGO = JCOMP.IDJOGO JOIN COMPONENTES COMP ON JCOMP.IDCOMPONENTE = COMP.IDCOMPONENTE";
-        if (habilidade) query += " JOIN JOGOS_HABILIDADES JH_F ON J.IDJOGO = JH_F.IDJOGO JOIN HABILIDADES H_F ON JH_F.habilidadeID = H_F.habilidadeID";
-        if (plataforma) query += " JOIN JOGOS_PLATAFORMA JP_F ON J.IDJOGO = JP_F.IDJOGO JOIN PLATAFORMA P_F ON JP_F.IDPLATAFORMA = P_F.IDPLATAFORMA";
+    let query = `
+      SELECT
+        J.IDJOGO,
+        J.NOME,
+        J.LINKIMAGEM,
+        J.DESCRICAOIMAGEM,
+        J.LINK,
+        J.IDIOMA,
+        J.LICENSA,
+        J.INTERACAO,
 
-        query += " WHERE 1=1";
+        GROUP_CONCAT(DISTINCT COMP.DESCRICAO SEPARATOR ', ') AS COMPONENTES,
+        GROUP_CONCAT(DISTINCT P.DESCRICAO SEPARATOR ', ') AS PLATAFORMA_DESCRICAO,
+        GROUP_CONCAT(DISTINCT H.codigoHabilidade SEPARATOR ', ') AS HABILIDADES_CODIGOS
 
-        if (nome) { query += " AND J.NOME LIKE ?"; params.push(`${nome}%`); }
-        if (curso) { query += " AND C.DESCRICAO LIKE ?"; params.push(`%${curso}%`); }
-        if (componente) { query += " AND COMP.DISCIPLINA LIKE ?"; params.push(`%${componente}%`); }
-        if (habilidade) { query += " AND H_F.descricaoHabilidade LIKE ?"; params.push(`%${habilidade}%`); }
-        if (plataforma) { query += " AND P_F.DESCRICAO LIKE ?"; params.push(`%${plataforma}%`); }
-        if (idioma) { query += " AND J.IDIOMA LIKE ?"; params.push(`%${idioma}%`); }
+      FROM JOGOS J
+      LEFT JOIN jogos_componentes JC ON JC.IDJOGO = J.IDJOGO
+      LEFT JOIN componentes COMP ON COMP.IDCOMPONENTE = JC.IDCOMPONENTE
 
-        const [rows] = await db.promise().query(query, params);
-        console.log("RESULTADOS:", rows.length);
-        res.status(200).json(rows);
-    } catch (error) {
-        console.error("Erro no SQL detalhado:", error);
-        res.status(500).json({ mensagem: "Erro ao buscar jogos no banco" });
+      LEFT JOIN jogos_plataforma JP ON JP.IDJOGO = J.IDJOGO
+      LEFT JOIN plataforma P ON P.IDPLATAFORMA = JP.IDPLATAFORMA
+
+      LEFT JOIN jogos_habilidades JH ON JH.IDJOGO = J.IDJOGO
+      LEFT JOIN habilidades H ON H.habilidadeID = JH.habilidadeID
+    `;
+
+    // curso (só se filtrar)
+    if (curso) {
+      query += `
+        LEFT JOIN jogos_curso JCUR ON JCUR.IDJOGO = J.IDJOGO
+        LEFT JOIN curso CUR ON CUR.IDCURSO = JCUR.IDCURSO
+      `;
     }
+
+    query += ` WHERE 1=1 `;
+
+    if (nome) { query += ` AND J.NOME LIKE ?`; params.push(`${nome}%`); }
+    if (idioma) { query += ` AND J.IDIOMA LIKE ?`; params.push(`%${idioma}%`); }
+    if (curso) { query += ` AND CUR.DESCRICAO LIKE ?`; params.push(`%${curso}%`); }
+
+    // filtro por componente (usa DESCRICAO)
+    if (componente) {
+      query += ` AND COMP.DESCRICAO LIKE ? `;
+      params.push(`%${componente}%`);
+    }
+
+    // filtro por habilidade (código ou descrição)
+    if (habilidade) {
+      query += ` AND (H.codigoHabilidade LIKE ? OR H.descricaoHabilidade LIKE ?) `;
+      params.push(`%${habilidade}%`, `%${habilidade}%`);
+    }
+
+    if (plataforma) {
+      query += ` AND P.DESCRICAO LIKE ? `;
+      params.push(`%${plataforma}%`);
+    }
+
+    query += ` GROUP BY J.IDJOGO `;
+
+    const [rows] = await db.promise().query(query, params);
+    console.log("EXEMPLO ROW:", rows[0]); // <- temporário p/ validar
+    res.status(200).json(rows);
+  } catch (error) {
+    console.error("Erro no SQL detalhado:", error);
+    res.status(500).json({ mensagem: "Erro ao buscar jogos no banco" });
+  }
 };
 
 exports.getGameById = async (req, res) => {
     try {
-        const [rows] = await db.promise().query("SELECT * FROM JOGOS WHERE IDJOGO = ?", [req.params.id]);
+        const id = req.params.id;
+
+        const query = `
+      SELECT
+        J.IDJOGO,
+        J.NOME,
+        J.LINKIMAGEM,
+        J.DESCRICAOIMAGEM,
+        J.LINK,
+        J.IDIOMA,
+        J.LICENSA,
+        J.INTERACAO,
+
+        (SELECT GROUP_CONCAT(DISTINCT P.DESCRICAO SEPARATOR ', ')
+         FROM JOGOS_PLATAFORMA JP
+         JOIN PLATAFORMA P ON JP.IDPLATAFORMA = P.IDPLATAFORMA
+         WHERE JP.IDJOGO = J.IDJOGO) AS PLATAFORMA_DESCRICAO,
+
+        (SELECT GROUP_CONCAT(DISTINCT H.codigoHabilidade SEPARATOR ', ')
+         FROM JOGOS_HABILIDADES JH
+         JOIN HABILIDADES H ON JH.habilidadeID = H.habilidadeID
+         WHERE JH.IDJOGO = J.IDJOGO) AS HABILIDADES_CODIGOS,
+
+        (SELECT GROUP_CONCAT(DISTINCT COMP.DESCRICAO SEPARATOR ', ')
+        FROM jogos_componentes JC
+        JOIN componentes COMP ON JC.IDCOMPONENTE = COMP.IDCOMPONENTE
+        WHERE JC.IDJOGO = J.IDJOGO) AS COMPONENTES
+
+
+      FROM JOGOS J
+      WHERE J.IDJOGO = ?
+      LIMIT 1;
+    `;
+
+        const [rows] = await db.promise().query(query, [id]);
         if (rows.length === 0) return res.status(404).json({ mensagem: "Jogo não encontrado" });
         res.json(rows[0]);
     } catch (error) {
+        console.error(error);
         res.status(500).json({ mensagem: "Erro ao obter jogo" });
     }
 };
@@ -243,7 +303,7 @@ exports.getGameById = async (req, res) => {
 exports.addGame = async (req, res) => {
     try {
         const { NOME, LINKIMAGEM, LINK, IDIOMA, INTERACAO, LICENSA } = req.body;
-        
+
         const sql = `INSERT INTO JOGOS (NOME, LINKIMAGEM, LINK, IDIOMA, INTERACAO, LICENSA) VALUES (?, ?, ?, ?, ?, ?)`;
         const [result] = await db.promise().query(sql, [NOME, LINKIMAGEM, LINK, IDIOMA, INTERACAO, LICENSA]);
 
