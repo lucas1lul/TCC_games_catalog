@@ -19,23 +19,6 @@ document.addEventListener('DOMContentLoaded', () => {
     saudacao.style.color = '#555';
     header.insertAdjacentElement('afterend', saudacao);
   }
-  const lista = document.getElementById("lista");
-  if (!lista) return;
-
-  lista.addEventListener("click", (e) => {
-    const btn = e.target.closest(".btn-ver-mais");
-    if (!btn) return;
-
-    const id = Number(btn.dataset.jogoId);
-    const jogo = jogosCompletos.find(j => Number(j.IDJOGO) === id);
-
-    if (!jogo) {
-      console.warn("Jogo não encontrado para detalhes. ID:", id);
-      return;
-    }
-
-    abrirDetalhes(jogo); // ✅ agora passa o OBJETO real
-  });
 });
 
 let jogosCompletos = [];
@@ -141,9 +124,7 @@ function renderizarJogosDaPagina() {
                   aria-label="Favoritar jogo"
                   title="Favoritar">★</span>
 
-            <button class="btn-ver-mais" onclick="abrirDetalhes(${jogo.IDJOGO})">
-                🔍 Detalhes
-            </button>
+            <button class="btn-ver-mais" onclick="abrirDetalhes(${jogo.IDJOGO})">🔍 Detalhes</button>
 
             <a href="${jogo.LINK || "#"}"
                target="_blank"
@@ -215,55 +196,74 @@ async function toggleFavorito(jogoId, elementoEstrela) {
   }
 }
 
-async function abrirDetalhes(idJogo) {
+window.abrirDetalhes = async function abrirDetalhes(idJogo) {
   const modal = document.getElementById("modalDetalhes");
-  const body = document.getElementById("detalhesModalBody");
-  if (!modal || !body) {
-    console.error("Modal não encontrado no HTML (modalDetalhes/detalhesModalBody).");
+  if (!modal) {
+    console.error("Não achei o modalDetalhes no HTML.");
     return;
   }
 
+  // abre modal
   modal.style.display = "block";
-  body.innerHTML = "Carregando...";
+
+  // helper para setar texto com fallback
+  const set = (id, v) => {
+    const el = document.getElementById(id);
+    if (!el) {
+      console.warn("Elemento não encontrado:", id);
+      return;
+    }
+    el.textContent = (v == null || v === "") ? "N/A" : String(v);
+  };
+
+  // placeholders
+  set("modalTitulo", "Carregando...");
+  set("modalHabilidades", "Carregando...");
+  set("modalGenero", "Carregando...");
+  set("modalIdioma", "Carregando...");
+  set("modalPlataforma", "Carregando...");
+  set("modalLicenca", "Carregando...");
+  set("modalInteracao", "Carregando...");
+
+  // imagem placeholder
+  const imgEl = document.getElementById("modalImg");
+  if (imgEl) imgEl.src = "/images/placeholder.png";
 
   try {
     const res = await fetch(`/api/games/${idJogo}`);
     if (!res.ok) throw new Error(`Erro HTTP: ${res.status}`);
-
     const jogo = await res.json();
 
-    // Ajuste de nomes: alguns dados podem vir em MAIÚSCULO no seu SQL
-    const nome = jogo.NOME || jogo.nome || "Sem título";
-    const descricao = jogo.DESCRICAO || jogo.descricao || jogo.DESCRICAOIMAGEM || "Sem descrição.";
-    const curso = jogo.CURSO || jogo.curso || "N/A";
-    const componente = jogo.COMPONENTE || jogo.componente || jogo.DISCIPLINA || "N/A";
-    const habilidade = jogo.HABILIDADE || jogo.habilidade || jogo.descricaoHabilidade || "N/A";
-    const plataforma = jogo.PLATAFORMA || jogo.plataforma || "N/A";
-    const link = jogo.LINK || jogo.link || "";
+    // título
+    set("modalTitulo", jogo.NOME);
 
-    body.innerHTML = `
-      <h2 style="margin-top:0;">${nome}</h2>
-      <p>${descricao}</p>
+    // campos do seu JSON
+    set("modalHabilidades", jogo.HABILIDADES_CODIGOS);
+    set("modalPlataforma", jogo.PLATAFORMA_DESCRICAO);
+    set("modalIdioma", jogo.IDIOMA);
+    set("modalLicenca", jogo.LICENSA);
+    set("modalInteracao", jogo.INTERACAO);
 
-      <div class="detalhes-grid" style="margin-top: 12px;">
-        <p class="detalhe-item"><strong>Curso:</strong> ${curso}</p>
-        <p class="detalhe-item"><strong>Plataforma:</strong> ${plataforma}</p>
-        <p class="detalhe-item completo"><strong>Componente:</strong> ${componente}</p>
-        <p class="detalhe-item completo"><strong>Habilidade:</strong> ${habilidade}</p>
-      </div>
+    // gênero não vem no seu endpoint agora
+    set("modalGenero", jogo.GENERO_DESCRICAO || "N/A");
 
-      <div style="display:flex; gap:10px; justify-content:flex-end; margin-top: 14px;">
-        ${link
-        ? `<a href="${link}" target="_blank" rel="noopener noreferrer" class="btn-acessar">Acessar jogo</a>`
-        : `<span style="font-weight:700; color:#990000;">Link indisponível</span>`
-      }
-      </div>
-    `;
+    // imagem do jogo
+    if (imgEl) {
+      imgEl.src = jogo.LINKIMAGEM ? `/images/${jogo.LINKIMAGEM}` : "/images/placeholder.png";
+      imgEl.alt = jogo.NOME || "Capa do Jogo";
+    }
+
   } catch (err) {
     console.error(err);
-    body.innerHTML = "❌ Não foi possível carregar os detalhes do jogo.";
+    set("modalTitulo", "Erro ao carregar");
+    set("modalHabilidades", "Erro ao carregar");
+    set("modalGenero", "Erro ao carregar");
+    set("modalIdioma", "Erro ao carregar");
+    set("modalPlataforma", "Erro ao carregar");
+    set("modalLicenca", "Erro ao carregar");
+    set("modalInteracao", "Erro ao carregar");
   }
-}
+};
 
 function fecharModal() {
   const modal = document.getElementById("modalDetalhes");
