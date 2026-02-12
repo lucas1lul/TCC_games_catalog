@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Minha Área | Serious Games IFF</title>
-    <link rel="stylesheet" href="/css/styles.css"> 
+    <link rel="stylesheet" href="/css/styles.css">
     <link rel="stylesheet" href="/css/catalogo.css">
     <link rel="stylesheet" href="/css/navbar.css">
     <link rel="stylesheet" href="/css/my_games.css">
 </head>
+
 <body>
     <div id="navbar-placeholder"></div>
 
@@ -20,12 +22,14 @@
     </div>
 
     <main style="max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; gap: 30px; padding: 20px;">
-        
+
         <section class="bloco-personalizado">
             <div id="filtros">
                 <div style="width: 100%; margin-bottom: 15px;">
-                    <label for="filtroStatus" style="display: block; font-size: 0.75rem; color: var(--iff-red-dark); margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px; font-weight: bold;">Exibir:</label>
-                    <select id="filtroStatus" onchange="filtrarMeusJogos()" style="max-width: 250px; padding: 10px; border: 1px solid var(--iff-border); border-radius: 4px; background-color: #fff; cursor: pointer;">
+                    <label for="filtroStatus"
+                        style="display: block; font-size: 0.75rem; color: var(--iff-red-dark); margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px; font-weight: bold;">Exibir:</label>
+                    <select id="filtroStatus" onchange="filtrarMeusJogos()"
+                        style="max-width: 250px; padding: 10px; border: 1px solid var(--iff-border); border-radius: 4px; background-color: #fff; cursor: pointer;">
                         <option value="tudo">Tudo</option>
                         <option value="favoritados">❤️ Meus Favoritos</option>
                         <option value="avaliados">⭐ Meus Avaliados</option>
@@ -48,21 +52,51 @@
         </section>
 
         <section id="secaoProfessor" class="bloco-personalizado" style="display: none;">
-            <h2 style="color: var(--iff-text-dark); border-bottom: 2px solid var(--iff-green-dark); padding-bottom: 8px; margin-bottom: 20px;">
+            <h2
+                style="color: var(--iff-text-dark); border-bottom: 2px solid var(--iff-green-dark); padding-bottom: 8px; margin-bottom: 20px;">
                 🛠️ Ferramentas de Gestão
             </h2>
-            <p id="contadorSelecao" style="font-weight: bold; color: var(--iff-green-dark); margin-bottom: 10px;">Nenhum jogo selecionado</p>
-            <p style="margin-bottom: 15px; font-size: 0.9rem; color: #555;">Como professor, você pode exportar a lista atual para CSV:</p>
-            <button class="btn-principal" 
-                    style="background-color: var(--iff-green-dark); color: white; border: none; padding: 12px 25px; border-radius: 4px; font-weight: bold; cursor: pointer; transition: background 0.3s;" 
-                    onclick="exportarLista()">
+            <p id="contadorSelecao" style="font-weight: bold; color: var(--iff-green-dark); margin-bottom: 10px;">Nenhum
+                jogo selecionado</p>
+            <p style="margin-bottom: 15px; font-size: 0.9rem; color: #555;">Como professor, você pode exportar a lista
+                atual para CSV:</p>
+            <button class="btn-principal"
+                style="background-color: var(--iff-green-dark); color: white; border: none; padding: 12px 25px; border-radius: 4px; font-weight: bold; cursor: pointer; transition: background 0.3s;"
+                onclick="exportarLista()">
                 📥 Exportar Selecionados (CSV)
             </button>
         </section>
 
     </main>
 
+    <!-- MODAL DE DETALHES -->
+    <div id="modalDetalhes" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="fecharModal()">&times;</span>
+            <div class="modal-grid">
+                <div class="modal-img-container">
+                    <img id="modalImg" src="" alt="Capa do Jogo">
+                </div>
+                <div class="modal-info">
+                    <h2 id="modalTitulo"></h2>
+                    <hr>
+                    <div class="info-item"><strong>🎯 Habilidades:</strong> <span id="modalHabilidades"></span></div>
+                    <div class="info-item"><strong>🎭 Gênero:</strong> <span id="modalGenero"></span></div>
+                    <div class="info-item"><strong>🌐 Idioma:</strong> <span id="modalIdioma"></span></div>
+                    <div class="info-item"><strong>🎮 Plataforma:</strong> <span id="modalPlataforma"></span></div>
+                    <div class="info-item"><strong>📜 Licença:</strong> <span id="modalLicenca"></span></div>
+                    <div class="info-item"><strong>🤝 Interação:</strong> <span id="modalInteracao"></span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="/js/navbar.js"></script>
+    <script src="/js/jogoCard.js"></script>
+    <script src="\js\modalDetalhes.js"></script>
     <script src="/js/my_games.js"></script>
+
+
 </body>
+
 </html>
