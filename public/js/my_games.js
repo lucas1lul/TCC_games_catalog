@@ -1,5 +1,3 @@
-// my_games.js
-
 // Variáveis globais
 let meusJogosOriginais = [];
 let jogosFiltrados = [];
@@ -16,7 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   usuarioLogado = JSON.parse(usuarioSessao);
 
-  // displays (se existirem)
+  // displays
   const nomeEl = document.getElementById("nomeDisplay");
   const perfilEl = document.getElementById("perfilDisplay");
   if (nomeEl) nomeEl.textContent = usuarioLogado.nome || "";
@@ -24,7 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   configurarInterfacePorPerfil((usuarioLogado.perfil || "").toLowerCase());
 
-  // listeners de filtro (se existirem)
+  // listeners de filtro
   const filtroStatus = document.getElementById("filtroStatus");
   const filtroCurso = document.getElementById("filtroCurso");
 
@@ -50,10 +48,14 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         return;
       }
-
       // Favoritar
       if (e.target.closest('[data-action="favoritar"]')) {
         toggleFavorito(idJogo, e.target.closest('[data-action="favoritar"]'));
+        return;
+      }
+      if (e.target.closest('[data-action="avaliar"]')) {
+        const jogo = jogosCompletos.find(j => Number(j.IDJOGO) === idJogo) || meusJogosOriginais?.find?.(j => Number(j.IDJOGO) === idJogo);
+        abrirModalAvaliar(idJogo, jogo?.NOME);
         return;
       }
     });
@@ -149,6 +151,7 @@ async function carregarMeusDados() {
     }
 
     renderizarJogos(jogosFiltrados);
+    lista.forEach(j => atualizarMediaNoCard(j.IDJOGO));
   } catch (error) {
     console.error("Erro ao carregar meus jogos:", error);
     if (container) {

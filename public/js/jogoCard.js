@@ -80,33 +80,54 @@ window.renderJogoCard = function renderJogoCard(jogo, options = {}) {
         </div>
 
         <div class="card-footer" style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
-          ${
-            mostrarEstrela
-              ? `<span class="estrela-favorito ${classeAtiva}"
-                      data-action="favoritar"
-                      aria-label="Favoritar jogo"
-                      title="Favoritar">★</span>`
-              : `<span></span>`
-          }
 
-          ${
-            mostrarBotaoDetalhes
-              ? `<button class="btn-ver-mais" data-action="detalhes">🔍 Detalhes</button>`
-              : ``
-          }
+  ${mostrarEstrela
+      ? `<span class="estrela-favorito ${classeAtiva}"
+              data-action="favoritar"
+              aria-label="Favoritar jogo"
+              title="Favoritar"
+              style="font-size:18px; cursor:pointer;">
+              ❤
+         </span>`
+      : `<span></span>`
+    }
 
-          ${
-            mostrarLink
-              ? `<a href="${link || "#"}"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="btn-acessar"
-                    style="flex:1; text-align:right;">
-                   ${link ? "Acessar jogo" : "Link indisponível"}
-                 </a>`
-              : ``
-          }
-        </div>
+  ${mostrarBotaoDetalhes
+      ? `<button class="btn-ver-mais" data-action="detalhes">
+            🔍 Detalhes
+         </button>`
+      : ``
+    }
+
+  <!-- MÉDIA DAS AVALIAÇÕES -->
+  <span class="media-avaliacao"
+        data-media="true"
+        style="white-space:nowrap; font-weight:bold;">
+        <span data-media-valor>☆☆☆☆☆</span>
+        <span data-media-total style="font-weight:normal; opacity:.75;"></span>
+  </span>
+
+  <!-- BOTÃO AVALIAR (APENAS SE LOGADO) -->
+  ${localStorage.getItem("usuarioLogado")
+      ? `<button class="btn-avaliar" data-action="avaliar">
+            ⭐ Avaliar
+         </button>`
+      : ``
+    }
+
+  ${mostrarLink
+      ? `<a href="${link || "#"}"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn-acessar"
+            style="flex:1; text-align:right;">
+            ${link ? "Acessar jogo" : "Link indisponível"}
+         </a>`
+      : ``
+    }
+
+</div>
+
       </div>
     </div>
   `;

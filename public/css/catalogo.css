@@ -316,8 +316,8 @@ select {
     line-height: 1;
 }
 
-.estrela-favorito:hover { transform: scale(1.15); }
-.estrela-favorito.ativa { color: gold; }
+.estrela-favorito:hover { transform: scale(1.1); }
+.estrela-favorito.ativa { color: #e63946; }
 
 /* Estilos do Modal */
 .modal {

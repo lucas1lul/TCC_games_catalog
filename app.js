@@ -5,6 +5,7 @@ const path = require('path');
 
 const authRoutes = require('./src/controllers/routes/jogoRoutes');
 const userRoutes = require('./src/controllers/routes/userRoutes');
+const avaliacaoRoutes = require("./src/controllers/routes/avaliacaoRoutes");
 
 const app = express();
 
@@ -16,9 +17,17 @@ app.use(express.json());
 // Static (CSS/JS/IMAGES)
 app.use(express.static(path.join(__dirname, 'public')));
 
+// desabilita cache/etag na API
+app.use("/api", (req, res, next) => {
+  res.setHeader("Cache-Control", "no-store");
+  next();
+});
+app.disable("etag");
+
 // API
 app.use('/api', authRoutes);
 app.use('/api', userRoutes);
+app.use("/api", avaliacaoRoutes);
 
 // Páginas (clean URLs)
 app.get('/', (req, res) => res.sendFile(path.join(PAGES_DIR, 'index.html')));

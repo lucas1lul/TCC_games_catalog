@@ -89,11 +89,45 @@
                 </div>
             </div>
         </div>
+        <hr style="margin:15px 0;">
+        <div class="info-item">
+            <strong>⭐ Média:</strong> <span id="detalheMedia">Carregando...</span>
+        </div>
+
+        <h3 style="margin:15px 0 8px;">💬 Comentários</h3>
+        <div id="listaComentarios"></div>
+
+    </div>
+
+    <!-- MODAL AVALIAR -->
+    <div id="modalAvaliar" class="modal">
+        <div class="modal-content" style="max-width:650px;">
+            <span class="close-modal" onclick="fecharModalAvaliar()">&times;</span>
+
+            <h2 style="margin-top:0;" id="avaliarTitulo">Avaliar jogo</h2>
+
+            <div style="display:flex; gap:10px; align-items:center; margin:10px 0 15px;">
+                <strong>Sua nota:</strong>
+                <div id="estrelasAvaliacao" aria-label="Selecione de 1 a 5 estrelas"></div>
+                <span id="notaSelecionada" style="font-weight:bold;">—</span>
+            </div>
+
+            <label for="comentarioAvaliacao"><strong>Comentário (opcional):</strong></label>
+            <textarea id="comentarioAvaliacao" rows="4"
+                style="width:100%; padding:10px; border:1px solid #ddd; border-radius:8px; margin-top:6px;"
+                placeholder="Escreva um comentário..."></textarea>
+
+            <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:15px;">
+                <button class="btn-ver-mais" onclick="fecharModalAvaliar()">Cancelar</button>
+                <button class="btn-acessar" onclick="enviarAvaliacao()">Enviar avaliação</button>
+            </div>
+        </div>
     </div>
 
     <script src="/js/navbar.js"></script>
     <script src="/js/jogoCard.js"></script>
     <script src="\js\modalDetalhes.js"></script>
+    <script src="/js/avaliacoes.js"></script>
     <script src="/js/my_games.js"></script>
 
 

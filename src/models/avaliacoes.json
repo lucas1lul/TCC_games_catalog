@@ -1,0 +1,20 @@
+[
+  {
+    "id": "275704c7-194b-4702-9db7-75718c56c89d",
+    "jogoId": 2,
+    "usuarioId": 1,
+    "usuarioNome": "lucas",
+    "nota": 5,
+    "comentario": "Bom jogo",
+    "createdAt": "2026-02-13T02:33:02.300Z"
+  },
+  {
+    "id": "57c9c109-0fce-4682-8f8c-ed776f00d407",
+    "jogoId": 2,
+    "usuarioId": 1,
+    "usuarioNome": "lucas",
+    "nota": 1,
+    "comentario": "",
+    "createdAt": "2026-02-13T02:33:26.960Z"
+  }
+]

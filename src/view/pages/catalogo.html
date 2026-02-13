@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Catálogo de Serious Games | IFF</title>
-    <link rel="stylesheet" href="/css/styles.css"> 
+    <link rel="stylesheet" href="/css/styles.css">
     <link rel="stylesheet" href="/css/catalogo.css">
     <link rel="stylesheet" href="/css/navbar.css">
 </head>
@@ -16,12 +17,12 @@
         <h1 class="page-title">Explorar Jogos Educativos</h1>
 
         <form id="filtros">
-  <input id="filtroCurso" placeholder="Curso">
-  <input id="filtroComponente" placeholder="Componente">
-  <input id="filtroHabilidade" placeholder="Habilidade">
-  <input id="filtroPlataforma" placeholder="Plataforma">
-  <button type="submit">Filtrar</button>
-</form>
+            <input id="filtroCurso" placeholder="Curso">
+            <input id="filtroComponente" placeholder="Componente">
+            <input id="filtroHabilidade" placeholder="Habilidade">
+            <input id="filtroPlataforma" placeholder="Plataforma">
+            <button type="submit">Filtrar</button>
+        </form>
 
 
         <div id="lista">Aguardando clique em 'Filtrar'...</div>
@@ -33,35 +34,69 @@
         </div>
     </main>
 
-    <script src="/js/navbar.js"></script>
-    <script src="/js/jogoCard.js"></script>
-    <script src="/js/catalogo.js"></script>
-
     <div id="modalDetalhes" class="modal">
-    <div class="modal-content">
-        <span class="close-modal" onclick="fecharModal()">&times;</span>
-        <div class="modal-grid">
-            <div class="modal-img-container">
-                <img id="modalImg" src="" alt="Capa do Jogo">
-            </div>
-            <div class="modal-info">
-                <h2 id="modalTitulo"></h2>
-                <hr>
-                <div class="info-item"><strong>🎯 Habilidades:</strong> <span id="modalHabilidades"></span></div>
-                <div class="info-item"><strong>🎭 Gênero:</strong> <span id="modalGenero"></span></div>
-                <div class="info-item"><strong>🌐 Idioma:</strong> <span id="modalIdioma"></span></div>
-                <div class="info-item"><strong>🎮 Plataforma:</strong> <span id="modalPlataforma"></span></div>
-                <div class="info-item"><strong>📜 Licença:</strong> <span id="modalLicenca"></span></div>
-                <div class="info-item"><strong>🤝 Interação:</strong> <span id="modalInteracao"></span></div>
+        <div class="modal-content">
+            <span class="close-modal" onclick="fecharModal()">&times;</span>
+            <div class="modal-grid">
+                <div class="modal-img-container">
+                    <img id="modalImg" src="" alt="Capa do Jogo">
+                </div>
+                <div class="modal-info">
+                    <h2 id="modalTitulo"></h2>
+                    <hr>
+                    <div class="info-item"><strong>🎯 Habilidades:</strong> <span id="modalHabilidades"></span></div>
+                    <div class="info-item"><strong>🎭 Gênero:</strong> <span id="modalGenero"></span></div>
+                    <div class="info-item"><strong>🌐 Idioma:</strong> <span id="modalIdioma"></span></div>
+                    <div class="info-item"><strong>🎮 Plataforma:</strong> <span id="modalPlataforma"></span></div>
+                    <div class="info-item"><strong>📜 Licença:</strong> <span id="modalLicenca"></span></div>
+                    <div class="info-item"><strong>🤝 Interação:</strong> <span id="modalInteracao"></span></div>
+                </div>
             </div>
         </div>
     </div>
-</div>
-<div id="modalDetalhes" class="modal">
-  <div class="modal-content">
-    <span class="close-modal" onclick="fecharModal()">&times;</span>
-    <div id="detalhesModalBody">Carregando...</div>
-  </div>
-</div>
+    <div id="modalDetalhes" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="fecharModal()">&times;</span>
+            <div id="detalhesModalBody">Carregando...</div>
+        </div>
+        <hr style="margin:15px 0;">
+        <div class="info-item">
+            <strong>⭐ Média:</strong> <span id="detalheMedia">Carregando...</span>
+        </div>
+        <h3 style="margin:15px 0 8px;">💬 Comentários</h3>
+        <div id="listaComentarios"></div>
+    </div>
+
+    <!-- MODAL AVALIAR -->
+    <div id="modalAvaliar" class="modal">
+        <div class="modal-content" style="max-width:650px;">
+            <span class="close-modal" onclick="fecharModalAvaliar()">&times;</span>
+
+            <h2 style="margin-top:0;" id="avaliarTitulo">Avaliar jogo</h2>
+
+            <div style="display:flex; gap:10px; align-items:center; margin:10px 0 15px;">
+                <strong>Sua nota:</strong>
+                <div id="estrelasAvaliacao" aria-label="Selecione de 1 a 5 estrelas"></div>
+                <span id="notaSelecionada" style="font-weight:bold;">—</span>
+            </div>
+
+            <label for="comentarioAvaliacao"><strong>Comentário (opcional):</strong></label>
+            <textarea id="comentarioAvaliacao" rows="4"
+                style="width:100%; padding:10px; border:1px solid #ddd; border-radius:8px; margin-top:6px;"
+                placeholder="Escreva um comentário..."></textarea>
+
+            <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:15px;">
+                <button class="btn-ver-mais" onclick="fecharModalAvaliar()">Cancelar</button>
+                <button class="btn-acessar" onclick="enviarAvaliacao()">Enviar avaliação</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/navbar.js"></script>
+    <script src="/js/jogoCard.js"></script>
+    <script src="/js/avaliacoes.js"></script>
+    <script src="/js/catalogo.js"></script>
+
 </body>
+
 </html>

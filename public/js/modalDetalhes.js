@@ -52,6 +52,7 @@ window.abrirDetalhes = async function abrirDetalhes(idJogo) {
     set("modalLicenca", "Erro ao carregar");
     set("modalInteracao", "Erro ao carregar");
   }
+  await carregarAvaliacoesNoDetalhe(idJogo);
 };
 
 window.fecharModal = function fecharModal() {

@@ -32,6 +32,11 @@ document.addEventListener("DOMContentLoaded", () => {
         toggleFavorito(idJogo, e.target.closest('[data-action="favoritar"]'));
         return;
       }
+      if (e.target.closest('[data-action="avaliar"]')) {
+        const jogo = jogosCompletos.find(j => Number(j.IDJOGO) === idJogo) || meusJogosOriginais?.find?.(j => Number(j.IDJOGO) === idJogo);
+        abrirModalAvaliar(idJogo, jogo?.NOME);
+        return;
+      }
     });
   }
 
@@ -74,8 +79,11 @@ async function carregarJogos() {
   const url = params.toString() ? `/api/games?${params.toString()}` : "/api/games";
 
   try {
-    const res = await fetch(url);
-    if (!res.ok) throw new Error(`Erro HTTP! Status: ${res.status}`);
+    const res = await fetch(url, { cache: "no-store" });
+    if (!res.ok) {
+      const txt = await res.text().catch(() => "");
+      throw new Error(`Erro HTTP ${res.status} - ${txt}`);
+    }
 
     jogosCompletos = await res.json();
 
@@ -85,7 +93,7 @@ async function carregarJogos() {
       return;
     }
 
-    renderizarJogosDaPagina();
+    renderizarJogosDaPagina(); // ✅ aqui já vai renderizar a página 1
   } catch (error) {
     console.error("Erro ao buscar jogos:", error);
     lista.innerHTML = "❌ Erro ao carregar dados.";
@@ -109,6 +117,8 @@ function renderizarJogosDaPagina() {
     // ✅ Usa o componente reaproveitável
     lista.innerHTML += renderJogoCard(jogo, { favoritos });
   });
+  // após renderizar os cards da página atual, buscar média de cada card
+  jogosDaPagina.forEach(j => atualizarMediaNoCard(j.IDJOGO));
 
   atualizarControlesPaginacao();
 }
