@@ -30,7 +30,9 @@ app.use('/api', userRoutes);
 app.use("/api", avaliacaoRoutes);
 
 // Páginas (clean URLs)
-app.get('/', (req, res) => res.sendFile(path.join(PAGES_DIR, 'index.html')));
+app.get(['/', '/index'], (req, res) => {
+  res.sendFile(path.join(PAGES_DIR, 'index.html'));
+});
 app.get('/catalogo', (req, res) => res.sendFile(path.join(PAGES_DIR, 'catalogo.html')));
 app.get('/user', (req, res) => res.sendFile(path.join(PAGES_DIR, 'user.html')));
 app.get('/login', (req, res) => res.sendFile(path.join(PAGES_DIR, 'login.html')));

@@ -64,5 +64,24 @@
       84,
       85
     ]
+  },
+  {
+    "id": 8,
+    "nome": "euprof",
+    "email": "euprof@gmail.com",
+    "senha": "$2b$10$09x9FY9f3WXLPfmZm5ER8uvYq0oHIHvKAL3cBEzjcHtn4NG5Zq9dK",
+    "perfil": "professor",
+    "favoritos": [
+      1,
+      3,
+      8
+    ]
+  },
+  {
+    "id": 9,
+    "nome": "euprof2",
+    "email": "euprof2@gmail.com",
+    "senha": "$2b$10$O5ueHSe5XvDI/Vnob7SiJ.sfNqa9S4UG5RaVRk4LtvR82Bk7QnA9q",
+    "perfil": "professor"
   }
 ]

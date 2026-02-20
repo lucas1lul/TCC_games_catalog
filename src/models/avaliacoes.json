@@ -16,5 +16,14 @@
     "nota": 1,
     "comentario": "",
     "createdAt": "2026-02-13T02:33:26.960Z"
+  },
+  {
+    "id": "1fb0bfbb-f799-4ac5-bc87-507981113eb9",
+    "jogoId": 94,
+    "usuarioId": 1,
+    "usuarioNome": "lucas",
+    "nota": 5,
+    "comentario": "usadhausdhau",
+    "createdAt": "2026-02-20T00:04:07.106Z"
   }
 ]
