@@ -11,9 +11,12 @@
 </head>
 
 <body>
+    <a href="#conteudo-principal" class="skip-link">
+        Ir para o conteúdo principal
+    </a>
     <div id="navbar-placeholder"></div>
 
-    <main style="padding: 20px;">
+    <main id="conteudo-principal" style="padding: 20px;">
         <h1 class="page-title">Explorar Jogos Educativos</h1>
 
         <form id="filtros">
@@ -36,13 +39,15 @@
 
     <div id="modalDetalhes" class="modal">
         <div class="modal-content">
-            <span class="close-modal" onclick="fecharModal()">&times;</span>
+            <button class="close-modal" onclick="fecharModal()" aria-label="Fechar modal">
+                &times;
+            </button>
             <div class="modal-grid">
                 <div class="modal-img-container">
                     <img id="modalImg" src="" alt="Capa do Jogo">
                 </div>
                 <div class="modal-info">
-                    <h2 id="modalTitulo"></h2>
+                    <h2 id="modalTitulo">Detalhes do jogo</h2>
                     <hr>
                     <div class="info-item"><strong>🎯 Habilidades:</strong> <span id="modalHabilidades"></span></div>
                     <div class="info-item"><strong>🎭 Gênero:</strong> <span id="modalGenero"></span></div>
@@ -54,9 +59,11 @@
             </div>
         </div>
     </div>
-    <div id="modalDetalhes" class="modal">
+    <div class="modal">
         <div class="modal-content">
-            <span class="close-modal" onclick="fecharModal()">&times;</span>
+            <button class="close-modal" onclick="fecharModal()" aria-label="Fechar modal">
+                &times;
+            </button>
             <div id="detalhesModalBody">Carregando...</div>
         </div>
         <hr style="margin:15px 0;">
@@ -70,14 +77,15 @@
     <!-- MODAL AVALIAR -->
     <div id="modalAvaliar" class="modal">
         <div class="modal-content" style="max-width:650px;">
-            <span class="close-modal" onclick="fecharModalAvaliar()">&times;</span>
-
+            <button class="close-modal" onclick="fecharModalAvaliar()" aria-label="Fechar modal">
+                &times;
+            </button>
             <h2 style="margin-top:0;" id="avaliarTitulo">Avaliar jogo</h2>
 
             <div style="display:flex; gap:10px; align-items:center; margin:10px 0 15px;">
                 <strong>Sua nota:</strong>
-                <div id="estrelasAvaliacao" aria-label="Selecione de 1 a 5 estrelas"></div>
-                <span id="notaSelecionada" style="font-weight:bold;">—</span>
+                <div id="estrelasAvaliacao" role="radiogroup" aria-label="Selecione de 1 a 5 estrelas">
+                </div> <span id="notaSelecionada" style="font-weight:bold;">—</span>
             </div>
 
             <label for="comentarioAvaliacao"><strong>Comentário (opcional):</strong></label>
