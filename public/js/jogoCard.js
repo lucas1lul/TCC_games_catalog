@@ -42,19 +42,13 @@ window.renderJogoCard = function renderJogoCard(jogo, options = {}) {
 
   const id = Number(jogo.IDJOGO);
   const classeAtiva = favoritos.includes(id) ? "ativa" : "";
-
-  const urlImg = getImagem
-    ? getImagem(jogo)
-    : (jogo.LINKIMAGEM ? `/images/${jogo.LINKIMAGEM}` : "/images/placeholder.png");
-
+  const urlImg = getImagem ? getImagem(jogo) : (jogo.LINKIMAGEM ? `/images/${jogo.LINKIMAGEM}` : "/images/placeholder.png");
   const nome = escapeHtml(jogo.NOME || "Sem título");
   const interacao = escapeHtml(jogo.INTERACAO || "N/A");
   const descricao = escapeHtml(jogo.DESCRICAOIMAGEM || "Sem descrição disponível.");
-
   const habilidadeTxt = escapeHtml(jogo.HABILIDADES_CODIGOS || "N/A");
   const plataformaTxt = escapeHtml(jogo.PLATAFORMA_DESCRICAO || "N/A");
   const componenteTxt = escapeHtml(jogo.COMPONENTES || jogo.COMPONENTES_DESCRICAO || "N/A");
-
   const link = jogo.LINK || "";
 
   return `
@@ -64,70 +58,26 @@ window.renderJogoCard = function renderJogoCard(jogo, options = {}) {
       </div>
 
       <div class="card-content">
-        <div class="card-header-info">
-          <h2 class="jogo-titulo">${nome}</h2>
-          <span class="jogo-componente">INTERAÇÃO: ${interacao}</span>
-        </div>
-
+        <h2 class="jogo-titulo">${nome}</h2>
+        <span class="jogo-componente">INTERAÇÃO: ${interacao}</span>
+        
         <div class="card-body">
           <p class="jogo-descricao">${descricao}</p>
-
           <div class="detalhes-grid">
-            <p class="detalhe-item"><strong>Habilidades:</strong> ${habilidadeTxt}</p>
-            <p class="detalhe-item"><strong>Plataformas:</strong> ${plataformaTxt}</p>
-            <p class="detalhe-item completo"><strong>Componentes:</strong> ${componenteTxt}</p>
+            <div class="detalhe-item"><strong>Habilidades:</strong> <span>${habilidadeTxt}</span></div>
+            <div class="detalhe-item"><strong>Plataformas:</strong> <span>${plataformaTxt}</span></div>
           </div>
         </div>
+      </div>
 
-        <div class="card-footer" style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
+      <div class="card-footer">
+        <div class="footer-icons">
+          ${mostrarEstrela ? `<span class="estrela-favorito ${classeAtiva}" data-action="favoritar">❤</span>` : ''}
+          ${mostrarBotaoDetalhes ? `<button class="btn-icon" data-action="detalhes" title="Ver Detalhes">🔍</button>` : ''}
+          <span class="rating-stars">⭐⭐⭐⭐⭐</span>
+        </div>
 
-  ${mostrarEstrela
-      ? `<span class="estrela-favorito ${classeAtiva}"
-              data-action="favoritar"
-              aria-label="Favoritar jogo"
-              title="Favoritar"
-              style="font-size:18px; cursor:pointer;">
-              ❤
-         </span>`
-      : `<span></span>`
-    }
-
-  ${mostrarBotaoDetalhes
-      ? `<button class="btn-ver-mais" data-action="detalhes">
-            🔍 Detalhes
-         </button>`
-      : ``
-    }
-
-  <!-- MÉDIA DAS AVALIAÇÕES -->
-  <span class="media-avaliacao"
-        data-media="true"
-        style="white-space:nowrap; font-weight:bold;">
-        <span data-media-valor>☆☆☆☆☆</span>
-        <span data-media-total style="font-weight:normal; opacity:.75;"></span>
-  </span>
-
-  <!-- BOTÃO AVALIAR (APENAS SE LOGADO) -->
-  ${localStorage.getItem("usuarioLogado")
-      ? `<button class="btn-avaliar" data-action="avaliar">
-            ⭐ Avaliar
-         </button>`
-      : ``
-    }
-
-  ${mostrarLink
-      ? `<a href="${link || "#"}"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="btn-acessar"
-            style="flex:1; text-align:right;">
-            ${link ? "Acessar jogo" : "Link indisponível"}
-         </a>`
-      : ``
-    }
-
-</div>
-
+        ${mostrarLink ? `<a href="${link || "#"}" target="_blank" class="btn-acessar">${link ? "Acessar" : "Indisponível"}</a>` : ''}
       </div>
     </div>
   `;
