@@ -42,8 +42,7 @@ window.renderJogoCard = function renderJogoCard(jogo, options = {}) {
 
   const id = Number(jogo.IDJOGO);
   const classeAtiva = favoritos.includes(id) ? "ativa" : "";
-  const urlImg = getImagem ? getImagem(jogo) : (jogo.LINKIMAGEM ? `/images/${jogo.LINKIMAGEM}` : "/images/placeholder.png");
-  const nome = escapeHtml(jogo.NOME || "Sem título");
+  const urlImg = jogo.LINKIMAGEM ? `/images/${jogo.LINKIMAGEM}` : `/images/placeholder.png`;  const nome = escapeHtml(jogo.NOME || "Sem título");
   const interacao = escapeHtml(jogo.INTERACAO || "N/A");
   const descricao = escapeHtml(jogo.DESCRICAOIMAGEM || "Sem descrição disponível.");
   const habilidadeTxt = escapeHtml(jogo.HABILIDADES_CODIGOS || "N/A");

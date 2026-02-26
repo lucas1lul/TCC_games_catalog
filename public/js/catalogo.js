@@ -58,6 +58,7 @@ let paginaAtual = 1;
 const jogosPorPagina = 12;
 
 async function carregarJogos() {
+  const nome = (document.getElementById("filtroNome")?.value || "").trim();
   const curso = (document.getElementById("filtroCurso")?.value || "").trim();
   const componente = (document.getElementById("filtroComponente")?.value || "").trim();
   const habilidade = (document.getElementById("filtroHabilidade")?.value || "").trim();
@@ -71,6 +72,7 @@ async function carregarJogos() {
   lista.innerHTML = "Carregando resultados...";
 
   const params = new URLSearchParams();
+  if (nome) params.set("nome", nome);
   if (curso) params.set("curso", curso);
   if (componente) params.set("componente", componente);
   if (habilidade) params.set("habilidade", habilidade);
