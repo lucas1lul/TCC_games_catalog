@@ -1,52 +1,27 @@
-/* Reset básico */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-/* --- ESTILOS GERAIS/BODY CONSOLIDADOS (para páginas de conteúdo, se aplicável) --- */
+/* --- Variáveis IFF (Ajustadas para Vermelho e Verde) --- */
+:root {
+    --iff-red-dark: #990000;      /* Vermelho Institucional (Destaque principal) */
+    --iff-green-dark: #6cb333;    /* Verde Institucional (Fundo de Seções) */
+    --iff-gray-light: #f0f0f0;    /* Cinza claro para o fundo do body */
+    --iff-border: #ddd;
+    --iff-text-dark: #333;
+    --iff-red: #d32f2f;
+    --iff-green: #6cb333;
+    --iff-bg: #f8fafc; /* Cinza azulado bem leve, mais moderno */
+}
+
 body {
-    font-family: 'Arial', sans-serif;
-    color: #333;
-    padding: 0; /* Remove padding global */
-    margin: 0;
-    min-height: 100vh;
-}
-
-/* Estilização do cabeçalho */
-header {
-    background: #fff;
-    padding: 10px 0; 
-    text-align: center;
-    position: fixed;
-    top: 0;
-    width: 100%;
-    z-index: 1000;
-    border-bottom: 3px solid #008000;
-}
-
-nav ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-nav ul li {
-    display: inline;
-    margin: 0 15px;
-}
-
-nav ul li a {
-    color: #008000;
-    text-decoration: none;
-    font-size: 18px;
-    font-weight: bold;
-    transition: 0.3s;
-}
-
-nav ul li a:hover {
-    color: #004d00;
+    font-family: 'Inter', sans-serif;
+    background-color: var(--iff-bg);
+    padding: 40px 20px;
 }
 
 /* Estiliza a logo na página de login/registro */
@@ -174,104 +149,4 @@ body:has(.login-container) {
 .perfil-botoes .perfil-btn:hover {
     background-color: #004d00;
     opacity: 1;
-}
-
-
-/* --- ESTILOS DA PÁGINA PRINCIPAL / CONTEÚDO (Não Login/Registro) --- */
-
-main {
-    padding: 20px;
-    /* Ajusta para dar espaço ao header fixo */
-    margin-top: 80px; 
-}
-
-.content {
-    background: white;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 90%;
-    max-width: 800px;
-    margin: 20px auto; 
-    text-align: center;
-}
-
-/* Estilos para cards, rodapé e responsividade (Mantidos) */
-
-.tab-content {
-    display: none;
-}
-
-.tab-content.active {
-    display: block;
-}
-
-.games-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
-}
-
-.game-card {
-    background-color: #f0fff0; 
-    border: 2px solid #008000;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-    width: 200px;
-    text-align: center;
-    transition: transform 0.3s ease;
-}
-
-.game-card:hover {
-    transform: scale(1.05);
-}
-
-.game-card img {
-    width: 100%;
-    height: 150px;
-    object-fit: cover;
-}
-
-.game-card h3 {
-    font-size: 18px;
-    margin: 10px 0;
-}
-
-.game-card p {
-    font-size: 14px;
-    color: #777;
-    padding: 0 10px 10px;
-}
-
-/* Rodapé */
-footer {
-    background-color: #008000;
-    color: white;
-    text-align: center;
-    padding: 10px;
-    position: fixed;
-    width: 100%;
-    bottom: 0;
-}
-
-/* Responsividade */
-@media (max-width: 600px) {
-    .content {
-        width: 95%;
-        padding: 20px;
-    }
-
-    h1 {
-        font-size: 24px;
-    }
-
-    h2 {
-        font-size: 20px;
-    }
-
-    p, ul li {
-        font-size: 14px;
-    }
 }

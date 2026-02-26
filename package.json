@@ -17,7 +17,7 @@
   },
   "scripts": {
     "teste": "jest",
-    "dev": "nodemon index.js"
+    "dev": "nodemon catalogo.js"
   },
   "name": "teste",
   "version": "1.0.0",

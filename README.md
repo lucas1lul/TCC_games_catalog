@@ -73,11 +73,12 @@ O servidor será iniciado em:
 
 ### 🌐 Acessando o sistema
 
-Página inicial / login:  
-`http://localhost:3002/index.html`
-
-Catálogo de jogos:  
+Página inicial / Catálogo de jogos:  
 `http://localhost:3002/catalogo.html`
+
+login:  
+`http://localhost:3002/login.html`
+
 
 ---
 

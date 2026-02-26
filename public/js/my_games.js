@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (!usuarioSessao) {
     alert("Acesso negado. Por favor, faça login.");
-    window.location.href = "/index.html";
+    window.location.href = "/login.html";
     return;
   }
 
@@ -235,7 +235,7 @@ function exportarLista() {
 // --- LOGOUT ---
 function logout() {
   localStorage.removeItem("usuarioLogado");
-  window.location.href = "/index.html";
+  window.location.href = "/catalogo.html";
 }
 
 // expõe ações se você chamar via HTML

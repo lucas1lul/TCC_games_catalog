@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             <div class="nav-section nav-right">
                 ${!usuario ? `
-                    <a href="/" class="btn-login-header">Entrar</a>
+                    <a href="/login" class="btn-login-header">Entrar</a>
                 ` : `
                     <div class="user-dropdown-container">
                         <div class="user-info-display">
@@ -36,6 +36,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             
                             <ul id="dropdownMenu" class="dropdown-content">
                                 <li><a href="/user" class="menu-item-profile"><strong>${usuario.perfil}</strong></a></li>
+                                <li><a href="/catalogo">Catálogo</a></li>
                                 <li><a href="/my_game">Meus Jogos</a></li>
                                 <li class="divider"></li>
                                 <li><button onclick="logoutSistema()" class="btn-logout-item">Sair</button></li>
@@ -57,7 +58,7 @@ function toggleMenu() {
 
 function logoutSistema() {
     localStorage.removeItem('usuarioLogado');
-    window.location.href = '/';
+    window.location.href = '/login';
 }
 
 // Fecha o menu se clicar fora dele

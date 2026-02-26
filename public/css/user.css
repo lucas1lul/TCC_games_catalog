@@ -1,3 +1,25 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
+
+/* --- Variáveis IFF (Ajustadas para Vermelho e Verde) --- */
+:root {
+    --iff-red-dark: #990000;      /* Vermelho Institucional (Destaque principal) */
+    --iff-green-dark: #6cb333;    /* Verde Institucional (Fundo de Seções) */
+    --iff-gray-light: #f0f0f0;    /* Cinza claro para o fundo do body */
+    --iff-border: #ddd;
+    --iff-text-dark: #333;
+    --iff-red: #d32f2f;
+    --iff-green: #6cb333;
+    --iff-bg: #f8fafc; /* Cinza azulado bem leve, mais moderno */
+    --card-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--iff-bg);
+    padding: 40px 20px;
+}
+
 .account-page {
   max-width: 860px;
   margin: 0 auto;

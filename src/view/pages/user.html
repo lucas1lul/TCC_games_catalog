@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Minha Conta</title>
 
-  <link rel="stylesheet" href="/css/styles.css">
+  <!-- <link rel="stylesheet" href="/css/styles.css"> -->
   <link rel="stylesheet" href="/css/navbar.css">
   <link rel="stylesheet" href="/css/user.css">
 </head>
@@ -13,10 +13,10 @@
   <div id="navbar-placeholder"></div>
 
   <main class="account-page">
-    <header class="account-header">
+    <div class="account-header">
       <h1>Configurações da conta</h1>
       <p class="account-subtitle">Atualize seus dados cadastrais.</p>
-    </header>
+    </div>
 
     <section class="account-card">
       <div id="status" class="status"></div>
@@ -38,17 +38,17 @@
 
         <div class="form-row">
           <label for="senhaAtual">Senha atual</label>
-          <input id="senhaAtual" name="senhaAtual" type="password" autocomplete="current-password" placeholder="••••••••" />
+          <input id="senhaAtual" name="senhaAtual" type="password" autocomplete="current-password" placeholder="Digite a senha atual" />
         </div>
 
         <div class="form-row">
           <label for="novaSenha">Nova senha</label>
-          <input id="novaSenha" name="novaSenha" type="password" autocomplete="new-password" placeholder="mínimo 6 caracteres" />
+          <input id="novaSenha" name="novaSenha" type="password" autocomplete="new-password" placeholder="Nova senha (mínimo 6 caracteres)" />
         </div>
 
         <div class="form-row">
           <label for="confirmarNovaSenha">Confirmar nova senha</label>
-          <input id="confirmarNovaSenha" name="confirmarNovaSenha" type="password" autocomplete="new-password" placeholder="repita a nova senha" />
+          <input id="confirmarNovaSenha" name="confirmarNovaSenha" type="password" autocomplete="new-password" placeholder="Repita a nova senha" />
         </div>
 
         <div class="form-actions">
