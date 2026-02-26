@@ -151,7 +151,11 @@ async function carregarMeusDados() {
     }
 
     renderizarJogos(jogosFiltrados);
-    lista.forEach(j => atualizarMediaNoCard(j.IDJOGO));
+    setTimeout(() => {
+  if (typeof atualizarMediaNoCard === "function") {
+    jogos.forEach(j => atualizarMediaNoCard(j.IDJOGO));
+  }
+}, 0);
   } catch (error) {
     console.error("Erro ao carregar meus jogos:", error);
     if (container) {
