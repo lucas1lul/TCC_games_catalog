@@ -1,64 +1,82 @@
-const fs = require("fs");
-const path = require("path");
+const userService = require('../services/userService');
 
-const USERS_PATH = path.join(__dirname, "../../data/users.json");
+exports.register = async (req, res) => {
+  try {
+    const user = await userService.register(req.body);
+    res.status(201).json(user);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
 
-function readUsers() {
-  const raw = fs.readFileSync(USERS_PATH, "utf-8");
-  return JSON.parse(raw);
-}
-
-function writeUsers(users) {
-  fs.writeFileSync(USERS_PATH, JSON.stringify(users, null, 2), "utf-8");
-}
+exports.login = async (req, res) => {
+  try {
+    const user = await userService.login(req.body);
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
 
 exports.getMe = (req, res) => {
-  const id = Number(req.query.id);
-  if (!id) return res.status(400).json({ message: "id inválido" });
-
-  const users = readUsers();
-  const user = users.find(u => u.id === id);
-
-  if (!user) return res.status(404).json({ message: "Usuário não encontrado" });
-
-  // não devolver senha
-  const { senha, ...safe } = user;
-  res.json(safe);
+  try {
+    const userId = req.user?.id || req.query.id; // temporário até implementar auth JWT
+    const user = userService.getMe(userId);
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(404).json({ error: error.message });
+  }
 };
 
 exports.updateMe = (req, res) => {
-  const { id, nome, email, senhaAtual, novaSenha } = req.body;
-  const userId = Number(id);
-
-  if (!userId) return res.status(400).json({ message: "id inválido" });
-  if (!nome || !email) return res.status(400).json({ message: "nome e email são obrigatórios" });
-
-  const users = readUsers();
-  const idx = users.findIndex(u => u.id === userId);
-  if (idx === -1) return res.status(404).json({ message: "Usuário não encontrado" });
-
-  // valida email duplicado
-  const emailEmUso = users.some(u => u.email.toLowerCase() === email.toLowerCase() && u.id !== userId);
-  if (emailEmUso) return res.status(409).json({ message: "Este e-mail já está em uso." });
-
-  // troca senha (opcional)
-  if (senhaAtual || novaSenha) {
-    if (!senhaAtual || !novaSenha) {
-      return res.status(400).json({ message: "Para alterar a senha, informe senhaAtual e novaSenha." });
-    }
-    if (users[idx].senha !== senhaAtual) {
-      return res.status(401).json({ message: "Senha atual incorreta." });
-    }
-    if (String(novaSenha).length < 6) {
-      return res.status(400).json({ message: "A nova senha deve ter pelo menos 6 caracteres." });
-    }
-    users[idx].senha = novaSenha;
+  try {
+    const userId = req.user?.id || req.query.id;
+    const updatedUser = userService.updateMe(userId, req.body);
+    res.status(200).json(updatedUser);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
   }
+};
 
-  users[idx].nome = nome;
-  users[idx].email = email;
+exports.listUsers = (req, res) => {
+  try {
+    const users = userService.getAllUsers();
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
 
-  writeUsers(users);
+exports.toggleFavorito = (req, res) => {
+  try {
+    const { usuarioId, jogoId } = req.body;
 
-  res.json({ message: "ok" });
+    const favoritos = userService.toggleFavorito(usuarioId, jogoId);
+
+    res.status(200).json({ favoritos });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+exports.getUserFavorites = (req, res) => {
+  try {
+    const { id } = req.params;
+    const favoritos = userService.getUserFavorites(id);
+    res.status(200).json(favoritos);
+  } catch (error) {
+    res.status(404).json({ error: error.message });
+  }
+};
+
+exports.getUserFavorites = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const games = await userService.getUserFavorites(id);
+
+    res.status(200).json(games);
+  } catch (error) {
+    res.status(404).json({ error: error.message });
+  }
 };

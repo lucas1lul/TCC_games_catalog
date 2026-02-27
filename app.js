@@ -3,7 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 
-const authRoutes = require('./src/routes/jogoRoutes');
+const authRoutes = require('./src/routes/gameRoutes');
 const userRoutes = require('./src/routes/userRoutes');
 const avaliacaoRoutes = require("./src/routes/avaliacaoRoutes");
 
@@ -26,7 +26,7 @@ app.disable("etag");
 
 // API
 app.use('/api', authRoutes);
-app.use('/api', userRoutes);
+app.use("/api", userRoutes);
 app.use("/api", avaliacaoRoutes);
 
 // Páginas (clean URLs)
