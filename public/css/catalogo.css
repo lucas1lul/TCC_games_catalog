@@ -10,16 +10,10 @@
 
 /* --- Variáveis IFF (Ajustadas para Vermelho e Verde) --- */
 :root {
-    --iff-red-dark: #990000;      /* Vermelho Institucional (Destaque principal) */
-    --iff-green-dark: #6cb333;    /* Verde Institucional (Fundo de Seções) */
-    --iff-gray-light: #f0f0f0;    /* Cinza claro para o fundo do body */
-    --iff-border: #ddd;
+    --iff-red-dark: #990000;
+    --iff-green-dark: #6cb333;
     --iff-text-dark: #333;
-    --iff-red: #d32f2f;
-    --iff-green: #6cb333;
-    --iff-bg: #f8fafc; /* Cinza azulado bem leve, mais moderno */
-    --card-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --iff-bg: #f8fafc;
 }
 
 body {
@@ -46,6 +40,8 @@ main .page-title {
     align-items: center; /* Alinha tudo verticalmente ao centro */
     background: white;
     padding: 15px;
+    margin-top: 25px;
+    margin-bottom: 25px;
     border-radius: 12px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.05);
 }
@@ -72,18 +68,8 @@ main .page-title {
 }
 
 #filtros button:hover {
-    background-color: var(--iff-green-dark);
-}
-
-/* --- Jogo Card (Visual Clean) --- */
-.jogo-card {
-    display: flex;
-    flex-direction: column; /* Organiza o conteúdo em coluna */
-    height: 100%;
-    background: #fff;
-    border-radius: 15px;
-    overflow: hidden;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    opacity: 0.9;
+    transform: scale(1.05);
 }
 
 .card-content {
@@ -104,23 +90,6 @@ main .page-title {
     align-items: center;
 }
 
-/* Deixando o botão "Acessar" mais elegante e fixo */
-.btn-acessar {
-    background-color: var(--iff-red-dark);
-    color: white !important;
-    padding: 8px 16px;
-    border-radius: 6px;
-    text-decoration: none;
-    font-weight: bold;
-    font-size: 0.9rem;
-    text-align: center;
-    transition: 0.3s;
-}
-
-.btn-acessar:hover {
-    background-color: var(--iff-green-dark);
-}
-
 /* Detalhes como Badges */
 .detalhe-item strong {
     color: #64748b; /* Cinza suave para o rótulo */
@@ -133,10 +102,6 @@ main .page-title {
 .detalhe-item {
     color: #1e293b;
     font-weight: 500;
-}
-
-.jogo-card:hover {
-    transform: translateY(-5px);
 }
 
 .card-image-container {
@@ -227,20 +192,17 @@ main .page-title {
 
 .btn-acessar {
     background-color: var(--iff-red-dark);
-    color: white !important;
-    padding: 10px 20px;
-    border-radius: 8px;
+    color: #fff !important;
+    padding: 8px 16px;
+    border-radius: 6px;
     text-decoration: none;
-    font-size: 0.9rem;
     font-weight: bold;
-    transition: 0.3s;
-    /* Remove o comportamento de ocupar a linha toda */
-    display: inline-block; 
-    width: auto; 
+    font-size: 0.9rem;
+    white-space: nowrap; /* Impede o texto de quebrar linha */
 }
 
 .btn-acessar:hover {
-    background-color: var(--iff-green-dark);
+    opacity: 0.9;
     transform: scale(1.05);
 }
 
@@ -282,10 +244,9 @@ main .page-title {
     align-items: stretch; /* Garante que os cards na mesma linha tenham a mesma altura */
 }
 
-/* --- Card Uniforme --- */
 .jogo-card {
     display: flex;
-    flex-direction: column; /* Organiza topo, corpo e rodapé verticalmente */
+    flex-direction: column;
     height: 100%;
     background: #fff;
     border-radius: 12px;
@@ -295,15 +256,15 @@ main .page-title {
     overflow: hidden;
 }
 
+.jogo-card:hover {
+    transform: translateY(-5px);
+}
+
 .card-content {
     display: flex;
     flex-direction: column;
     flex-grow: 1; /* Faz esta parte ocupar todo o espaço sobrando */
     padding: 15px;
-}
-
-.card-body {
-    flex-grow: 1; /* EMPURRA o footer para o final do card */
 }
 
 /* --- Rodapé sem Erros de Borda --- */
@@ -316,18 +277,6 @@ main .page-title {
     background: #fafafa;
     border-top: 1px solid #eee;
     flex-wrap: wrap; /* Evita que os botões quebrem o card em telas pequenas */
-}
-
-/* --- Botão Acessar Corrigido --- */
-.btn-acessar {
-    background-color: var(--iff-red-dark);
-    color: #fff !important;
-    padding: 8px 16px;
-    border-radius: 6px;
-    text-decoration: none;
-    font-weight: bold;
-    font-size: 0.9rem;
-    white-space: nowrap; /* Impede o texto de quebrar linha */
 }
 
 .estrela-favorito {

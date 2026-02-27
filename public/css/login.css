@@ -8,41 +8,20 @@
 
 /* --- Variáveis IFF (Ajustadas para Vermelho e Verde) --- */
 :root {
-    --iff-red-dark: #990000;      /* Vermelho Institucional (Destaque principal) */
-    --iff-green-dark: #6cb333;    /* Verde Institucional (Fundo de Seções) */
-    --iff-gray-light: #f0f0f0;    /* Cinza claro para o fundo do body */
-    --iff-border: #ddd;
-    --iff-text-dark: #333;
-    --iff-red: #d32f2f;
+    --iff-green-dark: #6cb333;
+    --iff-red-dark: #990000;
     --iff-green: #6cb333;
-    --iff-bg: #f8fafc; /* Cinza azulado bem leve, mais moderno */
+    --iff-bg: #f8fafc;
 }
 
 body {
     font-family: 'Inter', sans-serif;
     background-color: var(--iff-bg);
-    padding: 40px 20px;
-}
-
-/* Estiliza a logo na página de login/registro */
-.logo-login {
-    width: auto;
-    max-width: 200px; 
-    height: 130px; 
-    display: block;
-    margin: 0 auto 15px auto; 
-}
-
-/* --- ESTILOS DE LOGIN E REGISTRO (Páginas login.html e register.html) --- */
-
-/* Regras de Centralização para a página de Login/Registro */
-/* Usa :has(.login-container) para aplicar a centralização vertical apenas onde esta box existe */
-body:has(.login-container) {
-    background-color: #f4f4f4; /* Fundo cinza claro para a área externa */
+    padding: 10px 10px;
     display: flex;
-    justify-content: center; /* Centraliza horizontalmente */
-    align-items: center; /* Centraliza verticalmente */
-    min-height: 100vh; /* Garante que body ocupe a altura total */
+    flex-direction: column; /* Faz os elementos ficarem um abaixo do outro */
+    min-height: 100vh;      /* Garante que o corpo ocupe a altura toda da tela */
+    margin: 0;
 }
 
 .login-container {
@@ -51,8 +30,17 @@ body:has(.login-container) {
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     text-align: center;
-    width: 350px; 
-    margin: 0; /* Garante a centralização correta */
+    width: 350px;
+    margin: auto;
+    margin-top: 10px;
+}
+
+.logo-login {
+    width: auto;
+    max-width: 200px; 
+    height: 130px; 
+    display: block;
+    margin: 0 auto 15px auto; 
 }
 
 .login-container h1 {
@@ -103,12 +91,13 @@ body:has(.login-container) {
     font-weight: bold;
     cursor: pointer;
     transition: 0.3s;
-    background-color: #004d00;
+    background-color: var(--iff-red-dark);
     color: white;
 }
 
 .login-container button[type="submit"]:hover {
-    opacity: 0.8;
+    opacity: 0.9;
+    transform: scale(1.05);
 }
 
 
@@ -123,30 +112,4 @@ body:has(.login-container) {
 #loginForm label {
     align-self: flex-start;
     font-weight: bold;
-}
-
-/* Estilos dos Botões de Seleção de Perfil (no login.html antes da seleção) */
-.perfil-botoes {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-top: 15px;
-}
-
-.perfil-botoes .perfil-btn {
-    width: 100%;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.3s;
-    background-color: #008000;
-    color: white;
-}
-
-.perfil-botoes .perfil-btn:hover {
-    background-color: #004d00;
-    opacity: 1;
 }
