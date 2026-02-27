@@ -1,7 +1,7 @@
 // src/controllers/routes/avaliacaoRoutes.js
 const express = require("express");
 const router = express.Router();
-const avaliacaoController = require("../avaliacaoController");
+const avaliacaoController = require("../controllers/avaliacaoController");
 
 router.get("/games/:id/avaliacoes", avaliacaoController.getAvaliacoesByGame);
 router.post("/avaliacoes", avaliacaoController.postAvaliacao);

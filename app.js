@@ -3,9 +3,9 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 
-const authRoutes = require('./src/controllers/routes/jogoRoutes');
-const userRoutes = require('./src/controllers/routes/userRoutes');
-const avaliacaoRoutes = require("./src/controllers/routes/avaliacaoRoutes");
+const authRoutes = require('./src/routes/jogoRoutes');
+const userRoutes = require('./src/routes/userRoutes');
+const avaliacaoRoutes = require("./src/routes/avaliacaoRoutes");
 
 const app = express();
 
