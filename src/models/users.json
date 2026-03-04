@@ -75,9 +75,9 @@
     "senha": "$2b$10$09x9FY9f3WXLPfmZm5ER8uvYq0oHIHvKAL3cBEzjcHtn4NG5Zq9dK",
     "perfil": "professor",
     "favoritos": [
-      1,
       3,
-      8
+      5,
+      1
     ]
   },
   {

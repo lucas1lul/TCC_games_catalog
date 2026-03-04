@@ -7,9 +7,9 @@ router.post("/login", userController.login);
 router.post("/register", userController.register);
 
 // Usuários
-router.get("/users", userController.listUsers);
-router.get("/users/me", userController.getMe);
-router.put("/users/me", userController.updateMe);
+router.get("/usuarios", userController.listUsers);
+router.get("/usuarios/me", userController.getMe);
+router.put("/usuarios/me", userController.updateMe);
 
 // Favoritos
 router.post("/favoritos", userController.toggleFavorito);

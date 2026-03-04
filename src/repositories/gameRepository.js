@@ -1,6 +1,6 @@
 const db = require('../config/db');
 
-exports.findAll = async (filters) => {
+exports.findAll = async (filters = {}) => {
   const { nome, curso, componente, habilidade, plataforma, idioma } = filters;
   const params = [];
 

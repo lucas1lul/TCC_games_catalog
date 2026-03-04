@@ -121,47 +121,32 @@ function renderizarJogos(lista) {
   });
 }
 
-// --- COMUNICAÇÃO COM API ---
 async function carregarMeusDados() {
   const container = document.getElementById("listaFavoritos");
   if (container) container.innerHTML = "Carregando...";
 
   try {
-    // 1) IDs favoritados (vindo do backend)
     const responseFav = await fetch(`/api/usuarios/${usuarioLogado.id}/favoritos`);
     if (!responseFav.ok) throw new Error("Falha ao carregar favoritos");
-    const idsFavoritos = await responseFav.json();
 
-    // normaliza para número
-    const setIds = new Set((idsFavoritos || []).map((x) => Number(x)).filter(Number.isFinite));
+    const jogosFavoritos = await responseFav.json();
 
-    // 2) todos os jogos
-    const responseJogos = await fetch("/api/games");
-    if (!responseJogos.ok) throw new Error("Falha ao carregar jogos");
-    const todosJogos = await responseJogos.json();
-
-    // 3) filtra só os favoritados
-    meusJogosOriginais = (todosJogos || []).filter((j) => setIds.has(Number(j.IDJOGO)));
-
+    meusJogosOriginais = jogosFavoritos || [];
     jogosFiltrados = [...meusJogosOriginais];
 
     if (meusJogosOriginais.length === 0) {
-      if (container) container.innerHTML = "<p>Você ainda não favoritou nenhum jogo. ❤️</p>";
+      container.innerHTML = "<p>Você ainda não favoritou nenhum jogo. ❤️</p>";
       return;
     }
 
+    console.log("Jogos favoritos recebidos:", meusJogosOriginais);
+
     renderizarJogos(jogosFiltrados);
-    setTimeout(() => {
-  if (typeof atualizarMediaNoCard === "function") {
-    jogos.forEach(j => atualizarMediaNoCard(j.IDJOGO));
-  }
-}, 0);
+
   } catch (error) {
     console.error("Erro ao carregar meus jogos:", error);
-    if (container) {
-      container.innerHTML =
-        '<p style="color:red">❌ Erro ao carregar Meus Jogos. Verifique o console.</p>';
-    }
+    container.innerHTML =
+      '<p style="color:red">❌ Erro ao carregar Meus Jogos.</p>';
   }
 }
 

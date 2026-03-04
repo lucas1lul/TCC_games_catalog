@@ -20,8 +20,8 @@ exports.login = async (req, res) => {
 
 exports.getMe = (req, res) => {
   try {
-    const userId = req.user?.id || req.query.id; // temporário até implementar auth JWT
-    const user = userService.getMe(userId);
+    const usuarioId = req.user?.id || req.query.id; // temporário até implementar auth JWT
+    const user = userService.getMe(usuarioId);
     res.status(200).json(user);
   } catch (error) {
     res.status(404).json({ error: error.message });
@@ -30,8 +30,8 @@ exports.getMe = (req, res) => {
 
 exports.updateMe = (req, res) => {
   try {
-    const userId = req.user?.id || req.query.id;
-    const updatedUser = userService.updateMe(userId, req.body);
+    const usuarioId = req.user?.id || req.query.id;
+    const updatedUser = userService.updateMe(usuarioId, req.body);
     res.status(200).json(updatedUser);
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -56,16 +56,6 @@ exports.toggleFavorito = (req, res) => {
     res.status(200).json({ favoritos });
   } catch (error) {
     res.status(400).json({ error: error.message });
-  }
-};
-
-exports.getUserFavorites = (req, res) => {
-  try {
-    const { id } = req.params;
-    const favoritos = userService.getUserFavorites(id);
-    res.status(200).json(favoritos);
-  } catch (error) {
-    res.status(404).json({ error: error.message });
   }
 };
 
