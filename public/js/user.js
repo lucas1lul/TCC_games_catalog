@@ -6,7 +6,7 @@ function setStatus(msg, type = "info") {
 }
 
 function getUsuarioLogado() {
-  const raw = localStorage.getItem("usuarioLogado");
+  const raw = fetch("/api/me");
   return raw ? JSON.parse(raw) : null;
 }
 

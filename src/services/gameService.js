@@ -32,11 +32,21 @@ exports.getGameById = async (id) => {
     return await gameRepository.findById(id);
 };
 
-exports.addGame = async (data) => {
+exports.create = async (data) => {
     const validatedData = mapAndValidateGame(data);
     return await gameRepository.create(validatedData);
 };
 
 exports.deleteGame = async (id) => {
     return await gameRepository.remove(id);
+};
+
+exports.updateGame = async (id, data) => {
+  const result = await gameRepository.updateGame(id, data);
+
+  if (result.affectedRows === 0) {
+    throw new Error("Jogo não encontrado.");
+  }
+
+  return { message: "Jogo atualizado com sucesso." };
 };

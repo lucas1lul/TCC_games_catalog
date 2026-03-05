@@ -1,5 +1,30 @@
-// catalogo.js
-document.addEventListener("DOMContentLoaded", () => {
+let jogosCompletos = [];
+let usuarioLogado = null; // Armazenará os dados do usuário (id, favoritos, etc)
+let paginaAtual = 1;
+const jogosPorPagina = 12;
+
+document.addEventListener("DOMContentLoaded", async () => { // Adicionei async aqui
+  // 1. Tenta carregar o usuário primeiro
+  try {
+    const res = await fetch("/api/me");
+    if (res.ok) {
+      usuarioLogado = await res.json();
+      
+      // Se houver usuário, exibe saudação
+      const header = document.querySelector("h1");
+      if (header && usuarioLogado.nome) {
+          const saudacao = document.createElement("p");
+          saudacao.textContent = `Olá, ${usuarioLogado.nome}!`;
+          saudacao.style.fontSize = "1rem";
+          saudacao.style.color = "#555";
+          header.insertAdjacentElement("afterend", saudacao);
+      }
+    }
+  } catch (e) {
+    console.log("Usuário não está logado ou erro na sessão.");
+  }
+
+  // 2. Depois carrega os jogos
   carregarJogos();
 
   const formFiltros = document.getElementById("filtros");
@@ -41,7 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Saudação (opcional)
-  const usuarioSessao = localStorage.getItem("usuarioLogado");
+  const usuarioSessao = fetch("/api/me");
   if (usuarioSessao) {
     const header = document.querySelector("h1");
     if (header) {
@@ -52,10 +77,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 });
-
-let jogosCompletos = [];
-let paginaAtual = 1;
-const jogosPorPagina = 12;
 
 async function carregarJogos() {
   const nome = (document.getElementById("filtroNome")?.value || "").trim();
@@ -112,16 +133,14 @@ function renderizarJogosDaPagina() {
   const fim = inicio + jogosPorPagina;
   const jogosDaPagina = jogosCompletos.slice(inicio, fim);
 
-  const usuarioLogado = JSON.parse(localStorage.getItem("usuarioLogado"));
+  // CORREÇÃO: Usamos a variável global que definimos no topo
   const favoritos = usuarioLogado?.favoritos || [];
 
   jogosDaPagina.forEach((jogo) => {
-    // ✅ Usa o componente reaproveitável
     lista.innerHTML += renderJogoCard(jogo, { favoritos });
   });
-  // após renderizar os cards da página atual, buscar média de cada card
-  jogosDaPagina.forEach(j => atualizarMediaNoCard(j.IDJOGO));
 
+  jogosDaPagina.forEach(j => atualizarMediaNoCard(j.IDJOGO));
   atualizarControlesPaginacao();
 }
 
@@ -147,8 +166,6 @@ function atualizarControlesPaginacao() {
 }
 
 async function toggleFavorito(jogoId, elementoEstrela) {
-  const usuarioLogado = JSON.parse(localStorage.getItem("usuarioLogado"));
-
   if (!usuarioLogado) {
     alert("Você precisa estar logado para favoritar!");
     return;
@@ -168,8 +185,8 @@ async function toggleFavorito(jogoId, elementoEstrela) {
 
     if (response.ok) {
       elementoEstrela.classList.toggle("ativa");
-      usuarioLogado.favoritos = data.favoritos;
-      localStorage.setItem("usuarioLogado", JSON.stringify(usuarioLogado));
+      // Atualiza os favoritos na memória global
+      usuarioLogado.favoritos = data.favoritos; 
     }
   } catch (error) {
     console.error("Erro ao favoritar:", error);

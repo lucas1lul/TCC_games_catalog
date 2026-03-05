@@ -89,3 +89,43 @@ exports.create = async (data) => {
 exports.remove = async (id) => {
   await db.promise().query("DELETE FROM JOGOS WHERE IDJOGO = ?", [id]);
 };
+
+exports.updateGame = async (id, data) => {
+  const {
+    nome,
+    linkImagem,
+    descricaoImagem,
+    link,
+    idioma,
+    licensa,
+    interacao
+  } = data;
+
+  const query = `
+    UPDATE JOGOS
+    SET
+      NOME = ?,
+      LINKIMAGEM = ?,
+      DESCRICAOIMAGEM = ?,
+      LINK = ?,
+      IDIOMA = ?,
+      LICENSA = ?,
+      INTERACAO = ?
+    WHERE IDJOGO = ?
+  `;
+
+  const params = [
+    nome,
+    linkImagem,
+    descricaoImagem,
+    link,
+    idioma,
+    licensa,
+    interacao,
+    id
+  ];
+
+  const [result] = await db.promise().query(query, params);
+
+  return result;
+};

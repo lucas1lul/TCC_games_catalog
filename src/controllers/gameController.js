@@ -24,9 +24,9 @@ exports.getGameById = async (req, res) => {
   }
 };
 
-exports.addGame = async (req, res) => {
+exports.create = async (req, res) => {
   try {
-    const id = await gameService.addGame(req.body);
+    const id = await gameService.create(req.body);
     res.status(201).json({ mensagem: "Jogo cadastrado!", id });
   } catch (error) {
     res.status(500).json({ mensagem: "Erro ao salvar jogo" });
@@ -39,5 +39,18 @@ exports.deleteGame = async (req, res) => {
     res.status(200).json({ mensagem: "Jogo deletado!" });
   } catch (error) {
     res.status(500).json({ mensagem: "Erro ao deletar jogo" });
+  }
+};
+
+exports.updateGame = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const data = req.body;
+
+    const response = await gameService.updateGame(id, data);
+
+    res.status(200).json(response);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
   }
 };

@@ -9,13 +9,29 @@ exports.register = async (req, res) => {
   }
 };
 
-exports.login = async (req, res) => {
-  try {
-    const user = await userService.login(req.body);
-    res.status(200).json(user);
-  } catch (error) {
-    res.status(400).json({ error: error.message });
+exports.login = (req, res) => {
+  const { email, senha } = req.body;
+
+  const user = userService.login(email, senha);
+
+  if (!user) {
+    return res.status(401).json({ error: "Credenciais inválidas" });
   }
+
+  req.session.user = {
+    id: user.id,
+    nome: user.nome,
+    perfil: user.perfil
+  };
+
+  res.status(200).json({ message: "Login realizado com sucesso" });
+};
+
+exports.logout = (req, res) => {
+  req.session.destroy(() => {
+    res.clearCookie("connect.sid");
+    res.status(200).json({ message: "Logout realizado" });
+  });
 };
 
 exports.getMe = (req, res) => {

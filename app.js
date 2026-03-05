@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const session = require("express-session");
 
 const authRoutes = require('./src/routes/gameRoutes');
 const userRoutes = require('./src/routes/userRoutes');
@@ -13,6 +14,14 @@ const PAGES_DIR = path.join(__dirname, 'src', 'view', 'pages');
 
 app.use(cors());
 app.use(express.json());
+app.use(session({
+  secret: "segredo-super-seguro-aqui",
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    maxAge: 1000 * 60 * 60 * 2 // 2 horas
+  }
+}));
 
 // Static (CSS/JS/IMAGES)
 app.use(express.static(path.join(__dirname, 'public')));

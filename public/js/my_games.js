@@ -4,7 +4,7 @@ let jogosFiltrados = [];
 let usuarioLogado = null;
 
 document.addEventListener("DOMContentLoaded", () => {
-  const usuarioSessao = localStorage.getItem("usuarioLogado");
+  const usuarioSessao = fetch("/api/me");
 
   if (!usuarioSessao) {
     alert("Acesso negado. Por favor, faça login.");
@@ -152,7 +152,7 @@ async function carregarMeusDados() {
 
 // --- FAVORITAR (reaproveita a mesma rota do catálogo) ---
 async function toggleFavorito(jogoId, elementoEstrela) {
-  const usuarioLogadoLocal = JSON.parse(localStorage.getItem("usuarioLogado"));
+  const usuarioLogadoLocal = JSON.parse(fetch("/api/me"));
   if (!usuarioLogadoLocal) {
     alert("Você precisa estar logado para favoritar!");
     return;

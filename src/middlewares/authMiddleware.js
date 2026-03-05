@@ -1,26 +1,18 @@
-function exigirLogin(req, res, next) {
-  if (!req.session.usuario) {
-    return res.status(401).json({ erro: "Não autenticado" });
+exports.isAuthenticated = (req, res, next) => {
+  if (!req.session.user) {
+    return res.status(401).json({ error: "Não autenticado" });
   }
   next();
-}
+};
 
-function exigirAdmin(req, res, next) {
-  if (!req.session.usuario || req.session.usuario.tipo !== "admin") {
-    return res.status(403).json({ erro: "Acesso restrito a administradores" });
-  }
-  next();
-}
+exports.authorizeRoles = (...roles) => {
+  return (req, res, next) => {
+    const user = req.session.user;
 
-function exigirProfessor(req, res, next) {
-  if (!req.session.usuario || req.session.usuario.tipo !== "professor") {
-    return res.status(403).json({ erro: "Apenas professores podem avaliar" });
-  }
-  next();
-}
+    if (!user || !roles.includes(user.perfil)) {
+      return res.status(403).json({ error: "Acesso negado" });
+    }
 
-module.exports = {
-  exigirLogin,
-  exigirAdmin,
-  exigirProfessor
+    next();
+  };
 };
