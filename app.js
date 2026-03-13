@@ -12,14 +12,19 @@ const app = express();
 
 const PAGES_DIR = path.join(__dirname, 'src', 'view', 'pages');
 
-app.use(cors());
+app.use(cors({
+  origin: true,
+  credentials: true
+}));
+
 app.use(express.json());
 app.use(session({
   secret: "segredo-super-seguro-aqui",
   resave: false,
   saveUninitialized: false,
   cookie: {
-    maxAge: 1000 * 60 * 60 * 2 // 2 horas
+    secure: false,
+    httpOnly: true
   }
 }));
 

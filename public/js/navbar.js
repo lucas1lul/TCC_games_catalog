@@ -3,7 +3,16 @@ document.addEventListener('DOMContentLoaded', function() {
     const navbarPlaceholder = document.getElementById('navbar-placeholder');
     if (!navbarPlaceholder) return;
 
-    const usuario = JSON.parse(localStorage.getItem('usuarioLogado'));
+let usuario = null;
+
+try {
+  const usuarioSalvo = localStorage.getItem('usuarioLogado');
+  if (usuarioSalvo && usuarioSalvo !== "undefined") {
+    usuario = JSON.parse(usuarioSalvo);
+  }
+} catch (e) {
+  console.warn("Erro ao ler usuarioLogado do localStorage");
+}    
 
     const navbarHTML = `
         <nav class="navbar-iff">

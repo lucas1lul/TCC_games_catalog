@@ -6,7 +6,7 @@ function setStatus(msg, type = "info") {
 }
 
 function getUsuarioLogado() {
-  const raw = fetch("/api/me");
+  const raw = fetch('/api/me', {credentials: 'include'});
   return raw ? JSON.parse(raw) : null;
 }
 

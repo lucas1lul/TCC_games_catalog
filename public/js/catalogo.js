@@ -6,7 +6,7 @@ const jogosPorPagina = 12;
 document.addEventListener("DOMContentLoaded", async () => { // Adicionei async aqui
   // 1. Tenta carregar o usuário primeiro
   try {
-    const res = await fetch("/api/me");
+    const res = await fetch('/api/me', {credentials: 'include'});
     if (res.ok) {
       usuarioLogado = await res.json();
       
@@ -66,7 +66,7 @@ document.addEventListener("DOMContentLoaded", async () => { // Adicionei async a
   }
 
   // Saudação (opcional)
-  const usuarioSessao = fetch("/api/me");
+  const usuarioSessao = fetch('/api/me', {credentials: 'include'});
   if (usuarioSessao) {
     const header = document.querySelector("h1");
     if (header) {

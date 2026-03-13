@@ -44,7 +44,7 @@ function atualizarEstrelasVisual(containerId) {
 }
 
 window.abrirModalAvaliar = function abrirModalAvaliar(jogoId, nomeJogo) {
-    const usuario = JSON.parse(fetch("/api/me"));
+    const usuario = JSON.parse(fetch('/api/me', {credentials: 'include'}));
     if (!usuario) {
         alert("Você precisa estar logado para avaliar.");
         return;
@@ -74,7 +74,7 @@ window.fecharModalAvaliar = function fecharModalAvaliar() {
 };
 
 window.enviarAvaliacao = async function enviarAvaliacao() {
-    const usuario = JSON.parse(await fetch("/api/me"));
+    const usuario = JSON.parse(await fetch('/api/me', {credentials: 'include'}));
     if (!usuario) return alert("Você precisa estar logado.");
 
     if (!jogoIdParaAvaliar) return alert("Jogo inválido.");

@@ -9,22 +9,23 @@ exports.register = async (req, res) => {
   }
 };
 
-exports.login = (req, res) => {
-  const { email, senha } = req.body;
+exports.login = async (req, res) => {
+  try {
+    const { email, senha } = req.body;
 
-  const user = userService.login(email, senha);
+    const user = await userService.login({ email, senha });
 
-  if (!user) {
-    return res.status(401).json({ error: "Credenciais inválidas" });
+    req.session.user = {
+      id: user.id,
+      nome: user.nome,
+      perfil: user.perfil
+    };
+
+    res.json({ user: req.session.user });
+
+  } catch (error) {
+    res.status(401).json({ error: error.message });
   }
-
-  req.session.user = {
-    id: user.id,
-    nome: user.nome,
-    perfil: user.perfil
-  };
-
-  res.status(200).json({ message: "Login realizado com sucesso" });
 };
 
 exports.logout = (req, res) => {
