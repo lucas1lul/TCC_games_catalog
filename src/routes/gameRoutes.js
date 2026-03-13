@@ -3,26 +3,25 @@ const router = express.Router();
 const gameController = require('../controllers/gameController');
 const authMiddleware = require("../middlewares/authMiddleware");
 
-console.log("gameController.updateGame:", typeof gameController.updateGame);
-console.log("gameController.deleteGame:", typeof gameController.deleteGame);
-// ROTAS DE GAMES
+// ROTAS PÚBLICAS
 router.get('/games', gameController.getGames);
 router.get('/games/:id', gameController.getGameById);
+
+// ROTAS ADMIN
 router.post(
   "/games",
-  authMiddleware.isAuthenticated,
   authMiddleware.authorizeRoles("Administrador"),
   gameController.create
 );
+
 router.put(
-  '/games/:id',
-  authMiddleware.isAuthenticated,
+  "/games/:id",
   authMiddleware.authorizeRoles("Administrador"),
   gameController.updateGame
 );
+
 router.delete(
-  '/games/:id',
-  authMiddleware.isAuthenticated,
+  "/games/:id",
   authMiddleware.authorizeRoles("Administrador"),
   gameController.deleteGame
 );

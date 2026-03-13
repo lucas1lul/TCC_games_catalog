@@ -37,11 +37,17 @@ exports.logout = (req, res) => {
 
 exports.getMe = (req, res) => {
   try {
-    const usuarioId = req.user?.id || req.query.id; // temporário até implementar auth JWT
-    const user = userService.getMe(usuarioId);
-    res.status(200).json(user);
+
+    if (!req.session.user) {
+      return res.status(200).json({ user: null });
+    }
+
+    res.status(200).json({
+      user: req.session.user
+    });
+
   } catch (error) {
-    res.status(404).json({ error: error.message });
+    res.status(500).json({ error: error.message });
   }
 };
 
