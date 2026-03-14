@@ -4,7 +4,7 @@ const cors = require('cors');
 const path = require('path');
 const session = require("express-session");
 
-const authRoutes = require('./src/routes/gameRoutes');
+const gameRoutes = require('./src/routes/gameRoutes');
 const userRoutes = require('./src/routes/userRoutes');
 const avaliacaoRoutes = require("./src/routes/avaliacaoRoutes");
 
@@ -12,49 +12,76 @@ const app = express();
 
 const PAGES_DIR = path.join(__dirname, 'src', 'view', 'pages');
 
+/* necessário para sessões funcionarem bem em alguns ambientes */
+app.set("trust proxy", 1);
+
+/* CORS */
 app.use(cors({
-  origin: true,
+  origin: "http://localhost:3002", // Ou a porta que você digita na URL
   credentials: true
 }));
 
+/* body parser */
 app.use(express.json());
+
+/* sessão */
 app.use(session({
+  name: "connect.sid", // volta para o padrão
   secret: "segredo-super-seguro-aqui",
   resave: false,
   saveUninitialized: false,
   cookie: {
+    httpOnly: true,
     secure: false,
-    httpOnly: true
+    sameSite: "lax"
   }
 }));
 
-// Static (CSS/JS/IMAGES)
+/* arquivos estáticos */
 app.use(express.static(path.join(__dirname, 'public')));
 
-// desabilita cache/etag na API
+/* evitar cache em API */
 app.use("/api", (req, res, next) => {
   res.setHeader("Cache-Control", "no-store");
   next();
 });
+
 app.disable("etag");
 
-// API
-app.use('/api', authRoutes);
-app.use("/api", userRoutes);
-app.use("/api", avaliacaoRoutes);
+/* rotas API */
+app.use('/api', gameRoutes);
+app.use('/api', userRoutes);
+app.use('/api', avaliacaoRoutes);
 
-// Páginas (clean URLs)
+/* páginas */
 app.get(['/', '/catalogo'], (req, res) => {
   res.sendFile(path.join(PAGES_DIR, 'catalogo.html'));
 });
-app.get('/catalogo', (req, res) => res.sendFile(path.join(PAGES_DIR, 'catalogo.html')));
-app.get('/user', (req, res) => res.sendFile(path.join(PAGES_DIR, 'user.html')));
-app.get('/login', (req, res) => res.sendFile(path.join(PAGES_DIR, 'login.html')));
-app.get('/register', (req, res) => res.sendFile(path.join(PAGES_DIR, 'register.html')));
-app.get('/my_game', (req, res) => res.sendFile(path.join(PAGES_DIR, 'my_games.html')));
-app.get('/intro', (req, res) => res.sendFile(path.join(PAGES_DIR, 'introducao.html')));
+
+app.get('/user', (req, res) =>
+  res.sendFile(path.join(PAGES_DIR, 'user.html'))
+);
+
+app.get('/login', (req, res) =>
+  res.sendFile(path.join(PAGES_DIR, 'login.html'))
+);
+
+app.get('/register', (req, res) =>
+  res.sendFile(path.join(PAGES_DIR, 'register.html'))
+);
+
+app.get('/my_game', (req, res) =>
+  res.sendFile(path.join(PAGES_DIR, 'my_games.html'))
+);
+
+app.get('/intro', (req, res) =>
+  res.sendFile(path.join(PAGES_DIR, 'introducao.html'))
+);
 
 const PORT = process.env.PORT || 3002;
-app.listen(PORT, () => console.log(`Servidor está rodando na porta ${PORT}`));
+
+app.listen(PORT, () =>
+  console.log(`Servidor está rodando na porta ${PORT}`)
+);
 
 module.exports = app;

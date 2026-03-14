@@ -21,17 +21,28 @@ exports.login = async (req, res) => {
       perfil: user.perfil
     };
 
-    res.json({ user: req.session.user });
+    req.session.save((err) => {
+      if (err) {
+        console.error("Erro ao salvar sessão:", err);
+        return res.status(500).json({ error: "Erro ao salvar sessão" });
+      }
+
+      res.json({ user: req.session.user });
+    });
 
   } catch (error) {
     res.status(401).json({ error: error.message });
   }
 };
 
+// src/controllers/userController.js
 exports.logout = (req, res) => {
-  req.session.destroy(() => {
-    res.clearCookie("connect.sid");
-    res.status(200).json({ message: "Logout realizado" });
+  req.session.destroy((err) => {
+    if (err) {
+      return res.status(500).json({ message: "Erro ao destruir sessão" });
+    }
+    res.clearCookie("connect.sid", { path: '/' });
+    return res.status(200).json({ message: "Logout realizado com sucesso" });
   });
 };
 

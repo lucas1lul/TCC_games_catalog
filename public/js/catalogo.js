@@ -3,79 +3,83 @@ let usuarioLogado = null; // Armazenará os dados do usuário (id, favoritos, et
 let paginaAtual = 1;
 const jogosPorPagina = 12;
 
-document.addEventListener("DOMContentLoaded", async () => { // Adicionei async aqui
-  // 1. Tenta carregar o usuário primeiro
+document.addEventListener("DOMContentLoaded", async () => {
+
+  let usuarioLogado = null;
+
   try {
-    const res = await fetch('/api/me', {credentials: 'include'});
-    if (res.ok) {
-      usuarioLogado = await res.json();
-      
-      // Se houver usuário, exibe saudação
-      const header = document.querySelector("h1");
-      if (header && usuarioLogado.nome) {
-          const saudacao = document.createElement("p");
-          saudacao.textContent = `Olá, ${usuarioLogado.nome}!`;
-          saudacao.style.fontSize = "1rem";
-          saudacao.style.color = "#555";
-          header.insertAdjacentElement("afterend", saudacao);
+
+    const res = await fetch("/api/me", {
+      credentials: "include"
+    });
+
+    const data = await res.json();
+
+    usuarioLogado = data.user;
+
+    if (usuarioLogado) {
+
+      const areaBoasVindas = document.getElementById("boasVindas");
+
+      if (areaBoasVindas) {
+        areaBoasVindas.textContent = `Olá, ${usuarioLogado.nome}!`;
       }
+
     }
+
   } catch (e) {
-    console.log("Usuário não está logado ou erro na sessão.");
+    console.log("Usuário não autenticado.");
   }
 
-  // 2. Depois carrega os jogos
   carregarJogos();
 
   const formFiltros = document.getElementById("filtros");
+
   if (formFiltros) {
-    // IMPORTANTE: #filtros precisa ser <form> no HTML para "Enter" funcionar
+
     formFiltros.addEventListener("submit", (e) => {
       e.preventDefault();
       carregarJogos();
     });
+
   }
 
-  // Clique em Detalhes / Favoritar (delegação)
   const lista = document.getElementById("lista");
+
   if (lista) {
+
     lista.addEventListener("click", (e) => {
+
       const card = e.target.closest(".jogo-card");
       if (!card) return;
 
       const idJogo = Number(card.dataset.jogoId);
       if (!Number.isFinite(idJogo)) return;
 
-      // Detalhes
       if (e.target.closest('[data-action="detalhes"]')) {
         abrirDetalhes(idJogo);
         return;
       }
 
-      // Favoritar
       if (e.target.closest('[data-action="favoritar"]')) {
         toggleFavorito(idJogo, e.target.closest('[data-action="favoritar"]'));
         return;
       }
+
       if (e.target.closest('[data-action="avaliar"]')) {
-        const jogo = jogosCompletos.find(j => Number(j.IDJOGO) === idJogo) || meusJogosOriginais?.find?.(j => Number(j.IDJOGO) === idJogo);
+
+        const jogo =
+          jogosCompletos.find(j => Number(j.IDJOGO) === idJogo) ||
+          meusJogosOriginais?.find?.(j => Number(j.IDJOGO) === idJogo);
+
         abrirModalAvaliar(idJogo, jogo?.NOME);
-        return;
+
       }
+
     });
+
   }
 
-  // Saudação (opcional)
-  const usuarioSessao = fetch('/api/me', {credentials: 'include'});
-  if (usuarioSessao) {
-    const header = document.querySelector("h1");
-    if (header) {
-      const saudacao = document.createElement("p");
-      saudacao.style.fontSize = "1rem";
-      saudacao.style.color = "#555";
-      header.insertAdjacentElement("afterend", saudacao);
-    }
-  }
 });
 
 async function carregarJogos() {

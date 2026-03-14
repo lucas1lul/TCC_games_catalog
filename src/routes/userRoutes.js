@@ -6,13 +6,15 @@ const authMiddleware = require("../middlewares/authMiddleware");
 // Sessão
 router.post("/login", userController.login);
 router.post("/register", userController.register);
+router.post("/logout", userController.logout);
 
 router.get("/me", (req, res) => {
-  if (!req.session.user) {
+  if (!req.session || !req.session.user) {
     return res.json({ user: null });
   }
 
-  res.json(req.session.user);
+  // Envolvemos em um objeto 'user' para bater com seu fetch
+  res.json({ user: req.session.user });
 });
 
 // Usuários
