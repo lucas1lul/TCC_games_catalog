@@ -1,55 +1,28 @@
 let jogosCompletos = [];
-let usuarioLogado = null; // Armazenará os dados do usuário (id, favoritos, etc)
+let usuarioLogado = null; 
 let paginaAtual = 1;
 const jogosPorPagina = 12;
 
 document.addEventListener("DOMContentLoaded", async () => {
+  // 1. Verificar Sessão (Aguarda a resposta do servidor)
+  await verificarSessao();
 
-  let usuarioLogado = null;
-
-  try {
-
-    const res = await fetch("/api/me", {
-      credentials: "include"
-    });
-
-    const data = await res.json();
-
-    usuarioLogado = data.user;
-
-    if (usuarioLogado) {
-
-      const areaBoasVindas = document.getElementById("boasVindas");
-
-      if (areaBoasVindas) {
-        areaBoasVindas.textContent = `Olá, ${usuarioLogado.nome}!`;
-      }
-
-    }
-
-  } catch (e) {
-    console.log("Usuário não autenticado.");
-  }
-
+  // 2. Carregar Jogos Iniciais
   carregarJogos();
 
+  // Configuração dos Filtros
   const formFiltros = document.getElementById("filtros");
-
   if (formFiltros) {
-
     formFiltros.addEventListener("submit", (e) => {
       e.preventDefault();
       carregarJogos();
     });
-
   }
 
+  // Eventos de clique nos Cards (Delegação de Eventos)
   const lista = document.getElementById("lista");
-
   if (lista) {
-
     lista.addEventListener("click", (e) => {
-
       const card = e.target.closest(".jogo-card");
       if (!card) return;
 
@@ -58,44 +31,53 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       if (e.target.closest('[data-action="detalhes"]')) {
         abrirDetalhes(idJogo);
-        return;
-      }
-
-      if (e.target.closest('[data-action="favoritar"]')) {
+      } else if (e.target.closest('[data-action="favoritar"]')) {
         toggleFavorito(idJogo, e.target.closest('[data-action="favoritar"]'));
-        return;
       }
-
-      if (e.target.closest('[data-action="avaliar"]')) {
-
-        const jogo =
-          jogosCompletos.find(j => Number(j.IDJOGO) === idJogo) ||
-          meusJogosOriginais?.find?.(j => Number(j.IDJOGO) === idJogo);
-
-        abrirModalAvaliar(idJogo, jogo?.NOME);
-
-      }
-
     });
-
   }
-
 });
 
+async function verificarSessao() {
+  try {
+    const res = await fetch("/api/me", {
+      credentials: "include",
+      cache: "no-store"
+    });
+
+    if (res.ok) {
+      const data = await res.json();
+      usuarioLogado = data.user; 
+
+      if (usuarioLogado) {
+        const areaBoasVindas = document.getElementById("boasVindas");
+        if (areaBoasVindas) {
+          areaBoasVindas.textContent = `Olá, ${usuarioLogado.nome}!`;
+        }
+      }
+    }
+  } catch (e) {
+    console.warn("Usuário não autenticado.");
+    usuarioLogado = null;
+  }
+}
+
 async function carregarJogos() {
+  const lista = document.getElementById("lista");
+  if (!lista) return;
+
+  // Pegar valores dos filtros
   const nome = (document.getElementById("filtroNome")?.value || "").trim();
   const curso = (document.getElementById("filtroCurso")?.value || "").trim();
   const componente = (document.getElementById("filtroComponente")?.value || "").trim();
   const habilidade = (document.getElementById("filtroHabilidade")?.value || "").trim();
   const plataforma = (document.getElementById("filtroPlataforma")?.value || "").trim();
 
-  const lista = document.getElementById("lista");
-  if (!lista) return;
-
   paginaAtual = 1;
   jogosCompletos = [];
   lista.innerHTML = "Carregando resultados...";
 
+  // Construir URL com parâmetros
   const params = new URLSearchParams();
   if (nome) params.set("nome", nome);
   if (curso) params.set("curso", curso);
@@ -107,10 +89,7 @@ async function carregarJogos() {
 
   try {
     const res = await fetch(url, { cache: "no-store" });
-    if (!res.ok) {
-      const txt = await res.text().catch(() => "");
-      throw new Error(`Erro HTTP ${res.status} - ${txt}`);
-    }
+    if (!res.ok) throw new Error(`Erro HTTP ${res.status}`);
 
     jogosCompletos = await res.json();
 
@@ -120,11 +99,10 @@ async function carregarJogos() {
       return;
     }
 
-    renderizarJogosDaPagina(); // ✅ aqui já vai renderizar a página 1
+    renderizarJogosDaPagina();
   } catch (error) {
     console.error("Erro ao buscar jogos:", error);
     lista.innerHTML = "❌ Erro ao carregar dados.";
-    atualizarControlesPaginacao();
   }
 }
 
@@ -137,36 +115,15 @@ function renderizarJogosDaPagina() {
   const fim = inicio + jogosPorPagina;
   const jogosDaPagina = jogosCompletos.slice(inicio, fim);
 
-  // CORREÇÃO: Usamos a variável global que definimos no topo
+  // Usa a variável global usuarioLogado definida lá no topo
   const favoritos = usuarioLogado?.favoritos || [];
 
   jogosDaPagina.forEach((jogo) => {
-    lista.innerHTML += renderJogoCard(jogo, { favoritos });
+    // Chama a função global do arquivo jogoCard.js
+    lista.innerHTML += window.renderJogoCard(jogo, { favoritos });
   });
 
-  jogosDaPagina.forEach(j => atualizarMediaNoCard(j.IDJOGO));
   atualizarControlesPaginacao();
-}
-
-function mudarPagina(direcao) {
-  const totalPaginas = Math.ceil(jogosCompletos.length / jogosPorPagina);
-  const novaPagina = paginaAtual + direcao;
-  if (novaPagina >= 1 && novaPagina <= totalPaginas) {
-    paginaAtual = novaPagina;
-    renderizarJogosDaPagina();
-    document.getElementById("lista")?.scrollIntoView({ behavior: "smooth" });
-  }
-}
-
-function atualizarControlesPaginacao() {
-  const totalPaginas = Math.ceil(jogosCompletos.length / jogosPorPagina);
-  const btnAnterior = document.getElementById("btnAnterior");
-  const btnProximo = document.getElementById("btnProximo");
-  const infoPagina = document.getElementById("infoPagina");
-
-  if (btnAnterior) btnAnterior.disabled = paginaAtual === 1;
-  if (btnProximo) btnProximo.disabled = paginaAtual === totalPaginas || jogosCompletos.length === 0;
-  if (infoPagina) infoPagina.textContent = `Página ${totalPaginas === 0 ? 0 : paginaAtual} de ${totalPaginas}`;
 }
 
 async function toggleFavorito(jogoId, elementoEstrela) {
@@ -179,86 +136,45 @@ async function toggleFavorito(jogoId, elementoEstrela) {
     const response = await fetch("/api/favoritos", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        usuarioId: usuarioLogado.id,
-        jogoId: jogoId,
-      }),
+      credentials: "include", 
+      body: JSON.stringify({ jogoId: jogoId }),
     });
 
     const data = await response.json();
 
     if (response.ok) {
       elementoEstrela.classList.toggle("ativa");
-      // Atualiza os favoritos na memória global
+      // Atualiza os favoritos na memória para não perder o estado ao mudar de página
       usuarioLogado.favoritos = data.favoritos; 
+    } else {
+      alert(data.error || "Erro ao favoritar");
     }
   } catch (error) {
     console.error("Erro ao favoritar:", error);
   }
 }
 
-async function abrirDetalhes(idJogo) {
-  const modal = document.getElementById("modalDetalhes");
-  if (!modal) return;
+function atualizarControlesPaginacao() {
+  const totalPaginas = Math.ceil(jogosCompletos.length / jogosPorPagina);
+  const btnAnterior = document.getElementById("btnAnterior");
+  const btnProximo = document.getElementById("btnProximo");
+  const infoPagina = document.getElementById("infoPagina");
 
-  modal.style.display = "block";
-
-  const set = (id, v) => {
-    const el = document.getElementById(id);
-    if (el) el.textContent = (v == null || v === "") ? "N/A" : String(v);
-  };
-
-  set("modalTitulo", "Carregando...");
-  set("modalHabilidades", "Carregando...");
-  set("modalGenero", "Carregando...");
-  set("modalIdioma", "Carregando...");
-  set("modalPlataforma", "Carregando...");
-  set("modalLicenca", "Carregando...");
-  set("modalInteracao", "Carregando...");
-
-  const imgEl = document.getElementById("modalImg");
-  if (imgEl) imgEl.src = "/images/placeholder.png";
-
-  try {
-    const res = await fetch(`/api/games/${idJogo}`);
-    if (!res.ok) throw new Error(`Erro HTTP: ${res.status}`);
-    const jogo = await res.json();
-
-    set("modalTitulo", jogo.NOME);
-    set("modalHabilidades", jogo.HABILIDADES_CODIGOS);
-    set("modalPlataforma", jogo.PLATAFORMA_DESCRICAO);
-    set("modalIdioma", jogo.IDIOMA);
-    set("modalLicenca", jogo.LICENSA);
-    set("modalInteracao", jogo.INTERACAO);
-    set("modalGenero", jogo.GENERO_DESCRICAO || "N/A");
-
-    if (imgEl) {
-      imgEl.src = jogo.LINKIMAGEM ? `/images/${jogo.LINKIMAGEM}` : "/images/placeholder.png";
-      imgEl.alt = jogo.NOME || "Capa do Jogo";
-    }
-  } catch (err) {
-    console.error(err);
-    set("modalTitulo", "Erro ao carregar");
-    set("modalHabilidades", "Erro ao carregar");
-    set("modalGenero", "Erro ao carregar");
-    set("modalIdioma", "Erro ao carregar");
-    set("modalPlataforma", "Erro ao carregar");
-    set("modalLicenca", "Erro ao carregar");
-    set("modalInteracao", "Erro ao carregar");
+  if (btnAnterior) btnAnterior.disabled = (paginaAtual === 1);
+  if (btnProximo) btnProximo.disabled = (paginaAtual === totalPaginas || jogosCompletos.length === 0);
+  if (infoPagina) {
+    infoPagina.textContent = `Página ${totalPaginas === 0 ? 0 : paginaAtual} de ${totalPaginas}`;
   }
 }
 
-function fecharModal() {
-  const modal = document.getElementById("modalDetalhes");
-  if (modal) modal.style.display = "none";
+function mudarPagina(direcao) {
+  const totalPaginas = Math.ceil(jogosCompletos.length / jogosPorPagina);
+  const novaPagina = paginaAtual + direcao;
+  if (novaPagina >= 1 && novaPagina <= totalPaginas) {
+    paginaAtual = novaPagina;
+    renderizarJogosDaPagina();
+    document.getElementById("lista")?.scrollIntoView({ behavior: "smooth" });
+  }
 }
 
-// fecha ao clicar fora do conteúdo
-window.addEventListener("click", (e) => {
-  const modal = document.getElementById("modalDetalhes");
-  if (modal && e.target === modal) modal.style.display = "none";
-});
-
-// Expondo funções usadas no HTML (paginacao e fechar)
 window.mudarPagina = mudarPagina;
-window.fecharModal = fecharModal;

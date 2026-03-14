@@ -10,27 +10,6 @@ function escapeHtml(str) {
     .replaceAll("'", "&#039;");
 }
 
-/**
- * Gera o HTML do card do jogo (padrão do catálogo)
- * @param {object} jogo
- * @param {object} options
- * @param {number[]} [options.favoritos]
- * @param {boolean} [options.mostrarEstrela]
- * @param {boolean} [options.mostrarBotaoDetalhes]
- * @param {boolean} [options.mostrarLink]
- * @param {function} [options.getImagem] - callback opcional p/ url da imagem
- */
-
-function escapeHtml(str) {
-  if (str == null) return "";
-  return String(str)
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
-}
-
 window.renderJogoCard = function renderJogoCard(jogo, options = {}) {
   const {
     favoritos = [],
@@ -41,13 +20,17 @@ window.renderJogoCard = function renderJogoCard(jogo, options = {}) {
   } = options;
 
   const id = Number(jogo.IDJOGO);
-  const classeAtiva = favoritos.includes(id) ? "ativa" : "";
-  const urlImg = jogo.LINKIMAGEM ? `/images/${jogo.LINKIMAGEM}` : `/images/placeholder.png`;  const nome = escapeHtml(jogo.NOME || "Sem título");
+  
+  // Normalizamos os IDs dos favoritos para números para garantir a comparação
+  const listaFavoritosNumerica = favoritos.map(f => Number(f));
+  const classeAtiva = listaFavoritosNumerica.includes(id) ? "ativa" : "";
+  
+  const urlImg = jogo.LINKIMAGEM ? `/images/${jogo.LINKIMAGEM}` : `/images/placeholder.png`;
+  const nome = escapeHtml(jogo.NOME || "Sem título");
   const interacao = escapeHtml(jogo.INTERACAO || "N/A");
   const descricao = escapeHtml(jogo.DESCRICAOIMAGEM || "Sem descrição disponível.");
   const habilidadeTxt = escapeHtml(jogo.HABILIDADES_CODIGOS || "N/A");
   const plataformaTxt = escapeHtml(jogo.PLATAFORMA_DESCRICAO || "N/A");
-  const componenteTxt = escapeHtml(jogo.COMPONENTES || jogo.COMPONENTES_DESCRICAO || "N/A");
   const link = jogo.LINK || "";
 
   return `
@@ -71,7 +54,7 @@ window.renderJogoCard = function renderJogoCard(jogo, options = {}) {
 
       <div class="card-footer">
         <div class="footer-icons">
-          ${mostrarEstrela ? `<span class="estrela-favorito ${classeAtiva}" data-action="favoritar">❤</span>` : ''}
+          ${mostrarEstrela ? `<span class="estrela-favorito ${classeAtiva}" data-action="favoritar" title="Favoritar">❤</span>` : ''}
           ${mostrarBotaoDetalhes ? `<button class="btn-icon" data-action="detalhes" title="Ver Detalhes">🔍</button>` : ''}
           <span class="rating-stars">⭐⭐⭐⭐⭐</span>
         </div>

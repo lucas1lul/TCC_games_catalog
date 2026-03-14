@@ -62,10 +62,18 @@ exports.getMe = (req, res) => {
   }
 };
 
-exports.updateMe = (req, res) => {
+exports.updateMe = async (req, res) => {
   try {
-    const usuarioId = req.user?.id || req.query.id;
-    const updatedUser = userService.updateMe(usuarioId, req.body);
+    // Nunca confie em IDs vindos do query/body para rotas "Me"
+    const usuarioId = req.session.user?.id;
+    
+    if (!usuarioId) return res.status(401).json({ error: "Não autorizado" });
+
+    const updatedUser = await userService.updateMe(usuarioId, req.body);
+    
+    // Atualiza o nome ou perfil na sessão caso tenham mudado
+    req.session.user = { ...req.session.user, ...updatedUser };
+    
     res.status(200).json(updatedUser);
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -81,11 +89,23 @@ exports.listUsers = (req, res) => {
   }
 };
 
-exports.toggleFavorito = (req, res) => {
+exports.toggleFavorito = async (req, res) => { // Adicionei async caso o service seja assíncrono
   try {
-    const { usuarioId, jogoId } = req.body;
+    // O jogoId vem do body (enviado pelo fetch), 
+    // mas o usuarioId vem da SESSÃO (segurança)
+    const { jogoId } = req.body;
+    const usuarioId = req.session.user?.id;
 
-    const favoritos = userService.toggleFavorito(usuarioId, jogoId);
+    if (!usuarioId) {
+      return res.status(401).json({ error: "Sessão inválida ou expirada" });
+    }
+
+    // Chama o service passando o ID que veio da sessão
+    const favoritos = await userService.toggleFavorito(usuarioId, jogoId);
+
+    // Importante: Atualize os favoritos na sessão também! 
+    // Assim, ao dar F5, a navbar e o catálogo já sabem os novos favoritos.
+    req.session.user.favoritos = favoritos;
 
     res.status(200).json({ favoritos });
   } catch (error) {
