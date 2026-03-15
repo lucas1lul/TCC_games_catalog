@@ -18,7 +18,8 @@ exports.login = async (req, res) => {
     req.session.user = {
       id: user.id,
       nome: user.nome,
-      perfil: user.perfil
+      perfil: user.perfil,
+      favoritos: user.favoritos || []
     };
 
     req.session.save((err) => {

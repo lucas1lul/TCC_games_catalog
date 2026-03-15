@@ -1,0 +1,9 @@
+{
+  "verbose": true,
+  "ignore": [
+    "*.json",
+    "src/models/*.json",
+    "node_modules"
+  ],
+  "ext": "js, html, css"
+}

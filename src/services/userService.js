@@ -58,9 +58,9 @@ exports.updateMe = (usuarioId, data) => {
   return updatedUser;
 };
 
-exports.toggleFavorito = (usuarioId, jogoId) => {
+exports.toggleFavorito = async (usuarioId, jogoId) => {
 
-  const user = userRepository.findById(usuarioId);
+  const user = await userRepository.findById(usuarioId);
 
   if (!user) {
     throw new Error("Usuário não encontrado");
@@ -71,7 +71,6 @@ exports.toggleFavorito = (usuarioId, jogoId) => {
   }
 
   const jogoIdNumber = Number(jogoId);
-
   const jaFavoritado = user.favoritos.includes(jogoIdNumber);
 
   if (jaFavoritado) {
@@ -80,7 +79,7 @@ exports.toggleFavorito = (usuarioId, jogoId) => {
     user.favoritos.push(jogoIdNumber);
   }
 
-  userRepository.update(usuarioId, { favoritos: user.favoritos });
+  await userRepository.update(usuarioId, { favoritos: user.favoritos });
 
   return user.favoritos;
 };

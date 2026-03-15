@@ -3,226 +3,165 @@ let meusJogosOriginais = [];
 let jogosFiltrados = [];
 let usuarioLogado = null;
 
-document.addEventListener("DOMContentLoaded", () => {
-  const usuarioSessao = fetch('/api/me', {credentials: 'include'});
+document.addEventListener("DOMContentLoaded", async () => {
+    // 1. Verificar a sessão
+    await verificarSessao();
 
-  if (!usuarioSessao) {
-    alert("Acesso negado. Por favor, faça login.");
-    window.location.href = "/login.html";
-    return;
-  }
-
-  usuarioLogado = JSON.parse(usuarioSessao);
-
-  // displays
-  const nomeEl = document.getElementById("nomeDisplay");
-  const perfilEl = document.getElementById("perfilDisplay");
-  if (nomeEl) nomeEl.textContent = usuarioLogado.nome || "";
-  if (perfilEl) perfilEl.textContent = usuarioLogado.perfil || "";
-
-  configurarInterfacePorPerfil((usuarioLogado.perfil || "").toLowerCase());
-
-  // listeners de filtro
-  const filtroStatus = document.getElementById("filtroStatus");
-  const filtroCurso = document.getElementById("filtroCurso");
-
-  if (filtroStatus) filtroStatus.addEventListener("change", filtrarMeusJogos);
-  if (filtroCurso) filtroCurso.addEventListener("input", filtrarMeusJogos);
-
-  // Delegação de clique nos cards (Detalhes/Favoritar)
-  const container = document.getElementById("listaFavoritos");
-  if (container) {
-    container.addEventListener("click", (e) => {
-      const card = e.target.closest(".jogo-card");
-      if (!card) return;
-
-      const idJogo = Number(card.dataset.jogoId);
-      if (!Number.isFinite(idJogo)) return;
-
-      // Detalhes
-      if (e.target.closest('[data-action="detalhes"]')) {
-        if (typeof window.abrirDetalhes === "function") {
-          window.abrirDetalhes(idJogo);
-        } else {
-          console.warn("abrirDetalhes não existe nesta página.");
-        }
+    if (!usuarioLogado) {
+        alert("Acesso negado. Por favor, faça login.");
+        window.location.href = "/login"; 
         return;
-      }
-      // Favoritar
-      if (e.target.closest('[data-action="favoritar"]')) {
-        toggleFavorito(idJogo, e.target.closest('[data-action="favoritar"]'));
-        return;
-      }
-      if (e.target.closest('[data-action="avaliar"]')) {
-        const jogo = jogosCompletos.find(j => Number(j.IDJOGO) === idJogo) || meusJogosOriginais?.find?.(j => Number(j.IDJOGO) === idJogo);
-        abrirModalAvaliar(idJogo, jogo?.NOME);
-        return;
-      }
-    });
-  }
+    }
 
-  carregarMeusDados();
+    // Atualizar displays de perfil
+    const nomeEl = document.getElementById("nomeDisplay");
+    const perfilEl = document.getElementById("perfilDisplay");
+    if (nomeEl) nomeEl.textContent = usuarioLogado.nome || "";
+    if (perfilEl) perfilEl.textContent = usuarioLogado.perfil || "";
+
+    configurarInterfacePorPerfil((usuarioLogado.perfil || "").toLowerCase());
+
+    // Listeners de filtro
+    document.getElementById("filtroStatus")?.addEventListener("change", filtrarMeusJogos);
+    document.getElementById("filtroCurso")?.addEventListener("input", filtrarMeusJogos);
+
+    // Delegação de clique nos cards
+    const container = document.getElementById("listaFavoritos");
+    if (container) {
+        container.addEventListener("click", (e) => {
+            const card = e.target.closest(".jogo-card");
+            if (!card) return;
+
+            const idJogo = Number(card.dataset.jogoId);
+            if (!Number.isFinite(idJogo)) return;
+
+            // Ação de Detalhes
+            if (e.target.closest('[data-action="detalhes"]')) {
+                if (typeof window.abrirDetalhes === "function") window.abrirDetalhes(idJogo);
+            } 
+            // Ação de Favoritar/Desfavoritar (O coração/estrela)
+            else if (e.target.closest('[data-action="favoritar"]')) {
+                toggleFavorito(idJogo, e.target.closest('[data-action="favoritar"]'));
+            }
+        });
+    }
+
+    // 2. Carregar os dados
+    carregarMeusDados();
 });
 
-// --- LÓGICA DE INTERFACE ---
-function configurarInterfacePorPerfil(perfil) {
-  const secaoProfessor = document.getElementById("secaoProfessor");
-  if (!secaoProfessor) return;
-
-  if (perfil.includes("professor") || perfil.includes("administrador")) {
-    secaoProfessor.classList.add("mostrar-gestao");
-  } else {
-    secaoProfessor.classList.remove("mostrar-gestao");
-  }
-}
-
-// --- FILTROS ---
-function filtrarMeusJogos() {
-  const status = document.getElementById("filtroStatus")?.value || "tudo";
-  const busca = (document.getElementById("filtroCurso")?.value || "").toLowerCase().trim();
-
-  jogosFiltrados = meusJogosOriginais.filter((jogo) => {
-    // Como hoje seus favoritos vêm do endpoint, todos aqui já são favoritados
-    const matchStatus =
-      status === "tudo" ||
-      status === "favoritados" ||
-      (status === "avaliados" && jogo.isAvaliado);
-
-    const nome = (jogo.NOME || "").toLowerCase();
-    const matchTexto = !busca || nome.includes(busca);
-
-    return matchStatus && matchTexto;
-  });
-
-  renderizarJogos(jogosFiltrados);
-}
-
-// --- RENDERIZAÇÃO ---
-function renderizarJogos(lista) {
-  const container = document.getElementById("listaFavoritos");
-  if (!container) return;
-
-  container.innerHTML = "";
-
-  if (!Array.isArray(lista) || lista.length === 0) {
-    container.innerHTML = "<p>Nenhum jogo encontrado.</p>";
-    return;
-  }
-
-  const favoritos = usuarioLogado?.favoritos || [];
-
-  lista.forEach((jogo) => {
-    container.innerHTML += renderJogoCard(jogo, {
-      favoritos,
-      mostrarEstrela: true,
-      mostrarBotaoDetalhes: true,
-      mostrarLink: true,
-    });
-  });
+async function verificarSessao() {
+    try {
+        const res = await fetch('/api/me', { 
+            credentials: 'include',
+            headers: { 'Cache-Control': 'no-cache' }
+        });
+        if (!res.ok) { usuarioLogado = null; return; }
+        const data = await res.json();
+        usuarioLogado = (data && data.user && data.user.id) ? data.user : null;
+    } catch (e) {
+        console.error("Erro na comunicação com o servidor:", e);
+        usuarioLogado = null;
+    }
 }
 
 async function carregarMeusDados() {
-  const container = document.getElementById("listaFavoritos");
-  if (container) container.innerHTML = "Carregando...";
+    const container = document.getElementById("listaFavoritos");
+    if (container) container.innerHTML = "Carregando seus favoritos...";
 
-  try {
-    const responseFav = await fetch(`/api/usuarios/${usuarioLogado.id}/favoritos`);
-    if (!responseFav.ok) throw new Error("Falha ao carregar favoritos");
+    try {
+        const responseFav = await fetch(`/api/usuarios/${usuarioLogado.id}/favoritos`, {
+            credentials: 'include'
+        });
+        
+        if (!responseFav.ok) throw new Error("Falha ao carregar favoritos");
 
-    const jogosFavoritos = await responseFav.json();
+        meusJogosOriginais = await responseFav.json() || [];
+        jogosFiltrados = [...meusJogosOriginais];
 
-    meusJogosOriginais = jogosFavoritos || [];
-    jogosFiltrados = [...meusJogosOriginais];
+        if (meusJogosOriginais.length === 0) {
+            container.innerHTML = "<p>Você ainda não favoritou nenhum jogo. ❤️</p>";
+            return;
+        }
 
-    if (meusJogosOriginais.length === 0) {
-      container.innerHTML = "<p>Você ainda não favoritou nenhum jogo. ❤️</p>";
-      return;
+        renderizarJogos(jogosFiltrados);
+    } catch (error) {
+        console.error("Erro ao carregar meus jogos:", error);
+        if (container) container.innerHTML = '<p style="color:red">❌ Erro ao carregar favoritos.</p>';
     }
-
-    console.log("Jogos favoritos recebidos:", meusJogosOriginais);
-
-    renderizarJogos(jogosFiltrados);
-
-  } catch (error) {
-    console.error("Erro ao carregar meus jogos:", error);
-    container.innerHTML =
-      '<p style="color:red">❌ Erro ao carregar Meus Jogos.</p>';
-  }
 }
 
-// --- FAVORITAR (reaproveita a mesma rota do catálogo) ---
-async function toggleFavorito(jogoId, elementoEstrela) {
-  const usuarioLogadoLocal = JSON.parse(fetch('/api/me', {credentials: 'include'}));
-  if (!usuarioLogadoLocal) {
-    alert("Você precisa estar logado para favoritar!");
-    return;
-  }
+function renderizarJogos(lista) {
+    const container = document.getElementById("listaFavoritos");
+    if (!container) return;
+    container.innerHTML = "";
 
-  try {
-    const response = await fetch("/api/favoritos", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        usuarioId: usuarioLogadoLocal.id,
-        jogoId: jogoId,
-      }),
+    const favoritos = usuarioLogado?.favoritos || [];
+
+    lista.forEach((jogo) => {
+        // Usa a função do jogoCard.js
+        container.innerHTML += window.renderJogoCard(jogo, {
+            favoritos,
+            mostrarEstrela: true,
+            mostrarBotaoDetalhes: true,
+            mostrarLink: true,
+        });
+    });
+}
+
+async function toggleFavorito(jogoId, elementoEstrela) {
+    try {
+        const response = await fetch("/api/favoritos", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            credentials: "include",
+            body: JSON.stringify({ jogoId }) 
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            // Sincroniza a sessão local com o servidor
+            usuarioLogado.favoritos = data.favoritos;
+
+            const listaIds = (data.favoritos || []).map(Number);
+            const aindaFavoritado = listaIds.includes(Number(jogoId));
+
+            // Se desfavoritou, remove o card da tela
+            if (!aindaFavoritado) {
+                meusJogosOriginais = meusJogosOriginais.filter((j) => Number(j.IDJOGO) !== Number(jogoId));
+                filtrarMeusJogos(); 
+            }
+        }
+    } catch (error) {
+        console.error("Erro ao favoritar:", error);
+    }
+}
+
+function filtrarMeusJogos() {
+    const status = document.getElementById("filtroStatus")?.value || "tudo";
+    const busca = (document.getElementById("filtroCurso")?.value || "").toLowerCase().trim();
+
+    jogosFiltrados = meusJogosOriginais.filter((jogo) => {
+        const matchStatus = status === "tudo" || status === "favoritados" || (status === "avaliados" && jogo.isAvaliado);
+        const nome = (jogo.NOME || "").toLowerCase();
+        const matchTexto = !busca || nome.includes(busca);
+        return matchStatus && matchTexto;
     });
 
-    const data = await response.json();
-
-    if (response.ok) {
-      // atualiza storage + UI
-      usuarioLogadoLocal.favoritos = data.favoritos;
-      localStorage.setItem("usuarioLogado", JSON.stringify(usuarioLogadoLocal));
-      usuarioLogado = usuarioLogadoLocal;
-
-      // se o usuário desfavoritou, remove da lista de "Meus jogos"
-      const aindaFavoritado = (data.favoritos || []).map(Number).includes(Number(jogoId));
-      if (!aindaFavoritado) {
-        meusJogosOriginais = meusJogosOriginais.filter((j) => Number(j.IDJOGO) !== Number(jogoId));
-        filtrarMeusJogos(); // re-render respeitando filtros
-      } else {
-        elementoEstrela.classList.toggle("ativa");
-      }
-    }
-  } catch (error) {
-    console.error("Erro ao favoritar:", error);
-  }
+    renderizarJogos(jogosFiltrados);
 }
 
-// --- EXPORT CSV (opcional) ---
-// OBS: só funciona se você tiver checkboxes no HTML com .check-jogo e data-id
-function exportarLista() {
-  const checkboxes = document.querySelectorAll(".check-jogo:checked");
-  const idsSelecionados = Array.from(checkboxes)
-    .map((cb) => Number(cb.dataset.id))
-    .filter(Number.isFinite);
-
-  if (idsSelecionados.length === 0) {
-    alert("Selecione ao menos um jogo para exportar.");
-    return;
-  }
-
-  const dadosParaExportar = meusJogosOriginais.filter((j) => idsSelecionados.includes(Number(j.IDJOGO)));
-
-  let csvContent = "\uFEFFID;Titulo;Link;Idioma\n";
-  dadosParaExportar.forEach((j) => {
-    csvContent += `${j.IDJOGO};${(j.NOME || "").replaceAll(";", ",")};${j.LINK || ""};${j.IDIOMA || ""}\n`;
-  });
-
-  const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-  const link = document.createElement("a");
-  link.href = URL.createObjectURL(blob);
-  link.download = "meus_jogos_selecionados.csv";
-  link.click();
+function configurarInterfacePorPerfil(perfil) {
+    const secaoProfessor = document.getElementById("secaoProfessor");
+    if (!secaoProfessor) return;
+    secaoProfessor.style.display = (perfil.includes("professor") || perfil.includes("administrador")) ? "block" : "none";
 }
 
-// --- LOGOUT ---
 function logout() {
-  localStorage.removeItem("usuarioLogado");
-  window.location.href = "/catalogo.html";
+    // Agora o logout deve ser feito via API para limpar a sessão no servidor
+    fetch('/api/logout', { method: 'POST', credentials: 'include' })
+        .then(() => window.location.href = "/catalogo.html");
 }
 
-// expõe ações se você chamar via HTML
-window.exportarLista = exportarLista;
 window.logout = logout;
