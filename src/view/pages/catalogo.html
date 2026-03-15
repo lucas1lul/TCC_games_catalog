@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Catálogo de Serious Games | IFF</title>
-    <!--<link rel="stylesheet" href="/css/styles.css">-->
     <link rel="stylesheet" href="/css/catalogo.css">
     <link rel="stylesheet" href="/css/navbar.css">
 </head>
@@ -28,8 +27,7 @@
             <button type="submit">Filtrar</button>
         </form>
 
-
-        <div id="lista">Aguardando clique em 'Filtrar'...</div>
+        <div id="lista">Aguardando carregamento...</div>
 
         <div id="paginacao" style="text-align: center; margin-top: 20px;">
             <button id="btnAnterior" onclick="mudarPagina(-1)" disabled>Anterior</button>
@@ -56,26 +54,19 @@
                     <div class="info-item"><strong>🎮 Plataforma:</strong> <span id="modalPlataforma"></span></div>
                     <div class="info-item"><strong>📜 Licença:</strong> <span id="modalLicenca"></span></div>
                     <div class="info-item"><strong>🤝 Interação:</strong> <span id="modalInteracao"></span></div>
+
+                    <hr style="margin:15px 0;">
+                    <div class="info-item">
+                        <strong>⭐ Média de Avaliações:</strong> <span id="detalheMedia">Carregando...</span>
+                    </div>
+
+                    <h3 style="margin:15px 0 8px;">💬 Comentários</h3>
+                    <div id="listaComentarios">Nenhum comentário ainda.</div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="modal">
-        <div class="modal-content">
-            <button class="close-modal" onclick="fecharModal()" aria-label="Fechar modal">
-                &times;
-            </button>
-            <div id="detalhesModalBody">Carregando...</div>
-        </div>
-        <hr style="margin:15px 0;">
-        <div class="info-item">
-            <strong>⭐ Média:</strong> <span id="detalheMedia">Carregando...</span>
-        </div>
-        <h3 style="margin:15px 0 8px;">💬 Comentários</h3>
-        <div id="listaComentarios"></div>
-    </div>
 
-    <!-- MODAL AVALIAR -->
     <div id="modalAvaliar" class="modal">
         <div class="modal-content" style="max-width:650px;">
             <button class="close-modal" onclick="fecharModalAvaliar()" aria-label="Fechar modal">
@@ -86,7 +77,8 @@
             <div style="display:flex; gap:10px; align-items:center; margin:10px 0 15px;">
                 <strong>Sua nota:</strong>
                 <div id="estrelasAvaliacao" role="radiogroup" aria-label="Selecione de 1 a 5 estrelas">
-                </div> <span id="notaSelecionada" style="font-weight:bold;">—</span>
+                </div>
+                <span id="notaSelecionada" style="font-weight:bold;">—</span>
             </div>
 
             <label for="comentarioAvaliacao"><strong>Comentário (opcional):</strong></label>
@@ -103,6 +95,7 @@
 
     <script src="/js/navbar.js"></script>
     <script src="/js/jogoCard.js"></script>
+    <script src="/js/modalDetalhes.js"></script>
     <script src="/js/avaliacoes.js"></script>
     <script src="/js/catalogo.js"></script>
 
