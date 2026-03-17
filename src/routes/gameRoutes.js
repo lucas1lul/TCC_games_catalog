@@ -26,4 +26,7 @@ router.delete(
   gameController.deleteGame
 );
 
+router.get('/games/pending', authMiddleware.authorizeRoles("administrador"), gameController.listPending);
+router.put('/games/:id/status', authMiddleware.authorizeRoles("administrador"), gameController.updateGameStatus);
+
 module.exports = router;

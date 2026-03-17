@@ -88,10 +88,31 @@ exports.updateGame = async (req, res) => {
 exports.getPendingGames = async (req, res) => {
     try {
         const [rows] = await db.promise().query(
-            "SELECT * FROM jogos WHERE status = 'pendente'"
+            "SELECT * FROM jogos WHERE STATUS = 'pendente'"
         );
         res.json(rows);
     } catch (error) {
         res.status(500).json({ error: "Erro ao buscar submissões pendentes." });
+    }
+};
+
+exports.listPending = async (req, res) => {
+    try {
+        const pendingGames = await gameRepository.findPending();
+        res.json(pendingGames);
+    } catch (error) {
+        res.status(500).json({ error: "Erro ao buscar jogos pendentes." });
+    }
+};
+
+exports.updateGameStatus = async (req, res) => {
+    const { id } = req.params;
+    const { status } = req.body;
+
+    try {
+        await gameRepository.updateStatus(id, status);
+        res.json({ message: `O jogo agora está ${status}!` });
+    } catch (error) {
+        res.status(500).json({ error: "Erro ao atualizar o status do jogo." });
     }
 };

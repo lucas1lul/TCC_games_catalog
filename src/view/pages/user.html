@@ -13,85 +13,113 @@
 <body>
   <div id="navbar-placeholder"></div>
 
-  <main id="conteudo-principal" class="account-page">
-    <div class="account-header">
-      <h1>Configurações da conta</h1>
-      <p class="account-subtitle">Atualize seus dados cadastrais.</p>
-    </div>
+  <main class="dashboard-container">
+    <aside class="sidebar">
+      <nav class="sidebar-nav">
+        <button class="nav-btn active" onclick="showSection('section-perfil', this)">👤 Meus Dados</button>
+        
+        <div id="menu-admin" style="display: none;">
+          <p class="menu-label">Administração</p>
+          <button class="nav-btn" onclick="showSection('section-cadastro-jogo', this)">🎮 Cadastrar Jogo</button>
+          <button class="nav-btn" onclick="showSection('section-curadoria', this)">📋 Analisar Sugestões</button>
+        </div>
+      </nav>
+    </aside>
 
-    <section class="account-card">
+    <div class="account-page">
       <div id="status" class="status" aria-live="polite"></div>
 
-      <form id="formConta" class="account-form">
-        <div class="form-row">
-          <label for="nome">Nome</label>
-          <input id="nome" name="nome" type="text" placeholder="Seu nome" required />
-        </div>
-        <div class="form-row">
-          <label for="email">E-mail</label>
-          <input id="email" name="email" type="email" placeholder="seuemail@exemplo.com" required />
+      <section id="section-perfil" class="account-card section-content">
+        <div class="account-header">
+          <h1>Configurações da conta</h1>
+          <p class="account-subtitle">Atualize seus dados cadastrais.</p>
         </div>
 
-        <div class="divider"></div>
-        <h2 class="section-title">Alterar senha (opcional)</h2>
+        <form id="formConta" class="account-form">
+          <div class="form-row">
+            <label for="nome">Nome</label>
+            <input id="nome" name="nome" type="text" placeholder="Seu nome" required />
+          </div>
+          <div class="form-row">
+            <label for="email">E-mail</label>
+            <input id="email" name="email" type="email" placeholder="seuemail@exemplo.com" required />
+          </div>
 
-        <div class="form-row">
-          <label for="senhaAtual">Senha atual</label>
-          <input id="senhaAtual" type="password" placeholder="Digite a senha atual" />
-        </div>
-        <div class="form-row">
-          <label for="novaSenha">Nova senha</label>
-          <input id="novaSenha" type="password" placeholder="Mínimo 6 caracteres" />
-        </div>
-        <div class="form-row">
-          <label for="confirmarNovaSenha">Confirmar nova senha</label>
-          <input id="confirmarNovaSenha" type="password" placeholder="Repita a nova senha" />
-        </div>
+          <div class="divider"></div>
+          <h2 class="section-title">Alterar senha (opcional)</h2>
 
-        <div class="form-actions">
-          <button type="submit" class="btn-primary">Salvar alterações</button>
-        </div>
-      </form>
-    </section>
+          <div class="form-row">
+            <label for="senhaAtual">Senha atual</label>
+            <input id="senhaAtual" type="password" placeholder="Digite a senha atual" />
+          </div>
+          <div class="form-row">
+            <label for="novaSenha">Nova senha</label>
+            <input id="novaSenha" type="password" placeholder="Mínimo 6 caracteres" />
+          </div>
+          <div class="form-row">
+            <label for="confirmarNovaSenha">Confirmar nova senha</label>
+            <input id="confirmarNovaSenha" type="password" placeholder="Repita a nova senha" />
+          </div>
 
-    <section id="area-admin" class="account-card"
-      style="display: none; margin-top: 40px; border-top: 4px solid #8b0000;">
-      <h2 class="section-title">Painel do Administrador</h2>
-      <p>Cadastrar novo Serious Game no catálogo.</p>
+          <div class="form-actions">
+            <button type="submit" class="btn-primary">Salvar alterações</button>
+          </div>
+        </form>
+      </section>
 
-      <form id="formCadastroJogo" class="account-form">
-        <div class="form-row">
-          <label for="nome_jogo">Nome do Jogo *</label>
-          <input id="nome_jogo" type="text" required />
+      <section id="section-cadastro-jogo" class="account-card section-content" style="display: none;">
+        <h2 class="section-title">Cadastrar Novo Jogo</h2>
+        <form id="formCadastroJogo" class="account-form">
+          <div class="form-row">
+            <label for="nome_jogo">Nome do Jogo *</label>
+            <input id="nome_jogo" type="text" required />
+          </div>
+          <div class="form-row">
+            <label for="link_acesso">Link de Acesso *</label>
+            <input id="link_acesso" type="url" required />
+          </div>
+          <div class="form-row">
+            <label for="linkimagem">Nome da Imagem</label>
+            <input id="linkimagem" type="text" />
+          </div>
+          <div class="form-row">
+            <label for="idioma">Idioma</label>
+            <input id="idioma" type="text" />
+          </div>
+          <div class="form-row">
+            <label for="interacao">Interação</label>
+            <select id="interacao">
+              <option value="Single Player">Single Player</option>
+              <option value="Multiplayer">Multiplayer</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <label for="licensa">Licença</label>
+            <input id="licensa" type="text" />
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn-primary">Cadastrar Jogo</button>
+          </div>
+        </form>
+      </section>
+
+      <section id="section-curadoria" class="account-card section-content" style="display: none;">
+        <h2 class="section-title">Sugestões de Jogos</h2>
+        <div class="table-container">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Jogo</th>
+                <th>Link</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody id="tabela-sugestoes"></tbody>
+          </table>
         </div>
-        <div class="form-row">
-          <label for="link_acesso">Link de Acesso *</label>
-          <input id="link_acesso" type="url" required />
-        </div>
-      <div class="form-row">
-        <label for="linkimagem">Nome da Imagem (Ex: matrix.png)</label>
-        <input id="linkimagem" type="text" />
-      </div>
-      <div class="form-row">
-        <label for="idioma">Idioma</label>
-        <input id="idioma" type="text" placeholder="Ex: Português" />
-      </div>
-      <div class="form-row">
-        <label for="interacao">Interação</label>
-        <select id="interacao">
-          <option value="Single Player">Single Player</option>
-          <option value="Multiplayer">Multiplayer</option>
-        </select>
-      </div>
-      <div class="form-row">
-        <label for="licensa">Licença</label>
-        <input id="licensa" type="text" placeholder="Ex: Grátis" />
-      </div>
-      <div class="form-actions">
-        <button type="submit" class="btn-primary">Cadastrar Jogo</button>
-      </div>
-      </form>
-    </section>
+      </section>
+
+    </div>
   </main>
 
   <script src="/js/navbar.js"></script>

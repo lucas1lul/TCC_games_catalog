@@ -33,7 +33,7 @@ exports.findAll = async (filters = {}) => {
     `;
   }
 
-  query += ` WHERE 1=1 `;
+  query += ` WHERE J.STATUS = 'aprovado' `;;
 
   if (nome) { query += ` AND J.NOME LIKE ?`; params.push(`${nome}%`); }
   if (idioma) { query += ` AND J.IDIOMA LIKE ?`; params.push(`%${idioma}%`); }
@@ -67,11 +67,11 @@ exports.findById = async (id) => {
 };
 
 exports.createGame = async (data) => {
-  const { NOME, LINKIMAGEM, LINK, IDIOMA, INTERACAO, LICENSA } = data;
+  const { NOME, LINKIMAGEM, LINK, IDIOMA, INTERACAO, LICENSA, STATUS } = data;
 
   const sql = `
-    INSERT INTO JOGOS (NOME, LINKIMAGEM, LINK, IDIOMA, INTERACAO, LICENSA)
-    VALUES (?, ?, ?, ?, ?, ?)
+    INSERT INTO JOGOS (NOME, LINKIMAGEM, LINK, IDIOMA, INTERACAO, LICENSA, STATUS)
+    VALUES (?, ?, ?, ?, ?, ?, ?)
   `;
 
   const [result] = await db.promise().query(sql, [
@@ -80,7 +80,8 @@ exports.createGame = async (data) => {
     LINK,
     IDIOMA,
     INTERACAO,
-    LICENSA
+    LICENSA,
+    STATUS || 'pendente'
   ]);
 
   return result.insertId;
@@ -127,5 +128,21 @@ exports.updateGame = async (id, data) => {
 
   const [result] = await db.promise().query(query, params);
 
+  return result;
+};
+
+exports.findPending = async () => {
+  const query = `
+    SELECT IDJOGO, NOME, LINK, IDIOMA, STATUS 
+    FROM JOGOS 
+    WHERE STATUS = 'pendente'
+  `;
+  const [rows] = await db.promise().query(query);
+  return rows;
+};
+
+exports.updateStatus = async (id, novoStatus) => {
+  const query = `UPDATE JOGOS SET STATUS = ? WHERE IDJOGO = ?`;
+  const [result] = await db.promise().query(query, [novoStatus, id]);
   return result;
 };
