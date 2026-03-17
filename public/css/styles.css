@@ -1,0 +1,37 @@
+/* --- CLASSES DE ACESSIBILIDADE --- */
+
+/* Esconde elementos visualmente, mas mantém legível para leitores de tela */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
+/* Estilo do link de salto (Skip Link) - Fica visível apenas quando focado pelo teclado (TAB) */
+.skip-link:focus {
+    position: static;
+    width: auto;
+    height: auto;
+    clip: auto;
+    background-color: #2E7D32; /* Cor principal (ajuste se necessário) */
+    color: white;
+    padding: 10px;
+    text-decoration: none;
+    font-weight: bold;
+    z-index: 9999;
+    display: block;
+}
+
+/* Ajuste para botões de fechar modal (que substituíram os spans) */
+button.close-modal {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+}

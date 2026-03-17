@@ -4,24 +4,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minha Área | Serious Games IFF</title>
-    <!--<link rel="stylesheet" href="/css/styles.css">-->
+    <title>Minha Área | Jogos Favoritos</title>
     <link rel="stylesheet" href="/css/catalogo.css">
     <link rel="stylesheet" href="/css/navbar.css">
     <link rel="stylesheet" href="/css/my_games.css">
+    <link rel="stylesheet" href="/css/styles.css">
+
 </head>
 
 <body>
+    <a href="#conteudo-principal" class="sr-only skip-link">Saltar para o conteúdo principal</a>
+
     <div id="navbar-placeholder"></div>
 
     <div style="max-width: 1200px; margin: 0 auto; padding: 20px;">
-        <div style="display: none;">
+        <div style="display: none;" aria-hidden="true">
             <span id="nomeDisplay"></span>
             <span id="perfilDisplay"></span>
         </div>
     </div>
 
-    <main style="max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; gap: 30px; padding: 20px;">
+    <main id="conteudo-principal" style="max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; gap: 30px; padding: 20px;">
+
+        <h1 class="sr-only">Meus Jogos Favoritos e Avaliados</h1>
 
         <section class="bloco-personalizado">
             <div id="filtros">
@@ -36,17 +41,17 @@
                     </select>
                 </div>
 
-                <input id="filtroCurso" placeholder="Curso">
-                <input id="filtroComponente" placeholder="Componente">
-                <input id="filtroHabilidade" placeholder="Habilidade">
-                <input id="filtroPlataforma" placeholder="Plataforma">
+                <input id="filtroCurso" placeholder="Curso" aria-label="Filtrar por Curso">
+                <input id="filtroComponente" placeholder="Componente" aria-label="Filtrar por Componente">
+                <input id="filtroHabilidade" placeholder="Habilidade" aria-label="Filtrar por Habilidade">
+                <input id="filtroPlataforma" placeholder="Plataforma" aria-label="Filtrar por Plataforma">
                 <button onclick="filtrarMeusJogos()">Filtrar</button>
             </div>
         </section>
 
         <section class="bloco-personalizado">
             <h2 style="color: var(--iff-text-dark); margin-bottom: 20px;">Meus Resultados</h2>
-            <div id="listaFavoritos" class="lista-container">
+            <div id="listaFavoritos" class="lista-container" aria-live="polite">
                 <p>Carregando jogos...</p>
             </div>
         </section>
@@ -69,16 +74,16 @@
 
     </main>
 
-    <!-- MODAL DE DETALHES -->
-    <div id="modalDetalhes" class="modal">
+    <div id="modalDetalhes" class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitulo">
         <div class="modal-content">
-            <span class="close-modal" onclick="fecharModal()">&times;</span>
+            <button class="close-modal" aria-label="Fechar detalhes" onclick="fecharModal()">&times;</button>
+            
             <div class="modal-grid">
                 <div class="modal-img-container">
                     <img id="modalImg" src="" alt="Capa do Jogo">
                 </div>
                 <div class="modal-info">
-                    <h2 id="modalTitulo"></h2>
+                    <h2 id="modalTitulo">Carregando detalhes...</h2>
                     <hr>
                     <div class="info-item"><strong>🎯 Habilidades:</strong> <span id="modalHabilidades"></span></div>
                     <div class="info-item"><strong>🎭 Gênero:</strong> <span id="modalGenero"></span></div>
@@ -99,17 +104,16 @@
 
     </div>
 
-    <!-- MODAL AVALIAR -->
-    <div id="modalAvaliar" class="modal">
+    <div id="modalAvaliar" class="modal" role="dialog" aria-modal="true" aria-labelledby="avaliarTitulo">
         <div class="modal-content" style="max-width:650px;">
-            <span class="close-modal" onclick="fecharModalAvaliar()">&times;</span>
+            <button class="close-modal" aria-label="Fechar avaliação" onclick="fecharModalAvaliar()">&times;</button>
 
             <h2 style="margin-top:0;" id="avaliarTitulo">Avaliar jogo</h2>
 
             <div style="display:flex; gap:10px; align-items:center; margin:10px 0 15px;">
                 <strong>Sua nota:</strong>
-                <div id="estrelasAvaliacao" aria-label="Selecione de 1 a 5 estrelas"></div>
-                <span id="notaSelecionada" style="font-weight:bold;">—</span>
+                <div id="estrelasAvaliacao" role="group" aria-label="Selecione de 1 a 5 estrelas"></div>
+                <span id="notaSelecionada" style="font-weight:bold;" aria-live="polite">—</span>
             </div>
 
             <label for="comentarioAvaliacao"><strong>Comentário (opcional):</strong></label>
@@ -129,7 +133,6 @@
     <script src="\js\modalDetalhes.js"></script>
     <script src="/js/avaliacoes.js"></script>
     <script src="/js/my_games.js"></script>
-
 
 </body>
 
