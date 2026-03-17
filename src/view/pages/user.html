@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,6 +9,7 @@
   <link rel="stylesheet" href="/css/user.css">
   <link rel="stylesheet" href="/css/styles.css">
 </head>
+
 <body>
   <div id="navbar-placeholder"></div>
 
@@ -52,41 +54,42 @@
       </form>
     </section>
 
-    <section id="area-admin" class="account-card" style="display: none; margin-top: 40px; border-top: 4px solid #8b0000;">
+    <section id="area-admin" class="account-card"
+      style="display: none; margin-top: 40px; border-top: 4px solid #8b0000;">
       <h2 class="section-title">Painel do Administrador</h2>
       <p>Cadastrar novo Serious Game no catálogo.</p>
-      
+
       <form id="formCadastroJogo" class="account-form">
         <div class="form-row">
-          <label for="gameNome">Nome do Jogo *</label>
-          <input id="gameNome" type="text" required />
+          <label for="nome_jogo">Nome do Jogo *</label>
+          <input id="nome_jogo" type="text" required />
         </div>
         <div class="form-row">
-          <label for="gameLink">Link de Acesso *</label>
-          <input id="gameLink" type="url" required />
+          <label for="link_acesso">Link de Acesso *</label>
+          <input id="link_acesso" type="url" required />
         </div>
-        <div class="form-row">
-          <label for="gameImg">Nome da Imagem (Ex: matrix.png)</label>
-          <input id="gameImg" type="text" />
-        </div>
-        <div class="form-row">
-          <label for="gameIdioma">Idioma</label>
-          <input id="gameIdioma" type="text" placeholder="Ex: Português" />
-        </div>
-        <div class="form-row">
-          <label for="gameInteracao">Interação</label>
-          <select id="gameInteracao">
-            <option value="Single Player">Single Player</option>
-            <option value="Multiplayer">Multiplayer</option>
-          </select>
-        </div>
-        <div class="form-row">
-          <label for="gameLicensa">Licença</label>
-          <input id="gameLicensa" type="text" placeholder="Ex: Grátis" />
-        </div>
-        <div class="form-actions">
-          <button type="submit" class="btn-primary">Cadastrar Jogo</button>
-        </div>
+      <div class="form-row">
+        <label for="linkimagem">Nome da Imagem (Ex: matrix.png)</label>
+        <input id="linkimagem" type="text" />
+      </div>
+      <div class="form-row">
+        <label for="idioma">Idioma</label>
+        <input id="idioma" type="text" placeholder="Ex: Português" />
+      </div>
+      <div class="form-row">
+        <label for="interacao">Interação</label>
+        <select id="interacao">
+          <option value="Single Player">Single Player</option>
+          <option value="Multiplayer">Multiplayer</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label for="licensa">Licença</label>
+        <input id="licensa" type="text" placeholder="Ex: Grátis" />
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="btn-primary">Cadastrar Jogo</button>
+      </div>
       </form>
     </section>
   </main>
@@ -94,4 +97,5 @@
   <script src="/js/navbar.js"></script>
   <script src="/js/user.js"></script>
 </body>
+
 </html>

@@ -28,6 +28,7 @@ exports.getGameById = async (req, res) => {
 const gameRepository = require('../repositories/gameRepository');
 
 exports.createGame = async (req, res) => {
+  console.log("Dados recebidos no Body:", req.body);
     // Validação da pré-condição: Perfil Administrativo
     if (!req.session.user || req.session.user.perfil !== 'administrador') {
         return res.status(403).json({ error: "Acesso negado: apenas administradores podem cadastrar jogos." });
@@ -58,7 +59,7 @@ exports.createGame = async (req, res) => {
 
         res.status(201).json({ message: "Jogo cadastrado com sucesso!", id: insertId });
     } catch (error) {
-        console.error("Erro detalhado no controller:", error); // Isso vai te salvar no terminal
+        console.error("Erro detalhado no controller:", error);
         res.status(500).json({ error: "Erro ao salvar no banco de dados." });
     }
 };

@@ -78,33 +78,37 @@ async function salvarAlteracoes(e) {
   }
 }
 
-// Lógica de cadastrar jogo (Exclusivo Admin)
+// js/user.js
 async function cadastrarJogo(e) {
   e.preventDefault();
+
   const jogo = {
-    NOME: document.getElementById("gameNome").value,
-    LINK: document.getElementById("gameLink").value,
-    LINKIMAGEM: document.getElementById("gameImg").value,
-    IDIOMA: document.getElementById("gameIdioma").value,
-    INTERACAO: document.getElementById("gameInteracao").value,
-    LICENSA: document.getElementById("gameLicensa").value
+    nome: document.getElementById("nome_jogo").value, // Pega do ID novo e envia chave minúscula
+    link: document.getElementById("link_acesso").value,
+    linkimagem: document.getElementById("linkimagem").value,
+    idioma: document.getElementById("idioma").value,
+    interacao: document.getElementById("interacao").value,
+    licensa: document.getElementById("licensa").value
   };
 
   try {
-    const res = await fetch("/api/jogos", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(jogo)
+    const response = await fetch('/api/games', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(jogo),
+      credentials: 'include'
     });
 
-    if (res.ok) {
-      alert("Jogo cadastrado com sucesso no catálogo!");
-      e.target.reset();
+    const result = await response.json();
+
+    if (response.ok) {
+      alert("Jogo cadastrado com sucesso!");
+      location.reload(); // Recarrega para ver o novo jogo no catálogo
     } else {
-      alert("Erro ao cadastrar jogo.");
+      alert("Erro: " + (result.error || result.message));
     }
-  } catch (err) {
-    console.error(err);
+  } catch (error) {
+    console.error("Erro na requisição:", error);
   }
 }
 
