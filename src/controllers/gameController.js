@@ -84,3 +84,14 @@ exports.updateGame = async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 };
+
+exports.getPendingGames = async (req, res) => {
+    try {
+        const [rows] = await db.promise().query(
+            "SELECT * FROM jogos WHERE status = 'pendente'"
+        );
+        res.json(rows);
+    } catch (error) {
+        res.status(500).json({ error: "Erro ao buscar submissões pendentes." });
+    }
+};

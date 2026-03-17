@@ -33,7 +33,7 @@ async function carregarDadosIniciais() {
   document.getElementById("email").value = usuarioLogado.email || "";
 
   // 2. Se for admin, mostra o formulário de cadastro de jogos
-  if (usuarioLogado.perfil === 'administrador' || usuarioLogado.perfil === 'professor') {
+  if (usuarioLogado.perfil === 'administrador') {
     document.getElementById("area-admin").style.display = "block";
   }
 }
