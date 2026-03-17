@@ -1,101 +1,115 @@
+let usuarioLogado = null;
+
 function setStatus(msg, type = "info") {
   const el = document.getElementById("status");
   if (!el) return;
   el.textContent = msg || "";
-  el.className = "status" + (type === "success" ? " success" : type === "error" ? " error" : "");
+  el.className = "status " + type;
+  setTimeout(() => { el.textContent = ""; el.className = "status"; }, 5000);
 }
 
-function getUsuarioLogado() {
-  const raw = fetch('/api/me', {credentials: 'include'});
-  return raw ? JSON.parse(raw) : null;
+// 1. Busca dados da sessão real no servidor
+async function verificarSessao() {
+  try {
+    const res = await fetch('/api/me', { credentials: 'include' });
+    if (!res.ok) return null;
+    const data = await res.json();
+    return data.user;
+  } catch (e) {
+    return null;
+  }
 }
 
-async function carregarMeusDados() {
-  const user = getUsuarioLogado();
-  if (!user?.id) {
-    setStatus("Você precisa estar logado para acessar esta página.", "error");
+async function carregarDadosIniciais() {
+  usuarioLogado = await verificarSessao();
+  
+  if (!usuarioLogado) {
+    window.location.href = "/login";
     return;
   }
 
-  setStatus("Carregando seus dados...");
-  try {
-    // JSON inicial: busca pelo id do usuário logado
-    const res = await fetch(`/api/users/me?id=${encodeURIComponent(user.id)}`);
-    const data = await res.json();
+  // Preenche formulário de perfil
+  document.getElementById("nome").value = usuarioLogado.nome || "";
+  document.getElementById("email").value = usuarioLogado.email || "";
 
-    if (!res.ok) throw new Error(data?.message || "Falha ao carregar usuário");
-
-    document.getElementById("nome").value = data.nome || "";
-    document.getElementById("email").value = data.email || "";
-    setStatus("");
-  } catch (err) {
-    console.error(err);
-    setStatus("Não foi possível carregar seus dados.", "error");
+  // 2. Se for admin, mostra o formulário de cadastro de jogos
+  if (usuarioLogado.perfil === 'administrador' || usuarioLogado.perfil === 'professor') {
+    document.getElementById("area-admin").style.display = "block";
   }
 }
 
+// Lógica de salvar dados do usuário (Nome/Senha)
 async function salvarAlteracoes(e) {
   e.preventDefault();
-
-  const user = getUsuarioLogado();
-  if (!user?.id) return setStatus("Sessão inválida. Faça login novamente.", "error");
-
   const nome = document.getElementById("nome").value.trim();
   const email = document.getElementById("email").value.trim();
   const senhaAtual = document.getElementById("senhaAtual").value;
   const novaSenha = document.getElementById("novaSenha").value;
-  const confirmarNovaSenha = document.getElementById("confirmarNovaSenha").value;
+  const confirmar = document.getElementById("confirmarNovaSenha").value;
 
-  if (!nome || !email) return setStatus("Nome e e-mail são obrigatórios.", "error");
+  let payload = { id: usuarioLogado.id, nome, email };
 
-  const vaiTrocarSenha = senhaAtual || novaSenha || confirmarNovaSenha;
-  if (vaiTrocarSenha) {
-    if (!senhaAtual || !novaSenha || !confirmarNovaSenha) {
-      return setStatus("Para alterar a senha, preencha todos os campos de senha.", "error");
-    }
-    if (novaSenha !== confirmarNovaSenha) {
-      return setStatus("Nova senha e confirmação não conferem.", "error");
-    }
-    if (novaSenha.length < 6) {
-      return setStatus("A nova senha deve ter pelo menos 6 caracteres.", "error");
-    }
+  if (senhaAtual || novaSenha) {
+    if (novaSenha !== confirmar) return setStatus("As senhas não conferem!", "error");
+    if (novaSenha.length < 6) return setStatus("Nova senha muito curta!", "error");
+    payload.senhaAtual = senhaAtual;
+    payload.novaSenha = novaSenha;
   }
-
-  setStatus("Salvando...");
 
   try {
     const res = await fetch("/api/users/me", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        id: user.id,
-        nome,
-        email,
-        senhaAtual: vaiTrocarSenha ? senhaAtual : undefined,
-        novaSenha: vaiTrocarSenha ? novaSenha : undefined
-      })
+      body: JSON.stringify(payload)
     });
 
-    const data = await res.json();
-    if (!res.ok) throw new Error(data?.message || "Erro ao salvar");
+    if (res.ok) {
+      setStatus("Dados atualizados com sucesso!", "success");
+      // Limpa campos de senha
+      document.getElementById("senhaAtual").value = "";
+      document.getElementById("novaSenha").value = "";
+      document.getElementById("confirmarNovaSenha").value = "";
+    } else {
+      const err = await res.json();
+      throw new Error(err.message || "Erro ao atualizar");
+    }
+  } catch (err) {
+    setStatus(err.message, "error");
+  }
+}
 
-    // atualiza localStorage (mantém perfil/favoritos etc.)
-    const atualizado = { ...user, nome, email };
-    localStorage.setItem("usuarioLogado", JSON.stringify(atualizado));
+// Lógica de cadastrar jogo (Exclusivo Admin)
+async function cadastrarJogo(e) {
+  e.preventDefault();
+  const jogo = {
+    NOME: document.getElementById("gameNome").value,
+    LINK: document.getElementById("gameLink").value,
+    LINKIMAGEM: document.getElementById("gameImg").value,
+    IDIOMA: document.getElementById("gameIdioma").value,
+    INTERACAO: document.getElementById("gameInteracao").value,
+    LICENSA: document.getElementById("gameLicensa").value
+  };
 
-    // limpa campos de senha
-    document.getElementById("senhaAtual").value = "";
-    document.getElementById("novaSenha").value = "";
-    document.getElementById("confirmarNovaSenha").value = "";
+  try {
+    const res = await fetch("/api/jogos", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(jogo)
+    });
 
-    setStatus("Dados atualizados com sucesso!", "success");
+    if (res.ok) {
+      alert("Jogo cadastrado com sucesso no catálogo!");
+      e.target.reset();
+    } else {
+      alert("Erro ao cadastrar jogo.");
+    }
   } catch (err) {
     console.error(err);
-    setStatus(err.message || "Falha ao salvar alterações.", "error");
   }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  carregarMeusDados();
+  carregarDadosIniciais();
   document.getElementById("formConta").addEventListener("submit", salvarAlteracoes);
+  document.getElementById("formCadastroJogo").addEventListener("submit", cadastrarJogo);
 });

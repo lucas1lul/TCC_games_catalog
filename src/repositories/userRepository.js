@@ -26,7 +26,7 @@ exports.findByEmail = (email) => {
   return users.find(user => user.email === email);
 };
 
-exports.create = (userData) => {
+exports.createUser = (userData) => {
   const users = readUsers();
 
   const newUser = {

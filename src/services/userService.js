@@ -12,7 +12,7 @@ exports.register = async ({ nome, email, senha }) => {
 
   const hashedPassword = await bcrypt.hash(senha, 10);
 
-  const newUser = userRepository.create({
+  const newUser = userRepository.createUser({
     nome,
     email,
     senha: hashedPassword,

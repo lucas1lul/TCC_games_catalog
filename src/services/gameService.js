@@ -32,9 +32,9 @@ exports.getGameById = async (id) => {
     return await gameRepository.findById(id);
 };
 
-exports.create = async (data) => {
+exports.createGame = async (data) => {
     const validatedData = mapAndValidateGame(data);
-    return await gameRepository.create(validatedData);
+    return await gameRepository.createGame(validatedData);
 };
 
 exports.deleteGame = async (id) => {

@@ -24,15 +24,44 @@ exports.getGameById = async (req, res) => {
   }
 };
 
-exports.create = async (req, res) => {
-  try {
-    const id = await gameService.create(req.body);
-    res.status(201).json({ mensagem: "Jogo cadastrado!", id });
-  } catch (error) {
-    res.status(500).json({ mensagem: "Erro ao salvar jogo" });
-  }
-};
+// Não esqueça de importar o repositório no topo do arquivo!
+const gameRepository = require('../repositories/gameRepository');
 
+exports.createGame = async (req, res) => {
+    // Validação da pré-condição: Perfil Administrativo
+    if (!req.session.user || req.session.user.perfil !== 'administrador') {
+        return res.status(403).json({ error: "Acesso negado: apenas administradores podem cadastrar jogos." });
+    }
+
+    // Adicionei 'licensa' e 'linkimagem' aqui, pois o banco de dados exige isso
+    const { nome, link, interacao, idioma, licensa, linkimagem, habilidades, generos, plataformas } = req.body;
+
+    // Fluxo Alternativo 3a: Validação de dados obrigatórios
+    if (!nome || !link || !interacao || !idioma) {
+        return res.status(400).json({ error: "Preencha todos os campos obrigatórios." });
+    }
+
+    try {
+        // A MÁGICA ACONTECE AQUI: Chamamos o repositório e mapeamos os dados
+        const insertId = await gameRepository.createGame({
+            NOME: nome,
+            LINK: link,
+            LINKIMAGEM: linkimagem || 'placeholder.png', // Fallback caso venha vazio
+            IDIOMA: idioma,
+            INTERACAO: interacao,
+            LICENSA: licensa || 'Não informada'
+        });
+
+        // Obs: As 'habilidades', 'generos' e 'plataformas' que vêm no req.body 
+        // precisarão ser inseridas em tabelas associativas (N:N) em um segundo momento,
+        // usando o 'insertId' gerado acima. Mas por enquanto, vamos focar em salvar o jogo principal!
+
+        res.status(201).json({ message: "Jogo cadastrado com sucesso!", id: insertId });
+    } catch (error) {
+        console.error("Erro detalhado no controller:", error); // Isso vai te salvar no terminal
+        res.status(500).json({ error: "Erro ao salvar no banco de dados." });
+    }
+};
 exports.deleteGame = async (req, res) => {
   try {
     await gameService.deleteGame(req.params.id);

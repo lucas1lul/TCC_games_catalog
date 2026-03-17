@@ -12,7 +12,7 @@ exports.getAvaliacoesByGame = (req, res) => {
 };
 
 // POST /api/avaliacoes
-exports.create = (req, res) => {
+exports.createAvaliacao = (req, res) => {
   try {
     const result = avaliacaoService.createAvaliacao(req.body);
     res.status(201).json(result);

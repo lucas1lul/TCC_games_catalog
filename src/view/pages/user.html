@@ -3,16 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Minha Conta</title>
-
+  <title>Minha Conta | IFF</title>
   <link rel="stylesheet" href="/css/navbar.css">
   <link rel="stylesheet" href="/css/user.css">
   <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
-  
-  <a href="#conteudo-principal" class="sr-only skip-link">Saltar para o conteúdo principal</a>
-
   <div id="navbar-placeholder"></div>
 
   <main id="conteudo-principal" class="account-page">
@@ -29,34 +25,67 @@
           <label for="nome">Nome</label>
           <input id="nome" name="nome" type="text" placeholder="Seu nome" required />
         </div>
-
         <div class="form-row">
           <label for="email">E-mail</label>
           <input id="email" name="email" type="email" placeholder="seuemail@exemplo.com" required />
         </div>
 
         <div class="divider"></div>
-
-        <h2 class="section-title" style="font-size: 1.1rem; margin-bottom: 15px;">Alterar senha (opcional)</h2>
+        <h2 class="section-title">Alterar senha (opcional)</h2>
 
         <div class="form-row">
           <label for="senhaAtual">Senha atual</label>
-          <input id="senhaAtual" name="senhaAtual" type="password" autocomplete="current-password" placeholder="Digite a senha atual" />
+          <input id="senhaAtual" type="password" placeholder="Digite a senha atual" />
         </div>
-
         <div class="form-row">
           <label for="novaSenha">Nova senha</label>
-          <input id="novaSenha" name="novaSenha" type="password" autocomplete="new-password" placeholder="Nova senha (mínimo 6 caracteres)" aria-describedby="senhaDica" />
-          <small id="senhaDica" class="sr-only">A nova senha deve ter no mínimo 6 caracteres.</small>
+          <input id="novaSenha" type="password" placeholder="Mínimo 6 caracteres" />
         </div>
-
         <div class="form-row">
           <label for="confirmarNovaSenha">Confirmar nova senha</label>
-          <input id="confirmarNovaSenha" name="confirmarNovaSenha" type="password" autocomplete="new-password" placeholder="Repita a nova senha" />
+          <input id="confirmarNovaSenha" type="password" placeholder="Repita a nova senha" />
         </div>
 
         <div class="form-actions">
           <button type="submit" class="btn-primary">Salvar alterações</button>
+        </div>
+      </form>
+    </section>
+
+    <section id="area-admin" class="account-card" style="display: none; margin-top: 40px; border-top: 4px solid #8b0000;">
+      <h2 class="section-title">Painel do Administrador</h2>
+      <p>Cadastrar novo Serious Game no catálogo.</p>
+      
+      <form id="formCadastroJogo" class="account-form">
+        <div class="form-row">
+          <label for="gameNome">Nome do Jogo *</label>
+          <input id="gameNome" type="text" required />
+        </div>
+        <div class="form-row">
+          <label for="gameLink">Link de Acesso *</label>
+          <input id="gameLink" type="url" required />
+        </div>
+        <div class="form-row">
+          <label for="gameImg">Nome da Imagem (Ex: matrix.png)</label>
+          <input id="gameImg" type="text" />
+        </div>
+        <div class="form-row">
+          <label for="gameIdioma">Idioma</label>
+          <input id="gameIdioma" type="text" placeholder="Ex: Português" />
+        </div>
+        <div class="form-row">
+          <label for="gameInteracao">Interação</label>
+          <select id="gameInteracao">
+            <option value="Single Player">Single Player</option>
+            <option value="Multiplayer">Multiplayer</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <label for="gameLicensa">Licença</label>
+          <input id="gameLicensa" type="text" placeholder="Ex: Grátis" />
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn-primary">Cadastrar Jogo</button>
         </div>
       </form>
     </section>

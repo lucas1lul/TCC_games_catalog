@@ -11,8 +11,8 @@ router.get(
 router.post(
   "/avaliacoes",
   authMiddleware.isAuthenticated,
-  authMiddleware.authorizeRoles("Professor"),
-  avaliacaoController.create
+  authMiddleware.authorizeRoles("professor"),
+  avaliacaoController.createAvaliacao
 );
 
 module.exports = router;

@@ -91,5 +91,13 @@
       4,
       5
     ]
+  },
+  {
+    "id": 10,
+    "nome": "admin",
+    "email": "admin@gmail.com",
+    "senha": "$2b$10$TiNyG/q/R9xHlLAzWAKnc.uHHFxeGfTCW2FO2grAVcn2DRWERPWnC",
+    "perfil": "administrador",
+    "favoritos": []
   }
 ]

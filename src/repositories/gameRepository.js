@@ -66,7 +66,7 @@ exports.findById = async (id) => {
   return rows[0];
 };
 
-exports.create = async (data) => {
+exports.createGame = async (data) => {
   const { NOME, LINKIMAGEM, LINK, IDIOMA, INTERACAO, LICENSA } = data;
 
   const sql = `

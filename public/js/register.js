@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     mensagemElement.textContent = data.mensagem || 'Registro bem-sucedido! Redirecionando para o login...';
                     
                     setTimeout(() => {
-                        window.location.href = 'login.html';
+                        window.location.href = 'login';
                     }, 2000); 
                 } else {
                     // Registro falhou

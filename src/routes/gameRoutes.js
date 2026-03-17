@@ -10,19 +10,19 @@ router.get('/games/:id', gameController.getGameById);
 // ROTAS ADMIN
 router.post(
   "/games",
-  authMiddleware.authorizeRoles("Administrador"),
-  gameController.create
+  authMiddleware.authorizeRoles("administrador"),
+  gameController.createGame
 );
 
 router.put(
   "/games/:id",
-  authMiddleware.authorizeRoles("Administrador"),
+  authMiddleware.authorizeRoles("administrador"),
   gameController.updateGame
 );
 
 router.delete(
   "/games/:id",
-  authMiddleware.authorizeRoles("Administrador"),
+  authMiddleware.authorizeRoles("administrador"),
   gameController.deleteGame
 );
 
