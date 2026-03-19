@@ -85,6 +85,46 @@ exports.updateGame = async (req, res) => {
   }
 };
 
+exports.sugerirJogo = async (req, res) => {
+    console.log("Sugestão recebida:", req.body);
+    
+    // Validação de pré-condição: Perfil Profissional TI
+    if (!req.session.user || req.session.user.perfil !== 'profissional_ti') {
+        return res.status(403).json({ error: "Acesso negado: apenas profissionais de TI podem sugerir jogos." });
+    }
+
+    const { nome, link, justificativa } = req.body;
+
+    if (!nome || !link) {
+        return res.status(400).json({ error: "Nome e Link são obrigatórios para a sugestão." });
+    }
+
+    try {
+        const usuarioId = req.session.user.id;
+        const insertId = await gameService.sugerirJogo({
+            nome,
+            link,
+            justificativa
+        }, usuarioId);
+
+        res.status(201).json({ message: "Sugestão enviada com sucesso!", id: insertId });
+    } catch (error) {
+        console.error("Erro ao sugerir jogo:", error);
+        res.status(500).json({ error: "Erro ao processar sua sugestão no servidor." });
+    }
+};
+
+exports.listarMeusEnvios = async (req, res) => {
+    try {
+        const usuarioId = req.session.user.id;
+        const envios = await gameService.listarMeusEnvios(usuarioId);
+        res.status(200).json(envios);
+    } catch (error) {
+        console.error("Erro ao listar envios:", error);
+        res.status(500).json({ mensagem: "Erro ao buscar seus envios" });
+    }
+};
+
 exports.getPendingGames = async (req, res) => {
     try {
         const [rows] = await db.promise().query(

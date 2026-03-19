@@ -4,17 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro - Catálogo de Serious Games</title>
-    <link rel="stylesheet" href="css/login.css"> </head>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/login.css">
     <link rel="stylesheet" href="/css/navbar.css">
+</head>
 <body>
+    <a href="#conteudo-principal" class="sr-only skip-link">Saltar para o conteúdo principal</a>
+
     <div id="navbar-placeholder"></div>
-    <main class="login-container"> <img src="images/iff.jpeg" alt="Instituto Federal" class="logo-login">
+
+    <main id="conteudo-principal" class="login-container"> 
+        <img src="images/iff.jpeg" alt="Logotipo do Instituto Federal Fluminense" class="logo-login">
+        
         <h1>Registrar no Catálogo de Serious Games</h1>
         
+        <div id="mensagem" class="status-message" aria-live="polite"></div>
+
         <form id="registerForm">
             <div class="input-group">
                 <label for="nome">Nome:</label>
-                <input type="text" id="nome" name="nome" required>
+                <input type="text" id="nome" name="nome" autocomplete="name" required>
             </div>
             
             <div class="input-group">
@@ -30,19 +39,18 @@
             
             <div class="input-group">
                 <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
+                <input type="email" id="email" name="email" autocomplete="email" required>
             </div>
             
             <div class="input-group">
                 <label for="senha">Senha:</label>
-                <input type="password" id="senha" name="senha" required>
+                <input type="password" id="senha" name="senha" autocomplete="new-password" required>
             </div>
             
             <button type="submit">Registrar</button>
-            <p id="mensagem" style="color: green; margin-top: 10px;"></p> 
         </form>
 
-        <div id="opcoesLogin" style="margin-top: 20px;">
+        <div id="opcoesLogin" class="login-footer">
             <p>Já tem conta? <a href="/login">Faça login aqui</a></p>
         </div>
     </main>

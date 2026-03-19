@@ -98,7 +98,12 @@
     "email": "admin@gmail.com",
     "senha": "$2b$10$TiNyG/q/R9xHlLAzWAKnc.uHHFxeGfTCW2FO2grAVcn2DRWERPWnC",
     "perfil": "administrador",
-    "favoritos": []
+    "favoritos": [
+      11,
+      82,
+      149,
+      121
+    ]
   },
   {
     "id": 11,

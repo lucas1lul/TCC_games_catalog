@@ -4,13 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Catálogo de Jogos Educativos</title>
+    
+    <link rel="stylesheet" href="/css/styles.css">
+    
     <link rel="stylesheet" href="/css/navbar.css">
     <link rel="stylesheet" href="/css/login.css">
 </head>
 <body>
+    <a href="#conteudo-principal" class="sr-only skip-link">Saltar para o conteúdo principal</a>
+
     <div id="navbar-placeholder"></div>
-    <main class="login-container">
-        <img src="/images/iff.jpeg" alt="Instituto Federal" class="logo-login">
+
+    <main id="conteudo-principal" class="login-container">
+        <img src="/images/iff.jpeg" alt="Logotipo do Instituto Federal Fluminense" class="logo-login">
         
         <h1>Bem-vindo ao Catálogo de Jogos Educativos</h1>
         
@@ -24,7 +30,8 @@
                 <input type="password" id="senha" name="senha" required autocomplete="current-password">
             </div>
             <button type="submit">Entrar</button>
-            <p id="mensagemErro" style="color: red; margin-top: 10px; min-height: 20px;"></p>
+            
+            <p id="mensagemErro" aria-live="assertive" style="color: red; margin-top: 10px; min-height: 20px;"></p>
         </form>
 
         <div id="opcoesRegistro" style="margin-top: 20px;">

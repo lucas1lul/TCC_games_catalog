@@ -5,23 +5,34 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Minha Conta | IFF</title>
+  <link rel="stylesheet" href="/css/styles.css">
   <link rel="stylesheet" href="/css/navbar.css">
   <link rel="stylesheet" href="/css/user.css">
-  <link rel="stylesheet" href="/css/styles.css">
 </head>
 
 <body>
+  <a href="#conteudo-principal" class="sr-only skip-link">Saltar para o conteúdo principal</a>
+
   <div id="navbar-placeholder"></div>
 
-  <main class="dashboard-container">
+  <main id="conteudo-principal" class="dashboard-container">
+    
+    <h1 class="sr-only">Painel da Minha Conta</h1>
+
     <aside class="sidebar">
-      <nav class="sidebar-nav">
+      <nav class="sidebar-nav" aria-label="Menu de navegação da conta">
         <button class="nav-btn active" onclick="showSection('section-perfil', this)">👤 Meus Dados</button>
         
         <div id="menu-admin" style="display: none;">
           <p class="menu-label">Administração</p>
           <button class="nav-btn" onclick="showSection('section-cadastro-jogo', this)">🎮 Cadastrar Jogo</button>
           <button class="nav-btn" onclick="showSection('section-curadoria', this)">📋 Analisar Sugestões</button>
+        </div>
+
+        <div id="menu-ti" style="display: none;">
+          <p class="menu-label">Colaboração</p>
+          <button class="nav-btn" onclick="showSection('section-sugerir-jogo', this)">💡 Sugerir Jogo</button>
+          <button class="nav-btn" onclick="showSection('section-meus-envios', this)">📑 Meus Envios</button>
         </div>
       </nav>
     </aside>
@@ -31,7 +42,7 @@
 
       <section id="section-perfil" class="account-card section-content">
         <div class="account-header">
-          <h1>Configurações da conta</h1>
+          <h2>Configurações da conta</h2>
           <p class="account-subtitle">Atualize seus dados cadastrais.</p>
         </div>
 
@@ -46,19 +57,19 @@
           </div>
 
           <div class="divider"></div>
-          <h2 class="section-title">Alterar senha (opcional)</h2>
+          <h3 class="section-title">Alterar senha (opcional)</h3>
 
           <div class="form-row">
             <label for="senhaAtual">Senha atual</label>
-            <input id="senhaAtual" type="password" placeholder="Digite a senha atual" />
+            <input id="senhaAtual" type="password" autocomplete="current-password" placeholder="Digite a senha atual" />
           </div>
           <div class="form-row">
             <label for="novaSenha">Nova senha</label>
-            <input id="novaSenha" type="password" placeholder="Mínimo 6 caracteres" />
+            <input id="novaSenha" type="password" autocomplete="new-password" placeholder="Mínimo 6 caracteres" />
           </div>
           <div class="form-row">
             <label for="confirmarNovaSenha">Confirmar nova senha</label>
-            <input id="confirmarNovaSenha" type="password" placeholder="Repita a nova senha" />
+            <input id="confirmarNovaSenha" type="password" autocomplete="new-password" placeholder="Repita a nova senha" />
           </div>
 
           <div class="form-actions">
@@ -104,17 +115,65 @@
       </section>
 
       <section id="section-curadoria" class="account-card section-content" style="display: none;">
-        <h2 class="section-title">Sugestões de Jogos</h2>
+        <h2 class="section-title">Sugestões de Jogos Pendentes</h2>
         <div class="table-container">
           <table class="admin-table">
+            <caption>Lista de sugestões enviadas aguardando revisão</caption>
             <thead>
               <tr>
-                <th>Jogo</th>
-                <th>Link</th>
-                <th>Ações</th>
+                <th scope="col">Jogo</th>
+                <th scope="col">Link</th>
+                <th scope="col">Ações</th>
               </tr>
             </thead>
-            <tbody id="tabela-sugestoes"></tbody>
+            <tbody id="tabela-sugestoes">
+              <tr>
+                <td colspan="3">Nenhum dado carregado.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="section-sugerir-jogo" class="account-card section-content" style="display: none;">
+        <h2 class="section-title">Sugerir Jogo para o Catálogo</h2>
+        <p class="account-subtitle">Envie um jogo para análise da curadoria.</p>
+        <form id="formSugerirJogo" class="account-form">
+          <div class="form-row">
+            <label for="sug_nome">Nome do Jogo *</label>
+            <input id="sug_nome" type="text" required />
+          </div>
+          <div class="form-row">
+            <label for="sug_link">Link de Acesso *</label>
+            <input id="sug_link" type="url" required />
+          </div>
+          <div class="form-row">
+            <label for="sug_justificativa">Justificativa Pedagógica</label>
+            <textarea id="sug_justificativa" rows="4" placeholder="Como este jogo contribui para o ensino?"></textarea>
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn-primary">Enviar Sugestão</button>
+          </div>
+        </form>
+      </section>
+
+      <section id="section-meus-envios" class="account-card section-content" style="display: none;">
+        <h2 class="section-title">Acompanhar Minhas Sugestões</h2>
+        <div class="table-container">
+          <table class="admin-table">
+            <caption>Histórico de sugestões enviadas e seus status</caption>
+            <thead>
+              <tr>
+                <th scope="col">Jogo</th>
+                <th scope="col">Data de Envio</th>
+                <th scope="col">Status</th>
+              </tr>
+            </thead>
+            <tbody id="tabela-meus-envios">
+              <tr>
+                <td colspan="3">Nenhum dado carregado.</td>
+              </tr>
+            </tbody>
           </table>
         </div>
       </section>
@@ -125,5 +184,4 @@
   <script src="/js/navbar.js"></script>
   <script src="/js/user.js"></script>
 </body>
-
 </html>

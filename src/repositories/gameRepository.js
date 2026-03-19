@@ -146,3 +146,4 @@ exports.updateStatus = async (id, novoStatus) => {
   const [result] = await db.promise().query(query, [novoStatus, id]);
   return result;
 };
+

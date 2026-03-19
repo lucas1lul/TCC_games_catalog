@@ -34,9 +34,10 @@ async function carregarDadosIniciais() {
 
     // 2. Se for admin, mostra as opções de menu de administração
     if (usuarioLogado.perfil === 'administrador') {
-        const menuAdmin = document.getElementById("menu-admin");
-        if (menuAdmin) menuAdmin.style.display = "block";
-    }
+    document.getElementById("menu-admin").style.display = "block";
+} else if (usuarioLogado.perfil === 'profissional_ti') {
+    document.getElementById("menu-ti").style.display = "block";
+}
 }
 
 // Troca de abas no dashboard
@@ -122,35 +123,63 @@ async function cadastrarJogo(e) {
 
 async function carregarSugestoes() {
     try {
-        const response = await fetch('/api/games/pending');
-        const jogos = await response.json();
+        const res = await fetch('/api/games/pending');
+        const sugestoes = await res.json();
         const tabela = document.getElementById("tabela-sugestoes");
-        if (!tabela) return;
+        
+        if (sugestoes.length === 0) {
+            tabela.innerHTML = '<tr><td colspan="3">Nenhuma sugestão pendente.</td></tr>';
+            return;
+        }
 
-        tabela.innerHTML = jogos.map(jogo => `
+        tabela.innerHTML = sugestoes.map(s => `
             <tr>
-                <td>${jogo.NOME}</td>
-                <td><a href="${jogo.LINK}" target="_blank">Link</a></td>
+                <td>${s.NOME}</td>
+                <td><a href="${s.LINK}" target="_blank">Visualizar Jogo</a></td>
                 <td>
-                    <button onclick="decidirStatus(${jogo.IDJOGO}, 'aprovado')" class="btn-approve">✔️</button>
-                    <button onclick="decidirStatus(${jogo.IDJOGO}, 'rejeitado')" class="btn-reject">❌</button>
+                    <button class="btn-approve" onclick="prepararAprovacao('${s.IDJOGO}', '${s.NOME}', '${s.LINK}')">✅ Aprovar</button>
+                    <button class="btn-reject" onclick="rejeitarSugestao('${s.IDJOGO}')">❌</button>
                 </td>
             </tr>
         `).join('');
-    } catch (e) { console.error("Erro ao carregar sugestões", e); }
+    } catch (err) {
+        console.error("Erro ao carregar sugestões:", err);
+    }
 }
 
-async function decidirStatus(id, novoStatus) {
-    if (!confirm(`Deseja definir como ${novoStatus}?`)) return;
-    const res = await fetch(`/api/games/${id}/status`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ status: novoStatus })
-    });
+// ADMIN: Quando clica em Aprovar, os dados sobem para o formulário de Cadastro Real
+function prepararAprovacao(id, nome, link) {
+    // 1. Muda para a seção de cadastro
+    const btnCadastro = document.querySelector('[onclick*="section-cadastro-jogo"]');
+    showSection('section-cadastro-jogo', btnCadastro);
 
-    if (res.ok) {
-        alert(`Jogo ${novoStatus}!`);
-        carregarSugestoes();
+    // 2. Preenche o formulário de cadastro oficial com os dados da sugestão
+    document.getElementById("nome_jogo").value = nome;
+    document.getElementById("link_acesso").value = link;
+
+    // 3. Opcional: Guardamos o ID da sugestão para deletar/atualizar status depois de salvar o cadastro real
+    window.idSugestaoEmFoco = id;
+    
+    alert("Dados carregados! Complete as informações técnicas (Idioma, Interação, etc) para finalizar o cadastro.");
+}
+
+// ADMIN: Rejeitar a sugestão diretamente
+async function rejeitarSugestao(id) {
+    if (!confirm("Deseja realmente rejeitar esta sugestão?")) return;
+
+    try {
+        const res = await fetch(`/api/games/${id}/status`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ status: 'rejeitado' })
+        });
+
+        if (res.ok) {
+            alert("Sugestão rejeitada.");
+            carregarSugestoes(); // Atualiza a tabela
+        }
+    } catch (err) {
+        alert("Erro ao processar rejeição.");
     }
 }
 

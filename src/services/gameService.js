@@ -1,5 +1,13 @@
 const gameRepository = require('../repositories/gameRepository');
 
+exports.getGames = async (filters) => {
+    return await gameRepository.findAll(filters);
+};
+
+exports.getGameById = async (id) => {
+    return await gameRepository.findById(id);
+};
+
 const mapAndValidateGame = (gameData) => {
     if (!gameData.titulo || !gameData.componente) {
         throw new Error("Título e Componente são obrigatórios.");
@@ -30,6 +38,25 @@ exports.getGames = async (filters) => {
 
 exports.getGameById = async (id) => {
     return await gameRepository.findById(id);
+};
+
+exports.createGame = async (data) => {
+    const validatedData = mapAndValidateGame(data);
+    return await gameRepository.createGame(validatedData);
+};
+
+exports.deleteGame = async (id) => {
+    return await gameRepository.remove(id);
+};
+
+exports.updateGame = async (id, data) => {
+  const result = await gameRepository.updateGame(id, data);
+
+  if (result.affectedRows === 0) {
+    throw new Error("Jogo não encontrado.");
+  }
+
+  return { message: "Jogo atualizado com sucesso." };
 };
 
 exports.createGame = async (data) => {
