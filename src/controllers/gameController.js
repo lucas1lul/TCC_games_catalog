@@ -1,158 +1,105 @@
 const gameService = require('../services/gameService');
 
+// --- CONSULTAS PÚBLICAS ---
+
 exports.getGames = async (req, res) => {
-  try {
-    const games = await gameService.getGames(req.query);
-    res.status(200).json(games);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ mensagem: "Erro ao buscar jogos" });
-  }
+    try {
+        const games = await gameService.getGames(req.query);
+        res.status(200).json(games);
+    } catch (error) {
+        console.error("Erro ao buscar jogos:", error);
+        res.status(500).json({ mensagem: "Erro ao buscar jogos." });
+    }
 };
 
 exports.getGameById = async (req, res) => {
-  try {
-    const game = await gameService.getGameById(req.params.id);
-
-    if (!game) {
-      return res.status(404).json({ mensagem: "Jogo não encontrado" });
+    try {
+        const game = await gameService.getGameById(req.params.id);
+        if (!game) {
+            return res.status(404).json({ mensagem: "Jogo não encontrado." });
+        }
+        res.json(game);
+    } catch (error) {
+        res.status(500).json({ mensagem: "Erro ao obter jogo." });
     }
-
-    res.json(game);
-  } catch (error) {
-    res.status(500).json({ mensagem: "Erro ao obter jogo" });
-  }
 };
 
-// Não esqueça de importar o repositório no topo do arquivo!
-const gameRepository = require('../repositories/gameRepository');
+// --- AÇÕES DO ADMINISTRADOR (CATÁLOGO OFICIAL) ---
 
 exports.createGame = async (req, res) => {
-  console.log("Dados recebidos no Body:", req.body);
-    // Validação da pré-condição: Perfil Administrativo
-    if (!req.session.user || req.session.user.perfil !== 'administrador') {
-        return res.status(403).json({ error: "Acesso negado: apenas administradores podem cadastrar jogos." });
-    }
-
-    // Adicionei 'licensa' e 'linkimagem' aqui, pois o banco de dados exige isso
-    const { nome, link, interacao, idioma, licensa, linkimagem, habilidades, generos, plataformas } = req.body;
-
-    // Fluxo Alternativo 3a: Validação de dados obrigatórios
-    if (!nome || !link || !interacao || !idioma) {
-        return res.status(400).json({ error: "Preencha todos os campos obrigatórios." });
-    }
-
     try {
-        // A MÁGICA ACONTECE AQUI: Chamamos o repositório e mapeamos os dados
-        const insertId = await gameRepository.createGame({
-            NOME: nome,
-            LINK: link,
-            LINKIMAGEM: linkimagem || 'placeholder.png', // Fallback caso venha vazio
-            IDIOMA: idioma,
-            INTERACAO: interacao,
-            LICENSA: licensa || 'Não informada'
-        });
-
-        // Obs: As 'habilidades', 'generos' e 'plataformas' que vêm no req.body 
-        // precisarão ser inseridas em tabelas associativas (N:N) em um segundo momento,
-        // usando o 'insertId' gerado acima. Mas por enquanto, vamos focar em salvar o jogo principal!
-
+        // O mapeamento técnico agora é feito dentro do Service
+        const insertId = await gameService.createGame(req.body);
         res.status(201).json({ message: "Jogo cadastrado com sucesso!", id: insertId });
     } catch (error) {
-        console.error("Erro detalhado no controller:", error);
-        res.status(500).json({ error: "Erro ao salvar no banco de dados." });
+        console.error("Erro ao criar jogo:", error);
+        res.status(400).json({ error: error.message });
     }
-};
-exports.deleteGame = async (req, res) => {
-  try {
-    await gameService.deleteGame(req.params.id);
-    res.status(200).json({ mensagem: "Jogo deletado!" });
-  } catch (error) {
-    res.status(500).json({ mensagem: "Erro ao deletar jogo" });
-  }
 };
 
 exports.updateGame = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const data = req.body;
-
-    const response = await gameService.updateGame(id, data);
-
-    res.status(200).json(response);
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
+    try {
+        const response = await gameService.updateGame(req.params.id, req.body);
+        res.status(200).json(response);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
 };
 
-exports.sugerirJogo = async (req, res) => {
-    console.log("Sugestão recebida:", req.body);
-    
-    // Validação de pré-condição: Perfil Profissional TI
-    if (!req.session.user || req.session.user.perfil !== 'profissional_ti') {
-        return res.status(403).json({ error: "Acesso negado: apenas profissionais de TI podem sugerir jogos." });
-    }
-
-    const { nome, link, justificativa } = req.body;
-
-    if (!nome || !link) {
-        return res.status(400).json({ error: "Nome e Link são obrigatórios para a sugestão." });
-    }
-
+exports.deleteGame = async (req, res) => {
     try {
-        const usuarioId = req.session.user.id;
-        const insertId = await gameService.sugerirJogo({
-            nome,
-            link,
-            justificativa
-        }, usuarioId);
-
-        res.status(201).json({ message: "Sugestão enviada com sucesso!", id: insertId });
+        await gameService.deleteGame(req.params.id);
+        res.status(200).json({ mensagem: "Jogo deletado!" });
     } catch (error) {
-        console.error("Erro ao sugerir jogo:", error);
-        res.status(500).json({ error: "Erro ao processar sua sugestão no servidor." });
+        res.status(500).json({ mensagem: "Erro ao deletar jogo." });
+    }
+};
+
+// --- AÇÕES DO PROFISSIONAL TI (SUGESTÕES) ---
+
+exports.sugerirJogo = async (req, res) => {
+    try {
+        // Pegamos o ID do usuário da sessão (com fallback para testes)
+        const usuarioId = req.session.user?.id || 1; 
+        
+        const insertId = await gameService.sugerirJogo(req.body, usuarioId);
+        res.status(201).json({ message: "Sugestão salva com sucesso!", id: insertId });
+    } catch (error) {
+        console.error("Erro ao processar sugestão:", error);
+        res.status(400).json({ error: error.message });
     }
 };
 
 exports.listarMeusEnvios = async (req, res) => {
     try {
-        const usuarioId = req.session.user.id;
+        const usuarioId = req.session.user?.id || 1;
         const envios = await gameService.listarMeusEnvios(usuarioId);
         res.status(200).json(envios);
     } catch (error) {
-        console.error("Erro ao listar envios:", error);
-        res.status(500).json({ mensagem: "Erro ao buscar seus envios" });
+        res.status(500).json({ mensagem: "Erro ao buscar seus envios." });
     }
 };
 
-exports.getPendingGames = async (req, res) => {
-    try {
-        const [rows] = await db.promise().query(
-            "SELECT * FROM jogos WHERE STATUS = 'pendente'"
-        );
-        res.json(rows);
-    } catch (error) {
-        res.status(500).json({ error: "Erro ao buscar submissões pendentes." });
-    }
-};
+// --- CURADORIA (ADMINISTRADOR ANALISANDO SUGESTÕES) ---
 
 exports.listPending = async (req, res) => {
     try {
-        const pendingGames = await gameRepository.findPending();
+        const pendingGames = await gameService.listarPendentes();
         res.json(pendingGames);
     } catch (error) {
+        console.error("Erro ao listar pendentes:", error);
         res.status(500).json({ error: "Erro ao buscar jogos pendentes." });
     }
 };
 
 exports.updateGameStatus = async (req, res) => {
-    const { id } = req.params;
-    const { status } = req.body;
-
     try {
-        await gameRepository.updateStatus(id, status);
-        res.json({ message: `O jogo agora está ${status}!` });
+        const { id } = req.params;
+        const { status } = req.body; // 'aprovado' ou 'rejeitado'
+        
+        const response = await gameService.atualizarStatusSugestao(id, status);
+        res.json(response);
     } catch (error) {
-        res.status(500).json({ error: "Erro ao atualizar o status do jogo." });
+        res.status(500).json({ error: "Erro ao atualizar o status da sugestão." });
     }
 };

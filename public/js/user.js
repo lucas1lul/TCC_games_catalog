@@ -1,20 +1,26 @@
 let usuarioLogado = null;
 
+// --- UTILITÁRIOS ---
+
 function setStatus(msg, type = "info") {
     const el = document.getElementById("status");
     if (!el) return;
     el.textContent = msg || "";
     el.className = "status " + type;
-    setTimeout(() => { el.textContent = ""; el.className = "status"; }, 5000);
+    setTimeout(() => { 
+        el.textContent = ""; 
+        el.className = "status"; 
+    }, 5000);
 }
 
-// 1. Busca dados da sessão real no servidor
+// --- SESSÃO E INICIALIZAÇÃO ---
+
 async function verificarSessao() {
     try {
         const res = await fetch('/api/me', { credentials: 'include' });
         if (!res.ok) return null;
         const data = await res.json();
-        return data.user; // Espera { user: {...} } do servidor
+        return data.user; 
     } catch (e) {
         return null;
     }
@@ -28,19 +34,20 @@ async function carregarDadosIniciais() {
         return;
     }
 
-    // Preenche formulário de perfil
-    document.getElementById("nome").value = usuarioLogado.nome || "";
-    document.getElementById("email").value = usuarioLogado.email || "";
+    // Preenche perfil
+    if(document.getElementById("nome")) document.getElementById("nome").value = usuarioLogado.nome || "";
+    if(document.getElementById("email")) document.getElementById("email").value = usuarioLogado.email || "";
 
-    // 2. Se for admin, mostra as opções de menu de administração
+    // Controle de Menu por Perfil
     if (usuarioLogado.perfil === 'administrador') {
-    document.getElementById("menu-admin").style.display = "block";
-} else if (usuarioLogado.perfil === 'profissional_ti') {
-    document.getElementById("menu-ti").style.display = "block";
-}
+        document.getElementById("menu-admin").style.display = "block";
+    } else if (usuarioLogado.perfil === 'profissional_ti') {
+        document.getElementById("menu-ti").style.display = "block";
+    }
 }
 
-// Troca de abas no dashboard
+// --- NAVEGAÇÃO ---
+
 function showSection(sectionId, btn) {
     document.querySelectorAll('.section-content').forEach(s => s.style.display = 'none');
     const target = document.getElementById(sectionId);
@@ -49,44 +56,144 @@ function showSection(sectionId, btn) {
     document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
     if (btn) btn.classList.add('active');
 
+    // Carregamento sob demanda
     if (sectionId === 'section-curadoria') carregarSugestoes();
+    if (sectionId === 'section-meus-envios') carregarMeusEnvios();
 }
 
-async function salvarAlteracoes(e) {
-    e.preventDefault();
-    const nome = document.getElementById("nome").value.trim();
-    const email = document.getElementById("email").value.trim();
-    const senhaAtual = document.getElementById("senhaAtual").value;
-    const novaSenha = document.getElementById("novaSenha").value;
-    const confirmar = document.getElementById("confirmarNovaSenha").value;
+// --- AÇÕES DO PROFISSIONAL DE TI (SUGESTÕES) ---
 
-    let payload = { id: usuarioLogado.id, nome, email };
+async function enviarSugestao(e) {
+    e.preventDefault(); // Impede a página de recarregar
+    
+    const btnSubmit = e.target.querySelector('button[type="submit"]');
+    const msgDiv = document.getElementById("msg-confirmacao-sugestao");
+    
+    if (btnSubmit) btnSubmit.disabled = true; // Bloqueia duplo clique
 
-    if (senhaAtual || novaSenha) {
-        if (novaSenha !== confirmar) return setStatus("As senhas não conferem!", "error");
-        if (novaSenha.length < 6) return setStatus("Nova senha muito curta!", "error");
-        payload.senhaAtual = senhaAtual;
-        payload.novaSenha = novaSenha;
-    }
+    const dados = {
+        nome: document.getElementById("sug_nome").value,
+        link: document.getElementById("sug_link").value,
+        justificativa: document.getElementById("sug_justificativa").value
+    };
 
     try {
-        const res = await fetch("/api/users/me", {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload)
+        // ATENÇÃO AQUI: Verifique se a rota começa com /api/games/suggest ou apenas /api/suggest
+        const res = await fetch('/api/suggest', { 
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(dados)
         });
 
+        const result = await res.json();
+
         if (res.ok) {
-            setStatus("Dados atualizados com sucesso!", "success");
-            document.getElementById("senhaAtual").value = "";
-            document.getElementById("novaSenha").value = "";
-            document.getElementById("confirmarNovaSenha").value = "";
+            // MOSTRA A MENSAGEM DE CONFIRMAÇÃO VISUAL
+            if (msgDiv) {
+                msgDiv.style.display = "block";
+                msgDiv.style.backgroundColor = "#d4edda"; // Fundo verde claro
+                msgDiv.style.color = "#155724"; // Texto verde escuro
+                msgDiv.style.border = "1px solid #c3e6cb";
+                msgDiv.textContent = "✅ " + result.message;
+                
+                // Esconde a mensagem depois de 4 segundos
+                setTimeout(() => {
+                    msgDiv.style.display = "none";
+                }, 4000);
+            }
+            
+            e.target.reset(); // Limpa os campos do formulário
         } else {
-            const err = await res.json();
-            throw new Error(err.message || "Erro ao atualizar");
+            // MENSAGEM DE ERRO VISUAL
+            if (msgDiv) {
+                msgDiv.style.display = "block";
+                msgDiv.style.backgroundColor = "#f8d7da"; // Fundo vermelho claro
+                msgDiv.style.color = "#721c24";
+                msgDiv.style.border = "1px solid #f5c6cb";
+                msgDiv.textContent = "❌ Erro: " + (result.error || "Falha ao enviar");
+            }
         }
     } catch (err) {
-        setStatus(err.message, "error");
+        console.error("Erro no envio do fetch:", err);
+        alert("Erro de conexão com o servidor. Abra o console (F12) para ver os detalhes.");
+    } finally {
+        if (btnSubmit) btnSubmit.disabled = false; // Libera o botão novamente
+    }
+}
+
+async function carregarMeusEnvios() {
+    const lista = document.getElementById("lista-meus-envios");
+    if (!lista) return;
+
+    try {
+        const res = await fetch('/api/my-suggestions');
+        const envios = await res.json();
+
+        if (envios.length === 0) {
+            lista.innerHTML = "<li>Você ainda não enviou sugestões.</li>";
+            return;
+        }
+
+        lista.innerHTML = envios.map(s => `
+            <li class="envio-item">
+                <strong>${s.NOME_JOGO}</strong> - 
+                <span class="status-${s.STATUS}">${s.STATUS.toUpperCase()}</span>
+                <small>(${new Date(s.DATA_ENVIO).toLocaleDateString()})</small>
+            </li>
+        `).join('');
+    } catch (err) {
+        lista.innerHTML = "Erro ao carregar seus envios.";
+    }
+}
+
+// --- AÇÕES DO ADMINISTRADOR (CURADORIA E CADASTRO) ---
+
+async function carregarSugestoes() {
+    try {
+        const res = await fetch('/api/games/pending');
+        const sugestoes = await res.json();
+        const tabela = document.getElementById("tabela-sugestoes");
+        
+        if (!sugestoes || sugestoes.length === 0) {
+            tabela.innerHTML = '<tr><td colspan="4">Nenhuma sugestão pendente.</td></tr>';
+            return;
+        }
+
+        tabela.innerHTML = sugestoes.map(s => `
+            <tr>
+                <td>${s.NOME_JOGO}</td>
+                <td>${s.AUTOR_ID || 'Usuário'}</td>
+                <td><a href="${s.LINK_ACESSO}" target="_blank">Link</a></td>
+                <td>
+                    <button onclick="prepararAprovacao('${s.ID_SUGESTAO}', '${s.NOME_JOGO}', '${s.LINK_ACESSO}')">✅</button>
+                    <button onclick="rejeitarSugestao('${s.ID_SUGESTAO}')">❌</button>
+                </td>
+            </tr>
+        `).join('');
+    } catch (err) {
+        console.error("Erro ao carregar sugestões:", err);
+    }
+}
+
+function prepararAprovacao(id, nome, link) {
+    showSection('section-cadastro-jogo', document.querySelector('[onclick*="section-cadastro-jogo"]'));
+    document.getElementById("nome_jogo").value = nome;
+    document.getElementById("link_acesso").value = link;
+    window.idSugestaoEmFoco = id; // Guarda para atualizar status após salvar
+    alert("Dados carregados. Complete as informações técnicas.");
+}
+
+async function rejeitarSugestao(id) {
+    if (!confirm("Rejeitar esta sugestão?")) return;
+    try {
+        const res = await fetch(`/api/games/${id}/status`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ status: 'rejeitado' })
+        });
+        if (res.ok) carregarSugestoes();
+    } catch (err) {
+        alert("Erro ao rejeitar.");
     }
 }
 
@@ -95,7 +202,7 @@ async function cadastrarJogo(e) {
     const jogo = {
         nome: document.getElementById("nome_jogo").value,
         link: document.getElementById("link_acesso").value,
-        linkimagem: document.getElementById("linkimagem").value,
+        linkimagem: document.getElementById("linkimagem").value || 'placeholder.png',
         idioma: document.getElementById("idioma").value,
         interacao: document.getElementById("interacao").value,
         licensa: document.getElementById("licensa").value
@@ -105,87 +212,40 @@ async function cadastrarJogo(e) {
         const response = await fetch('/api/games', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(jogo),
-            credentials: 'include'
+            body: JSON.stringify(jogo)
         });
 
         if (response.ok) {
-            alert("Jogo cadastrado com sucesso!");
+            // Se veio de uma sugestão, aprova ela automaticamente agora que o jogo oficial foi criado
+            if (window.idSugestaoEmFoco) {
+                await fetch(`/api/games/${window.idSugestaoEmFoco}/status`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ status: 'aprovado' })
+                });
+            }
+            alert("Jogo cadastrado oficialmente!");
             location.reload();
-        } else {
-            const result = await response.json();
-            alert("Erro: " + (result.error || result.message));
         }
     } catch (error) {
-        console.error("Erro na requisição:", error);
+        console.error("Erro ao cadastrar:", error);
     }
 }
 
-async function carregarSugestoes() {
-    try {
-        const res = await fetch('/api/games/pending');
-        const sugestoes = await res.json();
-        const tabela = document.getElementById("tabela-sugestoes");
-        
-        if (sugestoes.length === 0) {
-            tabela.innerHTML = '<tr><td colspan="3">Nenhuma sugestão pendente.</td></tr>';
-            return;
-        }
-
-        tabela.innerHTML = sugestoes.map(s => `
-            <tr>
-                <td>${s.NOME}</td>
-                <td><a href="${s.LINK}" target="_blank">Visualizar Jogo</a></td>
-                <td>
-                    <button class="btn-approve" onclick="prepararAprovacao('${s.IDJOGO}', '${s.NOME}', '${s.LINK}')">✅ Aprovar</button>
-                    <button class="btn-reject" onclick="rejeitarSugestao('${s.IDJOGO}')">❌</button>
-                </td>
-            </tr>
-        `).join('');
-    } catch (err) {
-        console.error("Erro ao carregar sugestões:", err);
-    }
-}
-
-// ADMIN: Quando clica em Aprovar, os dados sobem para o formulário de Cadastro Real
-function prepararAprovacao(id, nome, link) {
-    // 1. Muda para a seção de cadastro
-    const btnCadastro = document.querySelector('[onclick*="section-cadastro-jogo"]');
-    showSection('section-cadastro-jogo', btnCadastro);
-
-    // 2. Preenche o formulário de cadastro oficial com os dados da sugestão
-    document.getElementById("nome_jogo").value = nome;
-    document.getElementById("link_acesso").value = link;
-
-    // 3. Opcional: Guardamos o ID da sugestão para deletar/atualizar status depois de salvar o cadastro real
-    window.idSugestaoEmFoco = id;
-    
-    alert("Dados carregados! Complete as informações técnicas (Idioma, Interação, etc) para finalizar o cadastro.");
-}
-
-// ADMIN: Rejeitar a sugestão diretamente
-async function rejeitarSugestao(id) {
-    if (!confirm("Deseja realmente rejeitar esta sugestão?")) return;
-
-    try {
-        const res = await fetch(`/api/games/${id}/status`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ status: 'rejeitado' })
-        });
-
-        if (res.ok) {
-            alert("Sugestão rejeitada.");
-            carregarSugestoes(); // Atualiza a tabela
-        }
-    } catch (err) {
-        alert("Erro ao processar rejeição.");
-    }
-}
+// --- EVENT LISTENERS ---
 
 document.addEventListener("DOMContentLoaded", () => {
     carregarDadosIniciais();
-    document.getElementById("formConta").addEventListener("submit", salvarAlteracoes);
+    
+    // Form de Perfil
+    const formConta = document.getElementById("formConta");
+    if (formConta) formConta.addEventListener("submit", salvarAlteracoes);
+
+    // Form de Cadastro (Admin)
     const formJogo = document.getElementById("formCadastroJogo");
     if (formJogo) formJogo.addEventListener("submit", cadastrarJogo);
+
+    // Form de Sugestão (Profissional TI)
+    const formSugestao = document.getElementById("form-sugerir-jogo");
+    if (formSugestao) formSugestao.addEventListener("submit", enviarSugestao);
 });

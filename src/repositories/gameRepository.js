@@ -4,6 +4,7 @@ exports.findAll = async (filters = {}) => {
   const { nome, curso, componente, habilidade, plataforma, idioma } = filters;
   const params = [];
 
+  // Removido o filtro de STATUS, pois agora tudo que está em JOGOS é considerado "oficial"
   let query = `
     SELECT
       J.IDJOGO,
@@ -33,7 +34,8 @@ exports.findAll = async (filters = {}) => {
     `;
   }
 
-  query += ` WHERE J.STATUS = 'aprovado' `;;
+  // Começamos o WHERE com 1=1 para facilitar a concatenação de ANDs
+  query += ` WHERE 1=1 `;
 
   if (nome) { query += ` AND J.NOME LIKE ?`; params.push(`${nome}%`); }
   if (idioma) { query += ` AND J.IDIOMA LIKE ?`; params.push(`%${idioma}%`); }
@@ -55,23 +57,18 @@ exports.findAll = async (filters = {}) => {
 };
 
 exports.findById = async (id) => {
-  const query = `
-    SELECT *
-    FROM JOGOS
-    WHERE IDJOGO = ?
-    LIMIT 1
-  `;
-
+  const query = `SELECT * FROM JOGOS WHERE IDJOGO = ? LIMIT 1`;
   const [rows] = await db.promise().query(query, [id]);
   return rows[0];
 };
 
 exports.createGame = async (data) => {
-  const { NOME, LINKIMAGEM, LINK, IDIOMA, INTERACAO, LICENSA, STATUS } = data;
+  const { NOME, LINKIMAGEM, LINK, IDIOMA, INTERACAO, LICENSA } = data;
 
+  // Removido STATUS da query de inserção da tabela JOGOS
   const sql = `
-    INSERT INTO JOGOS (NOME, LINKIMAGEM, LINK, IDIOMA, INTERACAO, LICENSA, STATUS)
-    VALUES (?, ?, ?, ?, ?, ?, ?)
+    INSERT INTO JOGOS (NOME, LINKIMAGEM, LINK, IDIOMA, INTERACAO, LICENSA)
+    VALUES (?, ?, ?, ?, ?, ?)
   `;
 
   const [result] = await db.promise().query(sql, [
@@ -80,8 +77,7 @@ exports.createGame = async (data) => {
     LINK,
     IDIOMA,
     INTERACAO,
-    LICENSA,
-    STATUS || 'pendente'
+    LICENSA
   ]);
 
   return result.insertId;
@@ -92,15 +88,7 @@ exports.remove = async (id) => {
 };
 
 exports.updateGame = async (id, data) => {
-  const {
-    nome,
-    linkImagem,
-    descricaoImagem,
-    link,
-    idioma,
-    licensa,
-    interacao
-  } = data;
+  const { nome, linkImagem, descricaoImagem, link, idioma, licensa, interacao } = data;
 
   const query = `
     UPDATE JOGOS
@@ -115,26 +103,47 @@ exports.updateGame = async (id, data) => {
     WHERE IDJOGO = ?
   `;
 
-  const params = [
-    nome,
-    linkImagem,
-    descricaoImagem,
-    link,
-    idioma,
-    licensa,
-    interacao,
-    id
-  ];
-
+  const params = [nome, linkImagem, descricaoImagem, link, idioma, licensa, interacao, id];
   const [result] = await db.promise().query(query, params);
-
   return result;
 };
 
+// --- NOVAS FUNÇÕES PARA A TABELA SUGESTOES_JOGOS ---
+
+exports.createSuggestion = async (jogo) => {
+  const sql = `
+    INSERT INTO SUGESTOES_JOGOS (NOME_JOGO, LINK_ACESSO, JUSTIFICATIVA, STATUS, ID_USUARIO_SUGERIU) 
+    VALUES (?, ?, ?, ?, ?)
+  `;
+  const values = [jogo.NOME, jogo.LINK, jogo.JUSTIFICATIVA, jogo.STATUS, jogo.ID_SUGERIDO_POR];
+  
+  const [result] = await db.promise().execute(sql, values);
+  return result.insertId;
+};
+
+exports.findByUserId = async (usuarioId) => {
+  const sql = `
+    SELECT ID_SUGESTAO, NOME_JOGO, STATUS, DATA_ENVIO 
+    FROM SUGESTOES_JOGOS 
+    WHERE ID_USUARIO_SUGERIU = ? 
+    ORDER BY DATA_ENVIO DESC
+  `;
+  const [rows] = await db.promise().query(sql, [usuarioId]);
+  return rows;
+};
+
+// src/repositories/gameRepository.js
+
 exports.findPending = async () => {
+  // Removi o JOIN com USUARIOS, pois eles ainda estão no JSON
   const query = `
-    SELECT IDJOGO, NOME, LINK, IDIOMA, STATUS 
-    FROM JOGOS 
+    SELECT 
+      ID_SUGESTAO, 
+      NOME_JOGO, 
+      LINK_ACESSO, 
+      JUSTIFICATIVA, 
+      ID_USUARIO_SUGERIU AS AUTOR_ID 
+    FROM SUGESTOES_JOGOS 
     WHERE STATUS = 'pendente'
   `;
   const [rows] = await db.promise().query(query);
@@ -142,8 +151,8 @@ exports.findPending = async () => {
 };
 
 exports.updateStatus = async (id, novoStatus) => {
-  const query = `UPDATE JOGOS SET STATUS = ? WHERE IDJOGO = ?`;
+  // Atualiza o status na tabela de sugestões
+  const query = `UPDATE SUGESTOES_JOGOS SET STATUS = ? WHERE ID_SUGESTAO = ?`;
   const [result] = await db.promise().query(query, [novoStatus, id]);
   return result;
 };
-
