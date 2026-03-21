@@ -232,7 +232,56 @@ async function cadastrarJogo(e) {
     }
 }
 
-// --- EVENT LISTENERS ---
+// --- AÇÕES DO PERFIL ---
+
+async function salvarAlteracoes(e) {
+    e.preventDefault();
+    
+    // Verifica se os elementos existem antes de pegar o valor para evitar novos erros
+    const elNome = document.getElementById("nome");
+    const elEmail = document.getElementById("email");
+    
+    if (!elNome || !elEmail) return;
+
+    const nome = elNome.value.trim();
+    const email = elEmail.value.trim();
+    const senhaAtual = document.getElementById("senhaAtual")?.value || "";
+    const novaSenha = document.getElementById("novaSenha")?.value || "";
+    const confirmar = document.getElementById("confirmarNovaSenha")?.value || "";
+
+    let payload = { id: usuarioLogado.id, nome, email };
+
+    if (senhaAtual || novaSenha) {
+        if (novaSenha !== confirmar) return setStatus("As senhas não conferem!", "error");
+        if (novaSenha.length < 6) return setStatus("Nova senha muito curta!", "error");
+        payload.senhaAtual = senhaAtual;
+        payload.novaSenha = novaSenha;
+    }
+
+    try {
+        const res = await fetch("/api/users/me", {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+        });
+
+        if (res.ok) {
+            setStatus("Dados atualizados com sucesso!", "success");
+            if (document.getElementById("senhaAtual")) {
+                document.getElementById("senhaAtual").value = "";
+                document.getElementById("novaSenha").value = "";
+                document.getElementById("confirmarNovaSenha").value = "";
+            }
+        } else {
+            const err = await res.json();
+            throw new Error(err.message || "Erro ao atualizar");
+        }
+    } catch (err) {
+        setStatus(err.message, "error");
+    }
+}
+
+/// --- EVENT LISTENERS ---
 
 document.addEventListener("DOMContentLoaded", () => {
     carregarDadosIniciais();
@@ -247,5 +296,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Form de Sugestão (Profissional TI)
     const formSugestao = document.getElementById("form-sugerir-jogo");
-    if (formSugestao) formSugestao.addEventListener("submit", enviarSugestao);
+    
+    // RADAR DE ERRO:
+    if (formSugestao) {
+        console.log("✅ Formulário de sugestão encontrado no HTML!");
+        formSugestao.addEventListener("submit", enviarSugestao);
+    } else {
+        console.error("❌ ERRO: O JavaScript não achou nenhum <form> com o id='form-sugerir-jogo'. Verifique seu HTML.");
+    }
 });
