@@ -3,11 +3,17 @@ const userRepository = require('../repositories/userRepository');
 const gameRepository = require('../repositories/gameRepository');
 
 
-exports.register = async ({ nome, email, senha }) => {
+exports.register = async ({ nome, email, senha, perfil }) => {
   const existingUser = userRepository.findByEmail(email);
-
   if (existingUser) {
-    throw new Error('Email já cadastrado');
+    throw new Error('Este e-mail já está cadastrado no sistema.');
+  }
+
+  const perfisPermitidos = ['aluno', 'profissional_ti', 'professor'];
+  
+  let perfilFinal = 'aluno'; 
+  if (perfil && perfisPermitidos.includes(perfil.toLowerCase())) {
+    perfilFinal = perfil.toLowerCase();
   }
 
   const hashedPassword = await bcrypt.hash(senha, 10);
@@ -16,10 +22,12 @@ exports.register = async ({ nome, email, senha }) => {
     nome,
     email,
     senha: hashedPassword,
-    perfil: 'usuario'
+    perfil: perfilFinal
   });
 
-  return newUser;
+  const { senha: _, ...userWithoutPassword } = newUser;
+  
+  return userWithoutPassword;
 };
 
 exports.login = async ({ email, senha }) => {

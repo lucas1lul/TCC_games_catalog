@@ -116,5 +116,13 @@
       2,
       152
     ]
+  },
+  {
+    "id": 12,
+    "nome": "Carlos Maciel",
+    "email": "cm@gmail.com",
+    "senha": "$2b$10$zNzyxAq0seI5FvkfS5Nuf.aJrm92XxMH.8nPj8MjoSypfWup15jz2",
+    "perfil": "professor",
+    "favoritos": []
   }
 ]
