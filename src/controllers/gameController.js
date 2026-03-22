@@ -72,11 +72,22 @@ exports.sugerirJogo = async (req, res) => {
 
 exports.listarMeusEnvios = async (req, res) => {
     try {
-        const usuarioId = req.session.user?.id || 1;
-        const envios = await gameService.listarMeusEnvios(usuarioId);
-        res.status(200).json(envios);
+        // Como estamos lidando com express-session, o ID geralmente fica aqui:
+        const usuarioId = req.session?.user?.id || req.user?.id;
+
+        if (!usuarioId) {
+            return res.status(401).json({ error: "Usuário não autenticado ou sessão expirada." });
+        }
+
+        // Pede para o Service buscar os dados
+        const envios = await gameService.obterMeusEnvios(usuarioId);
+        
+        // Devolve os dados para o frontend (o seu user.js vai pegar isso e montar a tabela)
+        res.json(envios);
+
     } catch (error) {
-        res.status(500).json({ mensagem: "Erro ao buscar seus envios." });
+        console.error("Erro no Controller [listarMeusEnvios]:", error);
+        res.status(500).json({ error: "Erro interno ao buscar as sugestões." });
     }
 };
 

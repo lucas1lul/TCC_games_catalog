@@ -91,3 +91,13 @@ exports.atualizarStatusSugestao = async (id, status) => {
     }
     return { message: `Sugestão ${status} com sucesso.` };
 };
+
+exports.obterMeusEnvios = async (usuarioId) => {
+    if (!usuarioId) {
+        throw new Error("ID do usuário não fornecido para a busca.");
+    }
+    
+    const envios = await gameRepository.buscarEnviosPorUsuario(usuarioId);
+    return envios;
+};
+
