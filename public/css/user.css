@@ -139,3 +139,13 @@ body {
 
 .btn-approve:hover { background-color: #218838; }
 .btn-reject:hover { background-color: #c82333; }
+
+.status-badge {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.85em;
+    font-weight: bold;
+}
+.status-pendente { background-color: #ffeeba; color: #856404; }
+.status-aprovado { background-color: #d4edda; color: #155724; }
+.status-rejeitado { background-color: #f8d7da; color: #721c24; }
