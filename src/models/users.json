@@ -116,5 +116,17 @@
       2,
       152
     ]
+  },
+  {
+    "id": 12,
+    "nome": "si",
+    "email": "123@gmail.com",
+    "senha": "$2b$10$6apTSdcRH2rQvfugrZUE0e9CFFYHNjPSjbORWtT.E/yenJ7F7g9pG",
+    "perfil": "usuario",
+    "favoritos": [
+      5,
+      4,
+      3
+    ]
   }
 ]
