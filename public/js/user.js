@@ -121,40 +121,22 @@ async function enviarSugestao(e) {
     }
 }
 
-async function carregarMeusEnvios() {
-    const lista = document.getElementById("lista-meus-envios");
-    if (!lista) return;
+async function carregarSugestoes() {
+    const tabela = document.getElementById("tabela-sugestoes");
+    if (!tabela) return;
 
     try {
-        const res = await fetch('/api/my-suggestions');
-        const envios = await res.json();
-
-        if (envios.length === 0) {
-            lista.innerHTML = "<li>Você ainda não enviou sugestões.</li>";
-            return;
+        const res = await fetch('/api/games/pending'); // Verifica se sua URL base é /api mesmo
+        
+        // Proteção: Se o backend retornar 404 ou 500, a gente barra aqui.
+        if (!res.ok) {
+            throw new Error(`Erro na rota: Status ${res.status}`);
         }
 
-        lista.innerHTML = envios.map(s => `
-            <li class="envio-item">
-                <strong>${s.NOME_JOGO}</strong> - 
-                <span class="status-${s.STATUS}">${s.STATUS.toUpperCase()}</span>
-                <small>(${new Date(s.DATA_ENVIO).toLocaleDateString()})</small>
-            </li>
-        `).join('');
-    } catch (err) {
-        lista.innerHTML = "Erro ao carregar seus envios.";
-    }
-}
-
-// --- AÇÕES DO ADMINISTRADOR (CURADORIA E CADASTRO) ---
-
-async function carregarSugestoes() {
-    try {
-        const res = await fetch('/api/games/pending');
         const sugestoes = await res.json();
-        const tabela = document.getElementById("tabela-sugestoes");
         
-        if (!sugestoes || sugestoes.length === 0) {
+        // Verifica se realmente é um Array antes de usar o .map
+        if (!Array.isArray(sugestoes) || sugestoes.length === 0) {
             tabela.innerHTML = '<tr><td colspan="4">Nenhuma sugestão pendente.</td></tr>';
             return;
         }
@@ -165,13 +147,54 @@ async function carregarSugestoes() {
                 <td>${s.AUTOR_ID || 'Usuário'}</td>
                 <td><a href="${s.LINK_ACESSO}" target="_blank">Link</a></td>
                 <td>
-                    <button onclick="prepararAprovacao('${s.ID_SUGESTAO}', '${s.NOME_JOGO}', '${s.LINK_ACESSO}')">✅</button>
-                    <button onclick="rejeitarSugestao('${s.ID_SUGESTAO}')">❌</button>
+                    <button class="btn-approve" onclick="prepararAprovacao('${s.ID_SUGESTAO}', '${s.NOME_JOGO}', '${s.LINK_ACESSO}')">✅</button>
+                    <button class="btn-reject" onclick="rejeitarSugestao('${s.ID_SUGESTAO}')">❌</button>
                 </td>
             </tr>
         `).join('');
     } catch (err) {
         console.error("Erro ao carregar sugestões:", err);
+        tabela.innerHTML = '<tr><td colspan="4" style="color:red;">Erro ao carregar os dados.</td></tr>';
+    }
+}
+
+async function carregarMeusEnvios() {
+    const tabelaCorpo = document.getElementById("tabela-meus-envios");
+    
+    if (!tabelaCorpo) {
+        console.error("❌ Erro: Não encontrei 'tabela-meus-envios' no HTML.");
+        return;
+    }
+
+    try {
+        const res = await fetch('/api/my-suggestions');
+        
+        if (!res.ok) throw new Error(`Erro HTTP: ${res.status}`);
+
+        const envios = await res.json();
+
+        if (!Array.isArray(envios) || envios.length === 0) {
+            tabelaCorpo.innerHTML = '<tr><td colspan="3">Você ainda não enviou sugestões.</td></tr>';
+            return;
+        }
+
+        // Preenchendo as 3 colunas: Jogo, Data e Status
+        tabelaCorpo.innerHTML = envios.map(s => {
+            const dataFormatada = s.DATA_ENVIO ? new Date(s.DATA_ENVIO).toLocaleDateString() : '---';
+            const statusLabel = (s.STATUS || 'pendente').toUpperCase();
+
+            return `
+                <tr>
+                    <td><strong>${s.NOME_JOGO || 'Sem nome'}</strong></td>
+                    <td>${dataFormatada}</td>
+                    <td><span class="status-badge status-${(s.STATUS || 'pendente').toLowerCase()}">${statusLabel}</span></td>
+                </tr>
+            `;
+        }).join('');
+
+    } catch (err) {
+        console.error("Erro ao carregar envios:", err);
+        tabelaCorpo.innerHTML = '<tr><td colspan="3" style="color:red;">Erro ao carregar dados.</td></tr>';
     }
 }
 
@@ -232,7 +255,56 @@ async function cadastrarJogo(e) {
     }
 }
 
-// --- EVENT LISTENERS ---
+// --- AÇÕES DO PERFIL ---
+
+async function salvarAlteracoes(e) {
+    e.preventDefault();
+    
+    // Verifica se os elementos existem antes de pegar o valor para evitar novos erros
+    const elNome = document.getElementById("nome");
+    const elEmail = document.getElementById("email");
+    
+    if (!elNome || !elEmail) return;
+
+    const nome = elNome.value.trim();
+    const email = elEmail.value.trim();
+    const senhaAtual = document.getElementById("senhaAtual")?.value || "";
+    const novaSenha = document.getElementById("novaSenha")?.value || "";
+    const confirmar = document.getElementById("confirmarNovaSenha")?.value || "";
+
+    let payload = { id: usuarioLogado.id, nome, email };
+
+    if (senhaAtual || novaSenha) {
+        if (novaSenha !== confirmar) return setStatus("As senhas não conferem!", "error");
+        if (novaSenha.length < 6) return setStatus("Nova senha muito curta!", "error");
+        payload.senhaAtual = senhaAtual;
+        payload.novaSenha = novaSenha;
+    }
+
+    try {
+        const res = await fetch("/api/users/me", {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+        });
+
+        if (res.ok) {
+            setStatus("Dados atualizados com sucesso!", "success");
+            if (document.getElementById("senhaAtual")) {
+                document.getElementById("senhaAtual").value = "";
+                document.getElementById("novaSenha").value = "";
+                document.getElementById("confirmarNovaSenha").value = "";
+            }
+        } else {
+            const err = await res.json();
+            throw new Error(err.message || "Erro ao atualizar");
+        }
+    } catch (err) {
+        setStatus(err.message, "error");
+    }
+}
+
+/// --- EVENT LISTENERS ---
 
 document.addEventListener("DOMContentLoaded", () => {
     carregarDadosIniciais();
@@ -247,5 +319,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Form de Sugestão (Profissional TI)
     const formSugestao = document.getElementById("form-sugerir-jogo");
-    if (formSugestao) formSugestao.addEventListener("submit", enviarSugestao);
+    
+    // RADAR DE ERRO:
+    if (formSugestao) {
+        console.log("✅ Formulário de sugestão encontrado no HTML!");
+        formSugestao.addEventListener("submit", enviarSugestao);
+    } else {
+        console.error("❌ ERRO: O JavaScript não achou nenhum <form> com o id='form-sugerir-jogo'. Verifique seu HTML.");
+    }
 });
