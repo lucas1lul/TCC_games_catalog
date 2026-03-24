@@ -79,15 +79,13 @@ main .page-title {
     padding: 15px;
 }
 
-/* O "Pulo do Gato": O footer sempre no fundo */
-.card-footer {
-    margin-top: auto; /* Empurra o footer para a base do card */
-    padding: 15px;
-    border-top: 1px solid #eee;
-    background: #f9f9f9;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.jogo-tag {
+  display: inline-block;
+  background: #ff4757;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  margin-bottom: 10px;
 }
 
 /* Detalhes como Badges */
@@ -105,24 +103,16 @@ main .page-title {
 }
 
 .card-image-container {
-    width: 100%;
-    height: 180px; /* Altura fixa para todas as imagens */
-    overflow: hidden;
-    background-color: #f0f0f0;
+  height: 140px;
+  overflow: hidden;
 }
-
 .jogo-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* ESSENCIAL: Preenche o espaço sem esticar a imagem */
-    object-position: top; /* Foca na parte superior da imagem, útil para capas de jogos */
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
-
 .card-content {
-    padding: 15px;
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1; /* Faz o conteúdo ocupar o espaço restante */
+  padding: 14px;
 }
 
 .card-header {
@@ -132,15 +122,19 @@ main .page-title {
 }
 
 .jogo-titulo {
-    margin: 0 0 6px 0;
-    font-size: 1.15rem;
-    font-weight: 800;
+  font-size: 16px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 6px;
 }
-
 .jogo-componente {
-    display: block;
-    font-size: 0.85em;
-    opacity: 0.95;
+  display: inline-block;
+  background: #0a7f3f; /* verde IFF */
+  color: #fff;
+  font-size: 11px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  margin-bottom: 10px;
 }
 
 .card-body {
@@ -149,17 +143,17 @@ main .page-title {
 }
 
 .jogo-descricao {
-    flex-grow: 1; /* Empurra os detalhes e o botão para o final do card */
-    font-size: 0.92rem;
-    color: #555;
-    margin: 10px 0 12px;
+  font-size: 13px;
+  color: #555;
+  margin-bottom: 10px;
 }
 /* Estilo do Grid de Detalhes */
 .detalhes-grid {
-    display: flex;
-    flex-direction: column; /* Empilha para leitura mais fácil */
-    gap: 12px;
-    padding: 15px 0;
+  font-size: 12px;
+  color: #666;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 .detalhe-item strong {
@@ -182,28 +176,55 @@ main .page-title {
 }
 
 .card-footer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between; /* Espalha os itens */
-    padding: 15px;
-    background: #fff; /* Fundo branco para não pesar */
-    border-top: 1px solid #eee;
+  margin-top: auto;
+  padding: 12px;
+  border-top: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
+.footer-icons {
+  display: flex;
+  gap: 10px;
+}
+
+
 .btn-acessar {
-    background-color: var(--iff-red-dark);
-    color: #fff !important;
-    padding: 8px 16px;
-    border-radius: 6px;
-    text-decoration: none;
-    font-weight: bold;
-    font-size: 0.9rem;
-    white-space: nowrap; /* Impede o texto de quebrar linha */
+  background: #990000;; /* vermelho */
+  color: white;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  text-decoration: none;
+  transition: 0.2s;
 }
 
 .btn-acessar:hover {
-    opacity: 0.9;
-    transform: scale(1.05);
+  background: #990000;
+}
+
+.acoes {
+  display: flex;
+  gap: 10px;
+}
+
+.btn-icon {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.estrela {
+  cursor: pointer;
+  font-size: 16px;
+  opacity: 0.6;
+}
+
+.estrela.ativa {
+  color: red;
+  opacity: 1;
 }
 
 /* Estilo da Paginação */
@@ -245,52 +266,45 @@ main .page-title {
 }
 
 .jogo-card {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    background: #fff;
-    border-radius: 12px;
-    border: none;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    transition: transform 0.2s;
-    overflow: hidden;
+  background: #ffffff;
+  border-radius: 14px;
+  overflow: hidden;
+  width: 260px;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.25s ease;
+  border: 1px solid #e5e5e5;
 }
 
 .jogo-card:hover {
-    transform: translateY(-5px);
+  transform: translateY(-6px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+}
+
+.card-image img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
 }
 
 .card-content {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1; /* Faz esta parte ocupar todo o espaço sobrando */
-    padding: 15px;
-}
-
-/* --- Rodapé sem Erros de Borda --- */
-.card-footer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px;
-    padding: 15px;
-    background: #fafafa;
-    border-top: 1px solid #eee;
-    flex-wrap: wrap; /* Evita que os botões quebrem o card em telas pequenas */
+  padding: 15px;
+  color: #fff;
+padding: 15px;
 }
 
 .estrela-favorito {
-    position: static;
-    font-size: 1.8rem;
-    cursor: pointer;
-    color: #bbb;
-    transition: transform 0.2s, color 0.2s;
-    user-select: none;
-    line-height: 1;
+  cursor: pointer;
+  opacity: 0.5;
+  transition: 0.2s;
 }
 
+
 .estrela-favorito:hover { transform: scale(1.1); }
-.estrela-favorito.ativa { color: #e63946; }
+.estrela-favorito.ativa {
+  color: #d62828; /* vermelho */
+  opacity: 1;
+}
 
 /* Estilos do Modal */
 .modal {

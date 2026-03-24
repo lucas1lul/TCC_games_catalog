@@ -119,10 +119,14 @@
   },
   {
     "id": 12,
-    "nome": "Carlos Maciel",
-    "email": "cm@gmail.com",
-    "senha": "$2b$10$zNzyxAq0seI5FvkfS5Nuf.aJrm92XxMH.8nPj8MjoSypfWup15jz2",
-    "perfil": "professor",
-    "favoritos": []
+    "nome": "si",
+    "email": "123@gmail.com",
+    "senha": "$2b$10$6apTSdcRH2rQvfugrZUE0e9CFFYHNjPSjbORWtT.E/yenJ7F7g9pG",
+    "perfil": "usuario",
+    "favoritos": [
+      5,
+      4,
+      3
+    ]
   }
 ]
