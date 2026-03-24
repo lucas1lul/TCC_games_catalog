@@ -54,5 +54,15 @@
     "comentario": "Ok\n",
     "createdAt": "2026-03-24T05:47:38.032Z",
     "dataCriacao": "2026-03-24T05:47:38.033Z"
+  },
+  {
+    "id": "34650dd8-5e77-421b-ab01-c6777399a549",
+    "jogoId": 3,
+    "usuarioId": 9,
+    "usuarioNome": "euprof2",
+    "nota": 5,
+    "comentario": "muito bom!!",
+    "createdAt": "2026-03-24T18:47:08.935Z",
+    "dataCriacao": "2026-03-24T18:47:08.935Z"
   }
 ]
