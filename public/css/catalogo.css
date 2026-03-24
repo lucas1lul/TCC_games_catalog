@@ -375,3 +375,81 @@ padding: 15px;
     background: #e2e8f0;
     color: #1e293b;
 }
+
+/* --- Estilização da Avaliação no Card --- */
+
+.container-avaliacao-card {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 20px;
+    transition: background 0.3s ease;
+}
+
+/* Efeito visual para indicar que o professor pode clicar */
+.container-avaliacao-card:hover {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.estrelas-dinamicas-card {
+    /* ... outras propriedades ... */
+    background: linear-gradient(90deg, #FFD700 var(--percent), #e0e0e0 var(--percent));
+    
+    /* Versão para Chrome/Safari/Edge */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    /* Versão Padrão (Boa prática) */
+    background-clip: text;
+    color: transparent; /* Fallback caso o background-clip falhe */
+}
+
+.nota-texto-card {
+    font-size: 0.85rem;
+    font-weight: bold;
+    color: #555;
+}
+
+/* Ajuste no footer para os 3 elementos conviverem bem */
+.card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    border-top: 1px solid #eee;
+}
+
+.footer-icons {
+    display: flex;
+    gap: 12px;
+}
+
+.comentario-item {
+    border-bottom: 1px solid #eee;
+    padding: 15px 0;
+}
+
+.comentario-item:last-child {
+    border-bottom: none;
+}
+
+.comentario-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.comentario-data {
+    font-size: 0.75rem;
+    color: #888;
+    margin-bottom: 8px;
+}
+
+.comentario-texto {
+    font-size: 0.9rem;
+    line-height: 1.4;
+    color: #444;
+}

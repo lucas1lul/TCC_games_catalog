@@ -1,5 +1,5 @@
 let jogosCompletos = [];
-let usuarioLogado = null; 
+window.usuarioLogado = null;
 let paginaAtual = 1;
 const jogosPorPagina = 12;
 
@@ -34,6 +34,16 @@ document.addEventListener("DOMContentLoaded", async () => {
       } else if (e.target.closest('[data-action="favoritar"]')) {
         toggleFavorito(idJogo, e.target.closest('[data-action="favoritar"]'));
       }
+      // --- NOVO: Captura o clique nas estrelas do card ---
+      else if (e.target.closest('[data-action="avaliar"]')) {
+        // Pegamos o nome do jogo direto do card para passar para o modal
+        const nomeJogo = card.querySelector(".jogo-titulo")?.textContent || "Jogo";
+
+        // Esta função window.abrirModalAvaliar deve estar no seu avaliacoes.js
+        if (typeof window.abrirModalAvaliar === "function") {
+          window.abrirModalAvaliar(idJogo, nomeJogo);
+        }
+      }
     });
   }
 });
@@ -47,7 +57,7 @@ async function verificarSessao() {
 
     if (res.ok) {
       const data = await res.json();
-      usuarioLogado = data.user; 
+      window.usuarioLogado = data.user;
 
       if (usuarioLogado) {
         const areaBoasVindas = document.getElementById("boasVindas");
@@ -134,7 +144,7 @@ async function toggleFavorito(jogoId, elementoEstrela) {
     const response = await fetch("/api/favoritos", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      credentials: "include", 
+      credentials: "include",
       body: JSON.stringify({ jogoId: jogoId }),
     });
 
@@ -143,7 +153,7 @@ async function toggleFavorito(jogoId, elementoEstrela) {
     if (response.ok) {
       elementoEstrela.classList.toggle("ativa");
       // Atualiza os favoritos na memória para não perder o estado ao mudar de página
-      usuarioLogado.favoritos = data.favoritos; 
+      usuarioLogado.favoritos = data.favoritos;
     } else {
       alert(data.error || "Erro ao favoritar");
     }

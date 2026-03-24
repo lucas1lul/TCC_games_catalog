@@ -3,11 +3,17 @@ const userRepository = require('../repositories/userRepository');
 const gameRepository = require('../repositories/gameRepository');
 
 
-exports.register = async ({ nome, email, senha }) => {
+exports.register = async ({ nome, email, senha, perfil }) => {
   const existingUser = userRepository.findByEmail(email);
-
   if (existingUser) {
-    throw new Error('Email já cadastrado');
+    throw new Error('Este e-mail já está cadastrado no sistema.');
+  }
+
+  const perfisPermitidos = ['aluno', 'profissional_ti', 'professor'];
+  
+  let perfilFinal = 'aluno'; 
+  if (perfil && perfisPermitidos.includes(perfil.toLowerCase())) {
+    perfilFinal = perfil.toLowerCase();
   }
 
   const hashedPassword = await bcrypt.hash(senha, 10);
@@ -16,10 +22,12 @@ exports.register = async ({ nome, email, senha }) => {
     nome,
     email,
     senha: hashedPassword,
-    perfil: 'usuario'
+    perfil: perfilFinal
   });
 
-  return newUser;
+  const { senha: _, ...userWithoutPassword } = newUser;
+  
+  return userWithoutPassword;
 };
 
 exports.login = async ({ email, senha }) => {
@@ -103,4 +111,52 @@ exports.getUserFavorites = async (usuarioId) => {
   );
 
   return favoritos;
+};
+
+// --- MÉTODOS DE ADMINISTRAÇÃO ---
+
+exports.getAllUsers = () => {
+    // Retorna todos os usuários do JSON via repository
+    return userRepository.findAll();
+};
+
+exports.adminUpdateUser = async (usuarioId, data) => {
+    const user = userRepository.findById(usuarioId);
+    if (!user) throw new Error("Usuário não encontrado.");
+
+    // Validação de perfis permitidos no sistema
+    const perfisValidos = ['aluno', 'profissional_ti', 'professor', 'administrador'];
+    
+    const updateData = {
+        nome: data.nome || user.nome,
+        email: data.email || user.email
+    };
+
+    if (data.perfil && perfisValidos.includes(data.perfil.toLowerCase())) {
+        updateData.perfil = data.perfil.toLowerCase();
+    }
+
+    // Salva no JSON
+    const updatedUser = userRepository.update(usuarioId, updateData);
+    
+    // Remove a senha antes de retornar
+    const { senha, ...safeUser } = updatedUser;
+    return safeUser;
+};
+
+exports.updatePassword = async (usuarioId, senhaAtual, novaSenha) => {
+    const user = userRepository.findById(usuarioId);
+    if (!user) throw new Error("Usuário não encontrado.");
+
+    // 1. Verifica se a senha atual digitada bate com o hash do banco/JSON
+    const isMatch = await bcrypt.compare(senhaAtual, user.senha);
+    if (!isMatch) {
+        throw new Error("A senha atual está incorreta.");
+    }
+
+    // 2. Cria o hash da nova senha
+    const hashedNewPassword = await bcrypt.hash(novaSenha, 10);
+
+    // 3. Atualiza apenas o campo da senha no repositório
+    return userRepository.update(usuarioId, { senha: hashedNewPassword });
 };

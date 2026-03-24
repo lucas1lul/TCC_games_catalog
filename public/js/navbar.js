@@ -24,10 +24,9 @@ async function carregarNavbar() {
       if (data && data.user && data.user.nome) {
         usuario = (data && data.user) ? data.user : null;
       } else {
-        usuario = null; // Garante que é nulo se os dados forem parciais
+        usuario = null;
       }
     } else {
-      // Se o status for 401 (Não autorizado), forçamos null
       usuario = null;
     }
 

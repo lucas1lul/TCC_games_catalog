@@ -4,10 +4,14 @@ const gameController = require('../controllers/gameController');
 const authMiddleware = require("../middlewares/authMiddleware");
 
 // ==========================================
-// 1. ROTAS ESPECÍFICAS (Sem parâmetros dinâmicos soltos)
+// 1. ROTAS ESPECÍFICAS (Sempre em cima)
 // ==========================================
 
 router.get('/games', gameController.getGames);
+
+// NOVA ROTA DE BUSCA DE HABILIDADES
+// Ela deve ficar aqui para não ser confundida com /games/:id
+router.get('/habilidades/search', gameController.searchHabilidades);
 
 router.get(
   '/games/pending', 
@@ -34,7 +38,7 @@ router.get(
 // 2. ROTAS COM PARÂMETROS DINÂMICOS (:id)
 // ==========================================
 
-// Como esta rota tem :id, ela deve ficar abaixo de /games/pending
+// Agora o Express só cai aqui se a URL não bater com as de cima
 router.get('/games/:id', gameController.getGameById);
 
 router.put(

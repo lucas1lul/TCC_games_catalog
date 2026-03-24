@@ -28,11 +28,26 @@ exports.getGameById = async (req, res) => {
 
 exports.createGame = async (req, res) => {
     try {
-        // O mapeamento técnico agora é feito dentro do Service
-        const insertId = await gameService.createGame(req.body);
-        res.status(201).json({ message: "Jogo cadastrado com sucesso!", id: insertId });
+        // Mapeia os dados recebidos do frontend (req.body) para o padrão do Service
+        const gameData = {
+            NOME: req.body.NOME || req.body.nome || req.body.titulo,
+            LINKIMAGEM: req.body.LINKIMAGEM || req.body.linkImagem,
+            LINK: req.body.LINK || req.body.link,
+            IDIOMA: req.body.IDIOMA || req.body.idioma,
+            LICENSA: req.body.LICENCA || req.body.licenca || req.body.licensa,
+            INTERACAO: req.body.INTERACAO || req.body.interacao,
+            // Tratamos as relações como arrays (caso o admin selecione mais de um)
+            HABILIDADES: req.body.HABILIDADES || req.body.habilidades,
+            GENERO: req.body.GENERO || req.body.genero,
+            PLATAFORMA: req.body.PLATAFORMA || req.body.plataforma,
+            COMPONENTE: req.body.COMPONENTE || req.body.componente
+        };
+
+        const result = await gameService.createGame(gameData);
+        res.status(201).json(result);
+
     } catch (error) {
-        console.error("Erro ao criar jogo:", error);
+        console.error("Erro na Controller [createGame]:", error.message);
         res.status(400).json({ error: error.message });
     }
 };
@@ -52,6 +67,24 @@ exports.deleteGame = async (req, res) => {
         res.status(200).json({ mensagem: "Jogo deletado!" });
     } catch (error) {
         res.status(500).json({ mensagem: "Erro ao deletar jogo." });
+    }
+};
+
+exports.searchHabilidades = async (req, res) => {
+    try {
+        const termo = req.query.q;
+        if (!termo || termo.length < 2) {
+            return res.json([]);
+        }
+
+        // Chama o service para buscar no banco
+        const habilidades = await gameService.searchHabilidades(termo);
+        
+        // Retorna o JSON (isso resolve o erro de Unexpected token '<')
+        res.json(habilidades);
+    } catch (error) {
+        console.error("Erro no Controller [searchHabilidades]:", error);
+        res.status(500).json({ error: "Erro interno ao buscar habilidades." });
     }
 };
 

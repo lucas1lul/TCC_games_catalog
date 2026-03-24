@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     }
 
-    // Delegação de clique nos cards
+    // Delegação de clique nos cards (Centraliza Detalhes, Favoritar e Avaliar)
     const container = document.getElementById("listaFavoritos");
     if (container) {
         container.addEventListener("click", (e) => {
@@ -42,18 +42,25 @@ document.addEventListener("DOMContentLoaded", async () => {
             const idJogo = Number(card.dataset.jogoId);
             if (!Number.isFinite(idJogo)) return;
 
-            // Ação de Detalhes
+            // Ação: Detalhes
             if (e.target.closest('[data-action="detalhes"]')) {
                 if (typeof window.abrirDetalhes === "function") window.abrirDetalhes(idJogo);
             } 
-            // Ação de Favoritar/Desfavoritar (O coração/estrela)
+            // Ação: Favoritar/Desfavoritar
             else if (e.target.closest('[data-action="favoritar"]')) {
                 toggleFavorito(idJogo, e.target.closest('[data-action="favoritar"]'));
+            }
+            // Ação: Avaliar (Estrelas do Card)
+            else if (e.target.closest('[data-action="avaliar"]')) {
+                const nomeJogo = card.querySelector(".jogo-titulo")?.textContent || "Jogo";
+                if (typeof window.abrirModalAvaliar === "function") {
+                    window.abrirModalAvaliar(idJogo, nomeJogo);
+                }
             }
         });
     }
 
-    // 2. Carregar os dados
+    // 2. Carregar os dados (Favoritos + Avaliados se for professor)
     carregarMeusDados();
 });
 
@@ -74,27 +81,40 @@ async function verificarSessao() {
 
 async function carregarMeusDados() {
     const container = document.getElementById("listaFavoritos");
-    if (container) container.innerHTML = "Carregando seus favoritos...";
+    if (container) container.innerHTML = "Carregando seus dados...";
 
     try {
-        const responseFav = await fetch(`/api/usuarios/${usuarioLogado.id}/favoritos`, {
-            credentials: 'include'
-        });
+        // Busca favoritos
+        const resFav = await fetch(`/api/usuarios/${usuarioLogado.id}/favoritos`, { credentials: 'include' });
+        const favoritos = await resFav.json() || [];
+
+        // Busca avaliados (apenas para perfil professor)
+        let avaliados = [];
+        if (usuarioLogado.perfil === 'professor') {
+            const resAval = await fetch(`/api/usuarios/${usuarioLogado.id}/avaliados`, { credentials: 'include' });
+            avaliados = await resAval.json() || [];
+        }
+
+        // Mescla as listas sem duplicar jogos que estão em ambas
+        const mapaGeral = new Map();
         
-        if (!responseFav.ok) throw new Error("Falha ao carregar favoritos");
+        favoritos.forEach(j => mapaGeral.set(j.IDJOGO, { ...j, isFavorito: true }));
+        avaliados.forEach(j => {
+            const existente = mapaGeral.get(j.IDJOGO);
+            mapaGeral.set(j.IDJOGO, { ...(existente || j), isAvaliado: true });
+        });
 
-        meusJogosOriginais = await responseFav.json() || [];
-        jogosFiltrados = [...meusJogosOriginais];
-
+        meusJogosOriginais = Array.from(mapaGeral.values());
+        
         if (meusJogosOriginais.length === 0) {
-            container.innerHTML = "<p>Você ainda não favoritou nenhum jogo. ❤️</p>";
+            container.innerHTML = "<p>Você ainda não possui interações registradas. ❤️</p>";
             return;
         }
 
-        renderizarJogos(jogosFiltrados);
+        filtrarMeusJogos();
     } catch (error) {
-        console.error("Erro ao carregar meus jogos:", error);
-        if (container) container.innerHTML = '<p style="color:red">❌ Erro ao carregar favoritos.</p>';
+        console.error("Erro ao carregar dados:", error);
+        if (container) container.innerHTML = '<p style="color:red">❌ Erro ao carregar dados.</p>';
     }
 }
 
@@ -103,17 +123,35 @@ function renderizarJogos(lista) {
     if (!container) return;
     container.innerHTML = "";
 
-    const favoritos = usuarioLogado?.favoritos || [];
+    const favoritosIds = usuarioLogado?.favoritos || [];
 
     lista.forEach((jogo) => {
-        // Usa a função do jogoCard.js
         container.innerHTML += window.renderJogoCard(jogo, {
-            favoritos,
+            favoritos: favoritosIds,
             mostrarEstrela: true,
             mostrarBotaoDetalhes: true,
             mostrarLink: true,
         });
     });
+}
+
+function filtrarMeusJogos() {
+    const status = document.getElementById("filtroStatus")?.value || "tudo";
+    const busca = (document.getElementById("filtroCurso")?.value || "").toLowerCase().trim();
+
+    jogosFiltrados = meusJogosOriginais.filter((jogo) => {
+        const matchStatus = 
+            status === "tudo" || 
+            (status === "favoritados" && jogo.isFavorito) || 
+            (status === "avaliados" && jogo.isAvaliado);
+
+        const nome = (jogo.NOME || "").toLowerCase();
+        const matchTexto = !busca || nome.includes(busca);
+
+        return matchStatus && matchTexto;
+    });
+
+    renderizarJogos(jogosFiltrados);
 }
 
 async function toggleFavorito(jogoId, elementoEstrela) {
@@ -128,48 +166,26 @@ async function toggleFavorito(jogoId, elementoEstrela) {
         const data = await response.json();
 
         if (response.ok) {
-            // Sincroniza a sessão local com o servidor
             usuarioLogado.favoritos = data.favoritos;
-
             const listaIds = (data.favoritos || []).map(Number);
             const aindaFavoritado = listaIds.includes(Number(jogoId));
 
-            // Se desfavoritou, remove o card da tela
+            // Se o usuário desfavoritou e está no filtro de favoritos, remove o card
             if (!aindaFavoritado) {
-                meusJogosOriginais = meusJogosOriginais.filter((j) => Number(j.IDJOGO) !== Number(jogoId));
+                // Atualiza o estado local do objeto
+                const jogo = meusJogosOriginais.find(j => Number(j.IDJOGO) === Number(jogoId));
+                if (jogo) jogo.isFavorito = false;
+                
+                // Se não for nem favorito nem avaliado, remove da lista original
+                if (jogo && !jogo.isAvaliado) {
+                    meusJogosOriginais = meusJogosOriginais.filter(j => Number(j.IDJOGO) !== Number(jogoId));
+                }
                 filtrarMeusJogos(); 
             }
         }
     } catch (error) {
         console.error("Erro ao favoritar:", error);
     }
-}
-
-function filtrarMeusJogos() {
-    const status = document.getElementById("filtroStatus")?.value || "tudo";
-    const componente = (document.getElementById("filtroComponente")?.value || "").toLowerCase();
-    const habilidade = (document.getElementById("filtroHabilidade")?.value || "").toLowerCase();
-    const plataforma = (document.getElementById("filtroPlataforma")?.value || "").toLowerCase();
-
-    jogosFiltrados = meusJogosOriginais.filter((jogo) => {
-        const matchStatus =
-            status === "tudo" ||
-            status === "favoritados" ||
-            (status === "avaliados" && jogo.isAvaliado);
-
-        const matchComponente =
-            !componente || (jogo.COMPONENTES || "").toLowerCase().includes(componente);
-
-        const matchHabilidade =
-            !habilidade || (jogo.HABILIDADES_CODIGOS || "").toLowerCase().includes(habilidade);
-
-        const matchPlataforma =
-            !plataforma || (jogo.PLATAFORMA_DESCRICAO || "").toLowerCase().includes(plataforma);
-
-        return matchStatus && matchComponente && matchHabilidade && matchPlataforma;
-    });
-
-    renderizarJogos(jogosFiltrados);
 }
 
 function configurarInterfacePorPerfil(perfil) {
@@ -179,7 +195,6 @@ function configurarInterfacePorPerfil(perfil) {
 }
 
 function logout() {
-    // Agora o logout deve ser feito via API para limpar a sessão no servidor
     fetch('/api/logout', { method: 'POST', credentials: 'include' })
         .then(() => window.location.href = "/catalogo.html");
 }

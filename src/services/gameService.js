@@ -5,25 +5,27 @@ const gameRepository = require('../repositories/gameRepository');
 /**
  * Valida e formata os dados para o cadastro OFICIAL de um jogo.
  */
-const mapAndValidateGame = (gameData) => {
-    if (!gameData.titulo || !gameData.componente) {
-        throw new Error("Título e Componente são obrigatórios.");
-    }
+const mapAndValidateGame = (data) => {
+    // Validações obrigatórias
+    if (!data.NOME || data.NOME.trim() === "") throw new Error("O Nome do jogo é obrigatório.");
+    if (!data.LINK || data.LINK.trim() === "") throw new Error("O Link do jogo é obrigatório.");
+
+    // Função auxiliar para garantir que os IDs venham como array
+    const toArray = (val) => Array.isArray(val) ? val : (val ? [val] : []);
 
     return {
-        titulo: gameData.titulo,
-        buscador: gameData.buscador || "N/A",
-        autor: gameData.autor || "N/A",
-        generos: Array.isArray(gameData.generos) ? gameData.generos : [],
-        habilidades: Array.isArray(gameData.habilidades) ? gameData.habilidades : [],
-        modelo_custo: gameData.modelo_custo || "N/A",
-        ano_lancamento: gameData.ano_lancamento ? parseInt(gameData.ano_lancamento, 10) : null,
-        descricao: gameData.descricao || "Sem descrição.",
-        url: gameData.url || "N/A",
-        plataforma: Array.isArray(gameData.plataforma) ? gameData.plataforma : [],
-        idioma: gameData.idioma || "N/A",
-        pais_origem: gameData.pais_origem || "N/A",
-        componente: gameData.componente,
+        NOME: data.NOME,
+        LINKIMAGEM: data.LINKIMAGEM || null,
+        LINK: data.LINK,
+        IDIOMA: data.IDIOMA || 'Português',
+        LICENSA: data.LICENSA || 'Gratis',
+        INTERACAO: data.INTERACAO || 'Single Player',
+        
+        // Garante que sejam arrays (ex: [1, 3, 5])
+        HABILIDADES: toArray(data.HABILIDADES),
+        GENERO: toArray(data.GENERO),
+        PLATAFORMA: toArray(data.PLATAFORMA),
+        COMPONENTE: toArray(data.COMPONENTE)
     };
 };
 
@@ -56,9 +58,10 @@ exports.getGameById = async (id) => {
 };
 
 // Fluxo de Cadastro Oficial (Admin)
-exports.createGame = async (data) => {
-    const validatedData = mapAndValidateGame(data);
-    return await gameRepository.createGame(validatedData);
+exports.createGame = async (gameData) => {
+    const validatedData = mapAndValidateGame(gameData);
+    const newId = await gameRepository.createGame(validatedData);
+    return { id: newId, message: "Jogo criado com sucesso!" };
 };
 
 exports.updateGame = async (id, data) => {
@@ -101,3 +104,10 @@ exports.obterMeusEnvios = async (usuarioId) => {
     return envios;
 };
 
+// --- BUSCA DE HABILIDADES ---
+
+exports.searchHabilidades = async (termo) => {
+    if (!termo) return [];
+    // O Service apenas repassa a ordem para o Repository, que cuida do banco
+    return await gameRepository.searchHabilidades(termo);
+};

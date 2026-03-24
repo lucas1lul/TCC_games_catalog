@@ -41,7 +41,6 @@ exports.createUser = (userData) => {
   const users = readUsers();
 
   const newUser = {
-    // Lógica simples de incremento de ID
     id: users.length ? Math.max(...users.map(u => u.id)) + 1 : 1,
     ...userData,
     favoritos: userData.favoritos || []

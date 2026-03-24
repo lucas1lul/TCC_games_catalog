@@ -16,7 +16,7 @@
     "nome": "barbara",
     "email": "b@gmail.com",
     "senha": "$2b$10$CXpJ2kBSzry011iQiGosfOPTZ7q5MCGgS/u358DdIK2CTnKcHz5pe",
-    "perfil": "administrador",
+    "perfil": "profissional_ti",
     "favoritos": [
       1
     ]
@@ -109,7 +109,7 @@
   },
   {
     "id": 11,
-    "nome": "Victor Silva Soares",
+    "nome": "Victor Soares",
     "email": "victor9soares@gmail.com",
     "senha": "$2b$10$PbYv8/YNeLm4pUaCCj54XeZYb0m4AcRvCNWKMo5KoeKNQkUahjzf2",
     "perfil": "profissional_ti",
@@ -121,10 +121,10 @@
   },
   {
     "id": 12,
-    "nome": "si",
+    "nome": "Sumério",
     "email": "123@gmail.com",
     "senha": "$2b$10$6apTSdcRH2rQvfugrZUE0e9CFFYHNjPSjbORWtT.E/yenJ7F7g9pG",
-    "perfil": "usuario",
+    "perfil": "aluno",
     "favoritos": [
       5,
       4,

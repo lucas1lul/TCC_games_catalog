@@ -81,18 +81,63 @@ exports.findById = async (id) => {
     LIMIT 1
   `;
 
-  const [rows] = await db.query(query, [id]);
+  // REMOVIDO o .promise() para evitar o conflito
+  const [rows] = await db.query(query, [id]); 
   return rows[0];
 };
 
 exports.createGame = async (data) => {
-  const { NOME, LINKIMAGEM, LINK, IDIOMA, INTERACAO, LICENSA } = data;
-  const sql = `
-    INSERT INTO JOGOS (NOME, LINKIMAGEM, LINK, IDIOMA, INTERACAO, LICENSA)
-    VALUES (?, ?, ?, ?, ?, ?)
-  `;
-  const [result] = await db.query(sql, [NOME, LINKIMAGEM, LINK, IDIOMA, INTERACAO, LICENSA]);
-  return result.insertId;
+    const { NOME, LINKIMAGEM, LINK, IDIOMA, INTERACAO, LICENSA, HABILIDADES, GENERO, PLATAFORMA, COMPONENTE } = data;
+
+    // Pega uma conexão exclusiva para a transação
+    const connection = await db.getConnection();
+    
+    try {
+        await connection.beginTransaction(); // Inicia a transação
+
+        // 1. Insere o jogo na tabela principal
+        const sqlGame = `
+            INSERT INTO JOGOS (NOME, LINKIMAGEM, LINK, IDIOMA, INTERACAO, LICENSA)
+            VALUES (?, ?, ?, ?, ?, ?)
+        `;
+        const [result] = await connection.execute(sqlGame, [NOME, LINKIMAGEM, LINK, IDIOMA, INTERACAO, LICENSA]);
+        const novoJogoId = result.insertId;
+
+        // 2. Insere as relações (apenas se o admin tiver selecionado alguma)
+        if (HABILIDADES.length > 0) {
+            for (const habId of HABILIDADES) {
+                await connection.execute('INSERT INTO jogos_habilidades (IDJOGO, habilidadeID) VALUES (?, ?)', [novoJogoId, habId]);
+            }
+        }
+        if (GENERO.length > 0) {
+            for (const genId of GENERO) {
+                await connection.execute('INSERT INTO jogos_genero (IDJOGO, IDGENERO) VALUES (?, ?)', [novoJogoId, genId]);
+            }
+        }
+        if (PLATAFORMA.length > 0) {
+            for (const platId of PLATAFORMA) {
+                await connection.execute('INSERT INTO jogos_plataforma (IDJOGO, IDPLATAFORMA) VALUES (?, ?)', [novoJogoId, platId]);
+            }
+        }
+        if (COMPONENTE.length > 0) {
+            for (const compId of COMPONENTE) {
+                await connection.execute('INSERT INTO jogos_componentes (IDJOGO, IDCOMPONENTE) VALUES (?, ?)', [novoJogoId, compId]);
+            }
+        }
+
+        // Tudo ocorreu bem, confirma as alterações no banco
+        await connection.commit();
+        
+        return novoJogoId; // Retorna o ID gerado
+
+    } catch (error) {
+        // Se der qualquer erro em qualquer passo, ele desfaz tudo (rollback)
+        if (connection) await connection.rollback();
+        throw error;
+    } finally {
+        // Libera a conexão de volta para o Pool
+        if (connection) connection.release();
+    }
 };
 
 exports.remove = async (id) => {
@@ -162,6 +207,28 @@ exports.buscarEnviosPorUsuario = async (usuarioId) => {
     return rows;
   } catch (error) {
     console.error("Erro no Repository [buscarEnviosPorUsuario]:", error);
+    throw error;
+  }
+};
+
+exports.searchHabilidades = async (termo) => {
+  try {
+    const query = `
+      SELECT 
+        habilidadeID AS ID, 
+        codigoHabilidade AS CODIGO, 
+        descricaoHabilidade AS NOME 
+      FROM habilidades 
+      WHERE codigoHabilidade LIKE ? OR descricaoHabilidade LIKE ? 
+      LIMIT 10
+    `;
+    const params = [`%${termo}%`, `%${termo}%`];
+    
+    // Usando .execute ou .query conforme seu padrão
+    const [rows] = await db.execute(query, params);
+    return rows;
+  } catch (error) {
+    console.error("Erro no Repository [searchHabilidades]:", error);
     throw error;
   }
 };
