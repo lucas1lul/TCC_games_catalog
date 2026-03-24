@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     if (!usuarioLogado) {
         alert("Acesso negado. Por favor, faça login.");
-        window.location.href = "/login"; 
+        window.location.href = "/login";
         return;
     }
 
@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Listeners de filtro
     document.getElementById("filtroStatus")?.addEventListener("change", filtrarMeusJogos);
 
-     const form = document.getElementById("filtros");
+    const form = document.getElementById("filtros");
     if (form) {
         form.addEventListener("submit", (e) => {
             e.preventDefault();
@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             // Ação: Detalhes
             if (e.target.closest('[data-action="detalhes"]')) {
                 if (typeof window.abrirDetalhes === "function") window.abrirDetalhes(idJogo);
-            } 
+            }
             // Ação: Favoritar/Desfavoritar
             else if (e.target.closest('[data-action="favoritar"]')) {
                 toggleFavorito(idJogo, e.target.closest('[data-action="favoritar"]'));
@@ -66,7 +66,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 async function verificarSessao() {
     try {
-        const res = await fetch('/api/me', { 
+        const res = await fetch('/api/me', {
             credentials: 'include',
             headers: { 'Cache-Control': 'no-cache' }
         });
@@ -97,21 +97,21 @@ async function carregarMeusDados() {
 
         // Mescla as listas sem duplicar jogos que estão em ambas
         const mapaGeral = new Map();
-        
+
         favoritos.forEach(j => mapaGeral.set(j.IDJOGO, { ...j, isFavorito: true }));
         avaliados.forEach(j => {
-    const id = Number(j.IDJOGO);
-    const existente = mapaGeral.get(id);
-    // Se já existe (é favorito), mantemos os dados mas injetamos a nota da avaliação
-    mapaGeral.set(id, { 
-        ...(existente || j), 
-        isAvaliado: true,
-        MEDIA_AVALIACAO: j.MEDIA_AVALIACAO // Garante que a nota da avaliação seja usada
-    });
-});
+            const id = Number(j.IDJOGO);
+            const existente = mapaGeral.get(id);
+            // Se já existe (é favorito), mantemos os dados mas injetamos a nota da avaliação
+            mapaGeral.set(id, {
+                ...(existente || j),
+                isAvaliado: true,
+                MEDIA_AVALIACAO: j.MEDIA_AVALIACAO // Garante que a nota da avaliação seja usada
+            });
+        });
 
         meusJogosOriginais = Array.from(mapaGeral.values());
-        
+
         if (meusJogosOriginais.length === 0) {
             container.innerHTML = "<p>Você ainda não possui interações registradas. ❤️</p>";
             return;
@@ -149,9 +149,9 @@ function filtrarMeusJogos() {
     const busca = (document.getElementById("filtroCurso")?.value || "").toLowerCase().trim();
 
     jogosFiltrados = meusJogosOriginais.filter((jogo) => {
-        const matchStatus = 
-            status === "tudo" || 
-            (status === "favoritados" && jogo.isFavorito) || 
+        const matchStatus =
+            status === "tudo" ||
+            (status === "favoritados" && jogo.isFavorito) ||
             (status === "avaliados" && jogo.isAvaliado);
 
         const nome = (jogo.NOME || "").toLowerCase();
@@ -169,7 +169,7 @@ async function toggleFavorito(jogoId, elementoEstrela) {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             credentials: "include",
-            body: JSON.stringify({ jogoId }) 
+            body: JSON.stringify({ jogoId })
         });
 
         const data = await response.json();
@@ -184,12 +184,12 @@ async function toggleFavorito(jogoId, elementoEstrela) {
                 // Atualiza o estado local do objeto
                 const jogo = meusJogosOriginais.find(j => Number(j.IDJOGO) === Number(jogoId));
                 if (jogo) jogo.isFavorito = false;
-                
+
                 // Se não for nem favorito nem avaliado, remove da lista original
                 if (jogo && !jogo.isAvaliado) {
                     meusJogosOriginais = meusJogosOriginais.filter(j => Number(j.IDJOGO) !== Number(jogoId));
                 }
-                filtrarMeusJogos(); 
+                filtrarMeusJogos();
             }
         }
     } catch (error) {
@@ -209,47 +209,51 @@ function logout() {
 }
 
 // Adicione esta função ao seu my_games.js
-window.abrirDetalhes = async function(id) {
+window.abrirDetalhes = async function (id) {
     try {
         const res = await fetch(`/api/games/${id}`);
         if (!res.ok) throw new Error("Jogo não encontrado");
-        const jogo = await res.json();
+        
+        // LEITURA ÚNICA: Guardamos os dados em uma variável só
+        const jogo = await res.json(); 
 
-        // LOG para você conferir no F12 qual o nome exato do campo da imagem
         console.log("Dados do jogo recebidos:", jogo);
 
-        // Tenta pegar o link da imagem em diferentes propriedades comuns
-        const linkImagem = jogo.LINKIMAGEM || jogo.linkImagem || jogo.capa || "/img/placeholder.png";
-        
+        // 1. Configurar a Imagem (usando o caminho correto da pasta public)
+        const urlFinal = jogo.LINKIMAGEM ? `/images/${jogo.LINKIMAGEM}` : "/images/placeholder.png";
         const imgElement = document.getElementById("modalImg");
+
         if (imgElement) {
-            imgElement.src = linkImagem;
-            imgElement.alt = `Capa do jogo ${jogo.NOME}`;
+            imgElement.src = urlFinal;
+            imgElement.alt = `Capa do jogo ${jogo.NOME || 'Jogo'}`;
         }
 
+        // 2. Preencher os campos de texto (verifique se as chaves batem com o SQL)
         document.getElementById("modalTitulo").textContent = jogo.NOME || "Sem nome";
         document.getElementById("modalHabilidades").textContent = jogo.HABILIDADES_CODIGOS || "N/A";
-        document.getElementById("modalGenero").textContent = jogo.GENERO || "N/A";
+        document.getElementById("modalGenero").textContent = jogo.GENERO_DESCRICAO || "N/A"; // Ajustado para bater com seu SQL
         document.getElementById("modalIdioma").textContent = jogo.IDIOMA || "N/A";
         document.getElementById("modalPlataforma").textContent = jogo.PLATAFORMA_DESCRICAO || "N/A";
         document.getElementById("modalLicenca").textContent = jogo.LICENCA || "N/A";
         document.getElementById("modalInteracao").textContent = jogo.INTERACAO || "N/A";
 
-        // Carrega os comentários usando a função global
+        // 3. Carregar os comentários
         if (typeof window.carregarAvaliacoesNoDetalhe === "function") {
             await window.carregarAvaliacoesNoDetalhe(id);
         }
 
+        // 4. Mostrar o Modal
         const modal = document.getElementById("modalDetalhes");
         if (modal) modal.style.display = "flex";
-        
+
     } catch (err) {
         console.error("Erro ao carregar detalhes:", err);
+        alert("Não foi possível carregar os detalhes do jogo.");
     }
 };
 
 // Função para fechar (caso não tenha)
-window.fecharModal = function() {
+window.fecharModal = function () {
     document.getElementById("modalDetalhes").style.display = "none";
 };
 

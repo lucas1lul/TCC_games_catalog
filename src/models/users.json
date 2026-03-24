@@ -103,7 +103,8 @@
       11,
       82,
       149,
-      121
+      121,
+      125
     ]
   },
   {
@@ -135,15 +136,15 @@
     "nome": "admin",
     "email": "admin123@gmail.com",
     "senha": "$2b$10$LRkHntzX2IfalvAb7oFE7uAda4zCJImX1cFySG/HwUKI5zgferwnG",
-    "perfil": "usuario",
+    "perfil": "administrador",
     "favoritos": []
   },
   {
     "id": 14,
-    "nome": "ad",
+    "nome": "adm",
     "email": "admin1223@gmail.com",
     "senha": "$2b$10$9nDw5hDlXKZ0zsbLO1LZje6eJScou1Cddf1hfO7U7AwjZ0iVbrGUS",
-    "perfil": "usuario",
+    "perfil": "administrador",
     "favoritos": []
   },
   {
@@ -151,7 +152,15 @@
     "nome": "123",
     "email": "12342@gmail.com",
     "senha": "$2b$10$MRH0fdUh9y9..VPrsbY7TO56sj3D9PAibeZC5G4X9GNfVK0khOcr2",
-    "perfil": "usuario",
+    "perfil": "aluno",
+    "favoritos": []
+  },
+  {
+    "id": 16,
+    "nome": "Aluno",
+    "email": "aluno@gmail.com",
+    "senha": "$2b$10$CLV1yc0vOsTSqQVHvFP9D.aNqz6SwknRSSpHBpg5iXhDMs/cYctLK",
+    "perfil": "aluno",
     "favoritos": []
   }
 ]
