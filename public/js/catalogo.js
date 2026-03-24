@@ -123,12 +123,14 @@ function renderizarJogosDaPagina() {
   const fim = inicio + jogosPorPagina;
   const jogosDaPagina = jogosCompletos.slice(inicio, fim);
 
-  // Usa a variável global usuarioLogado definida lá no topo
   const favoritos = usuarioLogado?.favoritos || [];
 
   jogosDaPagina.forEach((jogo) => {
-    // Chama a função global do arquivo jogoCard.js
-    lista.innerHTML += window.renderJogoCard(jogo, { favoritos });
+    // ADICIONE mostrarAvaliacao: true dentro do objeto de opções
+    lista.innerHTML += window.renderJogoCard(jogo, { 
+        favoritos,
+        mostrarAvaliacao: true // <--- ESSA LINHA É A CHAVE
+    });
   });
 
   atualizarControlesPaginacao();

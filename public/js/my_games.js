@@ -100,9 +100,15 @@ async function carregarMeusDados() {
         
         favoritos.forEach(j => mapaGeral.set(j.IDJOGO, { ...j, isFavorito: true }));
         avaliados.forEach(j => {
-            const existente = mapaGeral.get(j.IDJOGO);
-            mapaGeral.set(j.IDJOGO, { ...(existente || j), isAvaliado: true });
-        });
+    const id = Number(j.IDJOGO);
+    const existente = mapaGeral.get(id);
+    // Se já existe (é favorito), mantemos os dados mas injetamos a nota da avaliação
+    mapaGeral.set(id, { 
+        ...(existente || j), 
+        isAvaliado: true,
+        MEDIA_AVALIACAO: j.MEDIA_AVALIACAO // Garante que a nota da avaliação seja usada
+    });
+});
 
         meusJogosOriginais = Array.from(mapaGeral.values());
         
@@ -123,14 +129,17 @@ function renderizarJogos(lista) {
     if (!container) return;
     container.innerHTML = "";
 
-    const favoritosIds = usuarioLogado?.favoritos || [];
+    // Pegamos a lista real de favoritos do usuário logado
+    const favoritosIds = (usuarioLogado?.favoritos || []).map(Number);
 
     lista.forEach((jogo) => {
+        // O HTML é gerado usando a MEDIA_AVALIACAO que já injetamos no Service
         container.innerHTML += window.renderJogoCard(jogo, {
             favoritos: favoritosIds,
             mostrarEstrela: true,
             mostrarBotaoDetalhes: true,
             mostrarLink: true,
+            mostrarAvaliacao: true // Forçamos a exibição da avaliação
         });
     });
 }

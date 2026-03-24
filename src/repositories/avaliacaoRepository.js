@@ -20,17 +20,16 @@ function ensureDbFile() {
   }
 }
 
-function readDb() {
-  ensureDbFile();
-  try {
-    const raw = fs.readFileSync(DB_FILE, "utf-8");
-    // Se o arquivo estiver vazio, retorna um array vazio
-    const data = JSON.parse(raw || "[]");
-    return Array.isArray(data) ? data : [];
-  } catch (error) {
-    console.error("Erro ao ler banco de avaliações (JSON):", error);
-    return [];
-  }
+exports.readDb = () => { // Agora ela é pública
+  ensureDbFile();
+  try {
+    const raw = fs.readFileSync(DB_FILE, "utf-8");
+    const data = JSON.parse(raw || "[]");
+    return Array.isArray(data) ? data : [];
+  } catch (error) {
+    console.error("Erro ao ler banco de avaliações (JSON):", error);
+    return [];
+  }
 }
 
 function writeDb(data) {
@@ -46,7 +45,7 @@ function writeDb(data) {
  * Busca todas as avaliações de um jogo específico
  */
 exports.findByGameId = (jogoId) => {
-  const db = readDb();
+  const db = exports.readDb();
   // Usamos Number() em ambos os lados para garantir a comparação correta
   return db.filter(a => Number(a.jogoId) === Number(jogoId));
 };
@@ -55,7 +54,7 @@ exports.findByGameId = (jogoId) => {
  * Salva uma nova avaliação no arquivo
  */
 exports.save = (avaliacao) => {
-  const db = readDb();
+  const db = exports.readDb();
   
   // Adiciona um timestamp se não houver, útil para ordenar avaliações depois
   const novaAvaliacao = {
@@ -69,7 +68,7 @@ exports.save = (avaliacao) => {
 };
 
 exports.findByUserId = (usuarioId) => {
-  const db = readDb();
+  const db = exports.readDb();
   // Filtra as avaliações onde o usuarioId coincide
   return db.filter(a => Number(a.usuarioId) === Number(usuarioId));
 };

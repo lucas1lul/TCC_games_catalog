@@ -42,16 +42,12 @@ window.renderJogoCard = function renderJogoCard(jogo, options = {}) {
   // Calculamos a porcentagem de preenchimento (ex: nota 3.5 vira 70%)
   const percentualEstrelas = (media / 5) * 100;
   
-  // Texto formatado da nota (ex: "3.5" ou "S/N" se não houver nota)
-  const notaFormatada = media > 0 ? media.toFixed(1) : "S/N";
-
   // Criamos o HTML da avaliação separadamente para organizar
-  const avaliacaoHtml = mostrarAvaliacao ? `
-    <div class="container-avaliacao-card" data-action="avaliar" title="Nota Pedagógica: ${notaFormatada}/5 (Clique para avaliar)">
+ const avaliacaoHtml = mostrarAvaliacao ? `
+    <div class="container-avaliacao-card" data-action="avaliar" style="display: inline-block; vertical-align: middle;">
       <div class="estrelas-dinamicas-card" style="--percent: ${percentualEstrelas}%">
         ★★★★★
       </div>
-      <span class="nota-texto-card">(${notaFormatada})</span>
     </div>
   ` : '';
 
@@ -64,28 +60,26 @@ window.renderJogoCard = function renderJogoCard(jogo, options = {}) {
 
     <div class="card-content">
       <h2 class="jogo-titulo">${nome}</h2>
-
       <span class="jogo-componente">${interacao}</span>
-
-      <p class="jogo-descricao">
-        🌐 ${descricao}
-      </p>
-
+      <p class="jogo-descricao">🌐 ${descricao}</p>
       <div class="detalhes-grid">
         <div><strong>Habilidades:</strong> ${habilidadeTxt}</div>
         <div><strong>Plataformas:</strong> ${plataformaTxt}</div>
       </div>
     </div>
 
-    <div class="card-footer">
-      <div class="footer-icons">
+    <div class="card-footer" style="display: flex; align-items: center; justify-content: space-between; gap: 5px;">
+      <div class="footer-icons" style="display: flex; gap: 5px; flex-shrink: 0;">
         ${mostrarEstrela ? `<span class="estrela-favorito ${classeAtiva}" data-action="favoritar">❤</span>` : ''}
         ${mostrarBotaoDetalhes ? `<button class="btn-icon" data-action="detalhes">🔍</button>` : ''}
       </div>
 
       ${avaliacaoHtml}
 
-      ${mostrarLink ? `<a href="${link || "#"}" target="_blank" class="btn-acessar">${link ? "Acessar" : "Indisponível"}</a>` : ''}
+      ${mostrarLink ? `
+        <a href="${link || "#"}" target="_blank" class="btn-acessar" style="flex-shrink: 0; min-width: 80px; text-align: center;">
+          ${link ? "Acessar" : "Indisponível"}
+        </a>` : ''}
     </div>
   </div>
 `;

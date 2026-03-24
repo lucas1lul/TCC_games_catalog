@@ -94,21 +94,17 @@ window.atualizarMediaNoCard = async function (jogoId) {
     if (!card) return;
 
     const starsEl = card.querySelector(".estrelas-dinamicas-card");
-    const totalEl = card.querySelector(".nota-texto-card");
+    // Removi a referência ao totalEl (nota-texto-card) para não dar erro se ele não existir
 
     try {
         const res = await fetch(`/api/games/${jogoId}/avaliacoes`);
-        const { media, total } = await res.json();
+        const { media } = await res.json();
 
         if (starsEl) {
-            // Define a variável CSS que controla o preenchimento das estrelas
             const percent = (media / 5) * 100;
             starsEl.style.setProperty('--percent', `${percent}%`);
         }
-
-        if (totalEl) {
-            totalEl.textContent = total > 0 ? `(${media.toFixed(1)})` : "(S/N)";
-        }
+        // O código não tentará mais escrever "(0.0)" ou "(S/N)" no card
     } catch (err) {
         console.error("Erro ao atualizar média:", err);
     }

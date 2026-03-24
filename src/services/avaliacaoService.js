@@ -1,5 +1,6 @@
 const { randomUUID } = require("crypto");
 const avaliacaoRepository = require("../repositories/avaliacaoRepository");
+const jogoRepository = require("../repositories/gameRepository");
 
 exports.getAvaliacoesByGame = (jogoId) => {
   const all = avaliacaoRepository.findByGameId(jogoId);
@@ -79,4 +80,29 @@ exports.getJogosAvaliadosPorUsuario = async (usuarioId) => {
             return null; // Evita que um erro em um jogo derrube a lista toda
         }
     })).then(results => results.filter(r => r !== null)); // Remove itens que deram erro
+};
+
+exports.getMediasAgrupadas = () => {
+  const all = avaliacaoRepository.readDb(); // Use a função que lê o JSON todo
+  const medias = {};
+
+  all.forEach(av => {
+    if (!medias[av.jogoId]) {
+      medias[av.jogoId] = { soma: 0, qtd: 0 };
+    }
+    medias[av.jogoId].soma += Number(av.nota);
+    medias[av.jogoId].qtd += 1;
+  });
+
+  // Transforma em um objeto simples { id: media }
+  Object.keys(medias).forEach(id => {
+    medias[id] = Number((medias[id].soma / medias[id].qtd).toFixed(1));
+  });
+
+  return medias;
+};
+
+exports.getNotasPessoaisDoUsuario = (usuarioId) => {
+    // Filtra o JSON apenas pelo ID do usuário usando o repositório existente
+    return avaliacaoRepository.findByUserId(usuarioId);
 };

@@ -1,11 +1,36 @@
 const gameService = require('../services/gameService');
+const avaliacaoService = require('../services/avaliacaoService');
 
 // --- CONSULTAS PÚBLICAS ---
 
 exports.getGames = async (req, res) => {
     try {
+        // 1. Busca todos os jogos no MySQL via gameService
         const games = await gameService.getGames(req.query);
-        res.status(200).json(games);
+        
+        // 2. Tenta pegar o ID do usuário da sessão
+        const usuarioId = req.session?.user?.id;
+
+        let avaliacoesPessoais = [];
+        // SÓ BUSCA NOTAS SE HOUVER UM USUÁRIO LOGADO
+        if (usuarioId) {
+            // Usa a NOVA função rápida e síncrona
+            avaliacoesPessoais = avaliacaoService.getNotasPessoaisDoUsuario(usuarioId);
+        }
+
+        // 3. Mescla os dados: Cada jogo recebe apenas a nota que ESSE usuário deu
+        const gamesPersonalizados = games.map(jogo => {
+            // Procura se este usuário avaliou este jogo específico (compara IDs)
+            const minhaAvaliacao = avaliacoesPessoais.find(a => Number(a.jogoId) === Number(jogo.IDJOGO));
+            
+            return {
+                ...jogo,
+                // Se ele avaliou, manda a nota dele. Se não, manda 0.
+                MEDIA_AVALIACAO: minhaAvaliacao ? minhaAvaliacao.nota : 0
+            };
+        });
+
+        res.status(200).json(gamesPersonalizados);
     } catch (error) {
         console.error("Erro ao buscar jogos:", error);
         res.status(500).json({ mensagem: "Erro ao buscar jogos." });
@@ -18,6 +43,11 @@ exports.getGameById = async (req, res) => {
         if (!game) {
             return res.status(404).json({ mensagem: "Jogo não encontrado." });
         }
+
+        // Busca a média específica deste jogo
+        const medias = avaliacaoService.getMediasAgrupadas();
+        game.MEDIA_AVALIACAO = medias[game.IDJOGO] || 0;
+
         res.json(game);
     } catch (error) {
         res.status(500).json({ mensagem: "Erro ao obter jogo." });
