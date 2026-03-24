@@ -149,3 +149,180 @@ body {
 .status-pendente { background-color: #ffeeba; color: #856404; }
 .status-aprovado { background-color: #d4edda; color: #155724; }
 .status-rejeitado { background-color: #f8d7da; color: #721c24; }
+
+.full-width { grid-column: 1 / -1; } /* Ocupa as duas colunas do grid */
+
+.search-container { position: relative; }
+
+.dropdown-results {
+    position: absolute;
+    width: 100%;
+    max-height: 200px;
+    overflow-y: auto;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    z-index: 100;
+    display: none; /* Escondido por padrão */
+    box-shadow: var(--card-shadow);
+}
+
+.result-item {
+    padding: 10px;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.result-item:hover { background: #f0f0f0; color: var(--iff-red-dark); }
+
+/* ==========================================================================
+   FORMULÁRIO DE CADASTRO (ADMIN)
+   ========================================================================== */
+
+/* Container principal para alinhar grupos lado a lado */
+.multi-select-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+    margin: 20px 0;
+    align-items: start;
+}
+
+/* Títulos dos grupos (Gênero, Componentes, etc) */
+.select-group h3 {
+    font-size: 1rem;
+    color: var(--primary-color, #2c3e50);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 5px;
+}
+
+/* A "mágica" para organizar os checkboxes em grade */
+.checkbox-grid {
+    display: grid;
+    /* Cria colunas de no mínimo 150px. Se couber mais, ele expande */
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 10px;
+    background: #ffffff;
+    padding: 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    max-height: 250px;
+    overflow-y: auto;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+}
+
+.checkbox-grid label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: transform 0.1s;
+    /* Impede que o texto quebre e fique embaixo do checkbox */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.checkbox-grid label:hover {
+    color: var(--secondary-color, #3498db);
+    transform: translateX(3px);
+}
+
+.checkbox-grid input[type="checkbox"] {
+    cursor: pointer;
+    width: 16px;
+    height: 16px;
+}
+
+/* ==========================================================================
+   SISTEMA DE BUSCA E TAGS (HABILIDADES)
+   ========================================================================== */
+
+.search-container {
+    position: relative;
+    width: 100%;
+}
+
+/* Estilo do Input de Busca */
+#buscaHabilidade {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+}
+
+#buscaHabilidade:focus {
+    border-color: var(--secondary-color, #3498db);
+    outline: none;
+}
+
+/* Dropdown de resultados (Autocomplete) */
+.dropdown-results {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 0 0 8px 8px;
+    z-index: 1000;
+    max-height: 200px;
+    overflow-y: auto;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    display: none; /* Controlado via JS */
+}
+
+.result-item {
+    padding: 10px 15px;
+    cursor: pointer;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 0.9rem;
+}
+
+.result-item:hover {
+    background-color: #f7f9fc;
+    color: #3498db;
+}
+
+/* Container das Tags selecionadas */
+.tags-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+    min-height: 40px;
+}
+
+.tag {
+    background: #e1f0ff;
+    color: #007bff;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid #b3d7ff;
+}
+
+.tag .remove-tag {
+    cursor: pointer;
+    color: #ff4d4d;
+    font-size: 1.1rem;
+}
+
+/* Divider simples para separar seções do form */
+.divider {
+    height: 1px;
+    background: #eee;
+    margin: 30px 0;
+    width: 100%;
+}
