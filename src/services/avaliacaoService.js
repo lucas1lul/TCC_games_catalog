@@ -49,3 +49,34 @@ exports.createAvaliacao = ({ jogoId, usuarioId, usuarioNome, nota, comentario })
 
   return avaliacaoRepository.save(nova);
 };
+
+exports.getJogosAvaliadosPorUsuario = async (usuarioId) => {
+    const nUsuario = Number(usuarioId);
+    if (!nUsuario) return [];
+
+    const avaliacoes = avaliacaoRepository.findByUserId(nUsuario);
+    if (!avaliacoes || avaliacoes.length === 0) return [];
+
+    // Usamos Promise.all porque o findById é assíncrono (MySQL)
+    return Promise.all(avaliacoes.map(async (a) => {
+        try {
+            const infoJogo = await jogoRepository.findById(a.jogoId);
+            
+            return {
+                IDJOGO: a.jogoId,
+                NOME: infoJogo ? infoJogo.NOME : "Jogo não encontrado",
+                LINKIMAGEM: infoJogo ? infoJogo.LINKIMAGEM : "placeholder.png",
+                COMPONENTES: infoJogo ? infoJogo.COMPONENTES : "N/A",
+                IDIOMA: infoJogo ? infoJogo.IDIOMA : "N/A",
+                HABILIDADES_CODIGOS: infoJogo ? infoJogo.HABILIDADES_CODIGOS : "N/A",
+                PLATAFORMA_DESCRICAO: infoJogo ? infoJogo.PLATAFORMA_DESCRICAO : "N/A",
+                LINK: infoJogo ? infoJogo.LINK : "#",
+                MEDIA_AVALIACAO: a.nota, // Nota que veio do JSON
+                isAvaliado: true
+            };
+        } catch (err) {
+            console.error(`Erro ao buscar jogo ${a.jogoId}:`, err);
+            return null; // Evita que um erro em um jogo derrube a lista toda
+        }
+    })).then(results => results.filter(r => r !== null)); // Remove itens que deram erro
+};

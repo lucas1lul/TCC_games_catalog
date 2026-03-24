@@ -34,5 +34,25 @@
     "nota": 5,
     "comentario": "",
     "createdAt": "2026-02-24T11:59:44.822Z"
+  },
+  {
+    "id": "74816a36-fe1d-433e-8214-30f5037912da",
+    "jogoId": 1,
+    "usuarioId": 9,
+    "usuarioNome": "euprof2",
+    "nota": 5,
+    "comentario": "Jogo Bom!",
+    "createdAt": "2026-03-24T05:30:54.327Z",
+    "dataCriacao": "2026-03-24T05:30:54.344Z"
+  },
+  {
+    "id": "8799a4bd-fa65-43ec-8a2e-1f3d19467d16",
+    "jogoId": 1,
+    "usuarioId": 9,
+    "usuarioNome": "euprof2",
+    "nota": 3,
+    "comentario": "Ok\n",
+    "createdAt": "2026-03-24T05:47:38.032Z",
+    "dataCriacao": "2026-03-24T05:47:38.033Z"
   }
 ]

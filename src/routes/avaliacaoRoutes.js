@@ -8,6 +8,12 @@ router.get(
   avaliacaoController.getAvaliacoesByGame
 );
 
+router.get(
+  "/usuarios/:id/avaliados",
+  authMiddleware.isAuthenticated,
+  avaliacaoController.getAvaliacoesByUser
+);
+
 router.post(
   "/avaliacoes",
   authMiddleware.isAuthenticated,

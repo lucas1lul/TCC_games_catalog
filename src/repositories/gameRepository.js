@@ -66,31 +66,23 @@ exports.findById = async (id) => {
       J.IDIOMA,
       J.LICENSA,
       J.INTERACAO,
-
       GROUP_CONCAT(DISTINCT G.DESCRICAO SEPARATOR ', ') AS GENERO_DESCRICAO,
       GROUP_CONCAT(DISTINCT P.DESCRICAO SEPARATOR ', ') AS PLATAFORMA_DESCRICAO,
       GROUP_CONCAT(DISTINCT H.codigoHabilidade SEPARATOR ', ') AS HABILIDADES_CODIGOS
-
     FROM JOGOS J
-
-    -- 🎭 GENERO
     LEFT JOIN jogos_genero JG ON JG.IDJOGO = J.IDJOGO
     LEFT JOIN genero G ON G.IDGENERO = JG.IDGENERO
-
-    -- 🎮 PLATAFORMA
     LEFT JOIN jogos_plataforma JP ON JP.IDJOGO = J.IDJOGO
     LEFT JOIN plataforma P ON P.IDPLATAFORMA = JP.IDPLATAFORMA
-
-    -- 🎯 HABILIDADES
     LEFT JOIN jogos_habilidades JH ON JH.IDJOGO = J.IDJOGO
     LEFT JOIN habilidades H ON H.habilidadeID = JH.habilidadeID
-
     WHERE J.IDJOGO = ?
     GROUP BY J.IDJOGO
     LIMIT 1
   `;
 
-  const [rows] = await db.promise().query(query, [id]);
+  // REMOVIDO o .promise() para evitar o conflito
+  const [rows] = await db.query(query, [id]); 
   return rows[0];
 };
 

@@ -67,3 +67,9 @@ exports.save = (avaliacao) => {
   writeDb(db);
   return novaAvaliacao;
 };
+
+exports.findByUserId = (usuarioId) => {
+  const db = readDb();
+  // Filtra as avaliações onde o usuarioId coincide
+  return db.filter(a => Number(a.usuarioId) === Number(usuarioId));
+};

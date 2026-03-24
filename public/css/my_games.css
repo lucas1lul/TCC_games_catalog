@@ -155,3 +155,67 @@ h2 {
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 20px;
 }
+
+/* --- Estilos de Avaliação (Importados para My Games) --- */
+
+.container-avaliacao-card {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    padding: 6px;
+    border-radius: 8px;
+    transition: background 0.2s;
+}
+
+.container-avaliacao-card:hover {
+    background: rgba(0, 0, 0, 0.04);
+}
+
+.estrelas-dinamicas-card {
+    /* ... outras propriedades ... */
+    background: linear-gradient(90deg, #FFD700 var(--percent), #e0e0e0 var(--percent));
+    
+    /* Versão para Chrome/Safari/Edge */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    /* Versão Padrão (Boa prática) */
+    background-clip: text;
+    color: transparent; /* Fallback caso o background-clip falhe */
+}
+
+.nota-texto-card {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--iff-text-dark);
+}
+
+/* Ajuste para que o modal de avaliação também fique bonito nesta página */
+.star-btn {
+    background: none;
+    border: none;
+    font-size: 2.5rem;
+    cursor: pointer;
+    color: #ccc;
+    transition: transform 0.2s;
+}
+
+.star-btn:hover {
+    transform: scale(1.2);
+}
+
+/* Garante que o grid de jogos use a variável de sombra que você definiu */
+.jogo-card {
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: var(--card-shadow);
+    transition: var(--transition);
+    border: 1px solid var(--iff-border);
+}
+
+.jogo-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
