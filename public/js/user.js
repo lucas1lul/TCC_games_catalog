@@ -137,7 +137,7 @@ window.showSection = function (sectionId, btn) {
     // Gatilhos de carregamento de dados
     if (sectionId === 'section-curadoria') carregarSugestoes();
     if (sectionId === 'section-meus-envios') carregarMeusEnvios();
-    
+
     // ADICIONE ESTA LINHA:
     if (sectionId === 'section-gerenciar-usuarios') carregarUsuariosAdmin();
 };
@@ -186,28 +186,70 @@ async function cadastrarJogo(e) {
     }
 }
 
-// --- AÇÕES DO PERFIL ---
+// --- AÇÕES DO PERFIL (DADOS BÁSICOS) ---
 
-async function salvarAlteracoes(e) {
+async function atualizarDadosBasicos(e) {
     e.preventDefault();
     const payload = {
-        id: usuarioLogado.id,
         nome: document.getElementById("nome").value,
         email: document.getElementById("email").value
     };
 
     try {
-        const res = await fetch("/api/users/me", {
+        const res = await fetch("/api/usuarios/me", {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payload)
         });
 
+        const data = await res.json();
+
         if (res.ok) {
-            setStatus("Dados atualizados com sucesso!", "success");
+            setStatus("Perfil atualizado com sucesso!", "success");
+            // Atualiza o objeto global para refletir as mudanças sem recarregar
+            usuarioLogado.nome = payload.nome;
+            usuarioLogado.email = payload.email;
         } else {
-            const err = await res.json();
-            throw new Error(err.message || "Erro ao atualizar");
+            throw new Error(data.error || "Erro ao atualizar perfil");
+        }
+    } catch (err) {
+        setStatus(err.message, "error");
+    }
+}
+
+// --- AÇÕES DO PERFIL (SEGURANÇA/SENHA) ---
+
+async function atualizarSenha(e) {
+    e.preventDefault();
+
+    const senhaAtual = document.getElementById("senhaAtual").value;
+    const novaSenha = document.getElementById("novaSenha").value;
+    const confirmar = document.getElementById("confirmarNovaSenha").value;
+
+    if (novaSenha !== confirmar) {
+        setStatus("As novas senhas não coincidem!", "error");
+        return;
+    }
+
+    if (novaSenha.length < 6) {
+        setStatus("A nova senha deve ter pelo menos 6 caracteres.", "error");
+        return;
+    }
+
+    try {
+        const res = await fetch("/api/usuarios/me/senha", { // <--- Caminho corrigido
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ senhaAtual, novaSenha })
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+            setStatus("Senha alterada com sucesso!", "success");
+            e.target.reset(); // Limpa os campos de senha após o sucesso
+        } else {
+            throw new Error(data.error || "Senha atual incorreta");
         }
     } catch (err) {
         setStatus(err.message, "error");
@@ -283,7 +325,7 @@ async function carregarUsuariosAdmin() {
         tabelaCorpo.innerHTML = usuarios.map(u => {
             // Criamos uma string segura do objeto para passar no onclick
             const userJson = JSON.stringify(u).replace(/'/g, "&apos;");
-            
+
             return `
                 <tr>
                     <td>${u.id}</td>
@@ -302,7 +344,7 @@ async function carregarUsuariosAdmin() {
     }
 }
 
-window.abrirModalEditarUsuario = function(user) {
+window.abrirModalEditarUsuario = function (user) {
     // Exibe o modal (certifique-se de ter o ID correspondente no HTML)
     const modal = document.getElementById('modal-editar-usuario');
     if (!modal) return;
@@ -316,7 +358,7 @@ window.abrirModalEditarUsuario = function(user) {
     document.getElementById('edit-user-perfil').value = user.perfil;
 };
 
-window.fecharModalUser = function() {
+window.fecharModalUser = function () {
     const modal = document.getElementById('modal-editar-usuario');
     if (modal) modal.style.display = 'none';
 };
@@ -369,8 +411,11 @@ document.addEventListener("DOMContentLoaded", () => {
     carregarDadosIniciais();
     configurarBuscaHabilidades();
 
-    const formConta = document.getElementById("formConta");
-    if (formConta) formConta.addEventListener("submit", salvarAlteracoes);
+    const formDados = document.getElementById("formDadosBasicos");
+    if (formDados) formDados.addEventListener("submit", atualizarDadosBasicos);
+
+    const formSenha = document.getElementById("formSenha");
+    if (formSenha) formSenha.addEventListener("submit", atualizarSenha);
 
     const formJogo = document.getElementById("formCadastroJogo");
     if (formJogo) formJogo.addEventListener("submit", cadastrarJogo);

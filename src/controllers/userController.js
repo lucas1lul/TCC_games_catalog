@@ -156,3 +156,19 @@ exports.updateUserAdmin = async (req, res) => {
         res.status(400).json({ error: error.message });
     }
 };
+
+exports.updateMyPassword = async (req, res) => {
+    try {
+        const usuarioId = req.session.user.id;
+        const { senhaAtual, novaSenha } = req.body;
+
+        if (!senhaAtual || !novaSenha) {
+            return res.status(400).json({ error: "Preencha todos os campos de senha." });
+        }
+
+        await userService.updatePassword(usuarioId, senhaAtual, novaSenha);
+        res.status(200).json({ message: "Senha alterada com sucesso!" });
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+};

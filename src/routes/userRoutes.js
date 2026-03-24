@@ -21,6 +21,7 @@ router.get("/me", (req, res) => {
 router.get("/usuarios", userController.listUsers);
 router.get("/usuarios/me", userController.getMe);
 router.put("/usuarios/me", userController.updateMe);
+router.put("/usuarios/me/senha", authMiddleware.isAuthenticated, userController.updateMyPassword);
 
 // Favoritos
 router.post(
@@ -35,11 +36,8 @@ router.get(
 );
 
 // --- Gerenciamento Administrativo ---
-
-// Listar todos os usuários (GET /api/admin/users)
 router.get("/admin/users", authMiddleware.isAuthenticated, userController.listAllUsersAdmin);
 
-// Editar qualquer usuário (PUT /api/admin/users/:id)
 router.put("/admin/users/:id", authMiddleware.isAuthenticated, userController.updateUserAdmin);
 
 module.exports = router;

@@ -41,43 +41,54 @@
     <div class="account-page">
       <div id="status" class="status" aria-live="polite"></div>
 
-      <section id="section-perfil" class="account-card section-content">
-        <div class="account-header">
-          <h2>Configurações da conta</h2>
-          <p class="account-subtitle">Atualize seus dados cadastrais.</p>
+      <section id="section-perfil" class="section-content">
+
+        <div class="account-card" style="margin-bottom: 2rem;">
+          <div class="account-header">
+            <h2>Dados da Conta</h2>
+            <p class="account-subtitle">Altere seu nome e e-mail de exibição.</p>
+          </div>
+          <form id="formDadosBasicos" class="account-form">
+            <div class="form-row">
+              <label for="nome">Nome</label>
+              <input id="nome" name="nome" type="text" required />
+            </div>
+            <div class="form-row">
+              <label for="email">E-mail</label>
+              <input id="email" name="email" type="email" required />
+            </div>
+            <div class="form-actions" style="display: flex; justify-content: flex-end; margin-top: 15px;">
+              <button type="submit" class="btn-primary">Atualizar Perfil</button>
+            </div>
+          </form>
         </div>
 
-        <form id="formConta" class="account-form">
-          <div class="form-row">
-            <label for="nome">Nome</label>
-            <input id="nome" name="nome" type="text" placeholder="Seu nome" required />
+        <div class="account-card" style="border-top: 4px solid #800000;">
+          <div class="account-header">
+            <h2>Segurança</h2>
+            <p class="account-subtitle">Atualize sua senha de acesso.</p>
           </div>
-          <div class="form-row">
-            <label for="email">E-mail</label>
-            <input id="email" name="email" type="email" placeholder="seuemail@exemplo.com" required />
-          </div>
+          <form id="formSenha" class="account-form">
+            <div class="form-row">
+              <label for="senhaAtual">Senha Atual</label>
+              <input id="senhaAtual" type="password" required />
+            </div>
+            <div class="form-row">
+              <label for="novaSenha">Nova Senha</label>
+              <input id="novaSenha" type="password" required />
+            </div>
+            <div class="form-row">
+              <label for="confirmarNovaSenha">Confirmar Nova Senha</label>
+              <input id="confirmarNovaSenha" type="password" required />
+            </div>
+            <div class="form-actions" style="display: flex; justify-content: flex-end; margin-top: 15px;">
+              <button type="submit" class="btn-secondary"
+                style="background: #666; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer;">Alterar
+                Senha</button>
+            </div>
+          </form>
+        </div>
 
-          <div class="divider"></div>
-          <h3 class="section-title">Alterar senha (opcional)</h3>
-
-          <div class="form-row">
-            <label for="senhaAtual">Senha atual</label>
-            <input id="senhaAtual" type="password" autocomplete="current-password" placeholder="Digite a senha atual" />
-          </div>
-          <div class="form-row">
-            <label for="novaSenha">Nova senha</label>
-            <input id="novaSenha" type="password" autocomplete="new-password" placeholder="Mínimo 6 caracteres" />
-          </div>
-          <div class="form-row">
-            <label for="confirmarNovaSenha">Confirmar nova senha</label>
-            <input id="confirmarNovaSenha" type="password" autocomplete="new-password"
-              placeholder="Repita a nova senha" />
-          </div>
-
-          <div class="form-actions" style="margin-top: 20px; text-align: right;">
-            <button type="submit" class="btn-primary">Salvar alterações</button>
-          </div>
-        </form>
       </section>
 
       <section id="section-gerenciar-usuarios" class="account-card section-content" style="display: none;">

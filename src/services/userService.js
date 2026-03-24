@@ -143,3 +143,20 @@ exports.adminUpdateUser = async (usuarioId, data) => {
     const { senha, ...safeUser } = updatedUser;
     return safeUser;
 };
+
+exports.updatePassword = async (usuarioId, senhaAtual, novaSenha) => {
+    const user = userRepository.findById(usuarioId);
+    if (!user) throw new Error("Usuário não encontrado.");
+
+    // 1. Verifica se a senha atual digitada bate com o hash do banco/JSON
+    const isMatch = await bcrypt.compare(senhaAtual, user.senha);
+    if (!isMatch) {
+        throw new Error("A senha atual está incorreta.");
+    }
+
+    // 2. Cria o hash da nova senha
+    const hashedNewPassword = await bcrypt.hash(novaSenha, 10);
+
+    // 3. Atualiza apenas o campo da senha no repositório
+    return userRepository.update(usuarioId, { senha: hashedNewPassword });
+};
