@@ -112,3 +112,34 @@ exports.getUserFavorites = async (usuarioId) => {
 
   return favoritos;
 };
+
+// --- MÉTODOS DE ADMINISTRAÇÃO ---
+
+exports.getAllUsers = () => {
+    // Retorna todos os usuários do JSON via repository
+    return userRepository.findAll();
+};
+
+exports.adminUpdateUser = async (usuarioId, data) => {
+    const user = userRepository.findById(usuarioId);
+    if (!user) throw new Error("Usuário não encontrado.");
+
+    // Validação de perfis permitidos no sistema
+    const perfisValidos = ['aluno', 'profissional_ti', 'professor', 'administrador'];
+    
+    const updateData = {
+        nome: data.nome || user.nome,
+        email: data.email || user.email
+    };
+
+    if (data.perfil && perfisValidos.includes(data.perfil.toLowerCase())) {
+        updateData.perfil = data.perfil.toLowerCase();
+    }
+
+    // Salva no JSON
+    const updatedUser = userRepository.update(usuarioId, updateData);
+    
+    // Remove a senha antes de retornar
+    const { senha, ...safeUser } = updatedUser;
+    return safeUser;
+};

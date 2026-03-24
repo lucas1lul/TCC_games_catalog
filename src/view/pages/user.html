@@ -27,6 +27,8 @@
           <p class="menu-label">Administração</p>
           <button class="nav-btn" onclick="showSection('section-cadastro-jogo', this)">🎮 Cadastrar Jogo</button>
           <button class="nav-btn" onclick="showSection('section-curadoria', this)">📋 Analisar Sugestões</button>
+          <button class="nav-btn" onclick="showSection('section-gerenciar-usuarios', this)">👥 Gerenciar
+            Usuários</button>
         </div>
 
         <div id="menu-ti" style="display: none;">
@@ -36,7 +38,6 @@
         </div>
       </nav>
     </aside>
-
     <div class="account-page">
       <div id="status" class="status" aria-live="polite"></div>
 
@@ -79,186 +80,250 @@
         </form>
       </section>
 
-      <section id="section-cadastro-jogo" class="account-card section-content" style="display: none;">
-  <h2 class="section-title">Cadastrar Novo Jogo (Admin)</h2>
-  <p class="account-subtitle">Preencha os dados técnicos e selecione as competências do IFF.</p>
+      <section id="section-gerenciar-usuarios" class="account-card section-content" style="display: none;">
+        <h2 class="section-title">Gerenciar Usuários</h2>
+        <p class="account-subtitle">Visualize, edite cargos ou exclua contas do sistema.</p>
 
-  <form id="formCadastroJogo" class="account-form">
-    <div class="form-row">
-      <label for="NOME">Nome do Jogo *</label>
-      <input id="NOME" type="text" placeholder="Ex: Minecraft Education" required />
-    </div>
-
-    <div class="form-row">
-      <label for="LINK">Link de Acesso *</label>
-      <input id="LINK" type="url" placeholder="https://..." required />
-    </div>
-
-    <div class="form-grid-3">
-      <div class="form-row">
-        <label for="LINKIMAGEM">URL da Imagem</label>
-        <input id="LINKIMAGEM" type="text" placeholder="caminho/foto.png" />
-      </div>
-      <div class="form-row">
-        <label for="IDIOMA">Idioma</label>
-        <input id="IDIOMA" type="text" placeholder="Português" />
-      </div>
-      <div class="form-row">
-        <label for="LICENSA">Licença</label>
-        <input id="LICENSA" type="text" placeholder="Gratuito / Pago" />
-      </div>
-    </div>
-
-    <div class="form-row">
-      <label for="INTERACAO">Interação Principal</label>
-      <select id="INTERACAO">
-        <option value="Single Player">Single Player</option>
-        <option value="Multiplayer">Multiplayer</option>
-      </select>
-    </div>
-
-    <div class="divider"></div>
-
-    <div class="multi-select-container">
-      <div class="select-group">
-        <h3>🎭 Gêneros</h3>
-        <div id="lista-generos" class="checkbox-grid">
-          <label><input type="checkbox" name="GENERO" value="1"> Quiz</label>
-          <label><input type="checkbox" name="GENERO" value="2"> Puzzle</label>
-          <label><input type="checkbox" name="GENERO" value="3"> Estratégia</label>
-          <label><input type="checkbox" name="GENERO" value="4"> Simulação</label>
-          <label><input type="checkbox" name="GENERO" value="5"> Ação</label>
-          <label><input type="checkbox" name="GENERO" value="6"> Aventura</label>
-          <label><input type="checkbox" name="GENERO" value="7"> Estratégia Tower Defense</label>
-          <label><input type="checkbox" name="GENERO" value="8"> Jogos de Plataforma</label>
-          <label><input type="checkbox" name="GENERO" value="9"> RPG</label>
-          <label><input type="checkbox" name="GENERO" value="10"> Competição</label>
-          <label><input type="checkbox" name="GENERO" value="11"> Battles Royale</label>
-          <label><input type="checkbox" name="GENERO" value="12"> Jogo de Tabuleiro</label>
-          <label><input type="checkbox" name="GENERO" value="13"> Casual</label>
-          <label><input type="checkbox" name="GENERO" value="14"> Indie</label>
-          <label><input type="checkbox" name="GENERO" value="15"> Cibersegurança</label>
-          <label><input type="checkbox" name="GENERO" value="16"> Física</label>
-          <label><input type="checkbox" name="GENERO" value="17"> Trivia</label>
-          <label><input type="checkbox" name="GENERO" value="18"> Programação</label>
-          <label><input type="checkbox" name="GENERO" value="19"> Educacional</label>
-          <label><input type="checkbox" name="GENERO" value="20"> Eletrônica</label>
-          <label><input type="checkbox" name="GENERO" value="21"> Economia</label>
-          <label><input type="checkbox" name="GENERO" value="22"> Simulação de Gestão</label>
-          <label><input type="checkbox" name="GENERO" value="23"> Matemática</label>
-          <label><input type="checkbox" name="GENERO" value="24"> Design e Ilustração</label>
-        </div>
-      </div>
-
-      <div class="select-group">
-        <h3>📚 Componentes Curriculares</h3>
-        <div id="lista-componentes" class="checkbox-grid">
-          <label><input type="checkbox" name="COMPONENTE" value="1"> Matemática</label>
-          <label><input type="checkbox" name="COMPONENTE" value="2"> Lógica</label>
-          <label><input type="checkbox" name="COMPONENTE" value="3"> Programação</label>
-          <label><input type="checkbox" name="COMPONENTE" value="4"> Segurança da informação</label>
-          <label><input type="checkbox" name="COMPONENTE" value="5"> Física</label>
-          <label><input type="checkbox" name="COMPONENTE" value="6"> Economia</label>
-          <label><input type="checkbox" name="COMPONENTE" value="7"> Gerenciamento</label>
-          <label><input type="checkbox" name="COMPONENTE" value="8"> Gerência de tempo</label>
-          <label><input type="checkbox" name="COMPONENTE" value="9"> Eletrônica Analógica</label>
-          <label><input type="checkbox" name="COMPONENTE" value="10"> Eletrônica Digital</label>
-          <label><input type="checkbox" name="COMPONENTE" value="11"> Hardware</label>
-        </div>
-      </div>
-    </div>
-
-    <div class="multi-select-container">
-      <div class="select-group">
-        <h3>🎮 Plataformas</h3>
-        <div id="lista-plataformas" class="checkbox-grid">
-          <label><input type="checkbox" name="PLATAFORMA" value="1"> Windows</label>
-          <label><input type="checkbox" name="PLATAFORMA" value="2"> Android</label>
-          <label><input type="checkbox" name="PLATAFORMA" value="3"> iOS</label>
-          <label><input type="checkbox" name="PLATAFORMA" value="4"> MacOS</label>
-          <label><input type="checkbox" name="PLATAFORMA" value="5"> Linux</label>
-        </div>
-      </div>
-
-      <div class="select-group">
-        <h3>🎯 Habilidades (Busca)</h3>
-        <div class="search-container">
-          <input type="text" id="buscaHabilidade" placeholder="Digite o código (ex: EC8, EF...)" autocomplete="off" />
-          <div id="resultadosBusca" class="dropdown-results"></div>
-        </div>
-        <div id="habilidadesSelecionadas" class="tags-container"></div>
-      </div>
-    </div>
-
-    <div class="form-actions">
-      <button type="submit" class="btn-primary">Finalizar Cadastro no MySQL</button>
-    </div>
-  </form>
-</section>
-
-      <section id="section-curadoria" class="account-card section-content" style="display: none;">
-        <h2 class="section-title">Sugestões de Jogos Pendentes</h2>
         <div class="table-container">
           <table class="admin-table">
-            <caption>Lista de sugestões enviadas aguardando revisão</caption>
             <thead>
               <tr>
-                <th scope="col">Jogo</th>
-                <th scope="col">Link</th>
-                <th scope="col">Ações</th>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>E-mail</th>
+                <th>Cargo</th>
+                <th>Ações</th>
               </tr>
             </thead>
-            <tbody id="tabela-sugestoes">
-              <tr>
-                <td colspan="3">Nenhum dado carregado.</td>
-              </tr>
+            <tbody id="tabela-usuarios-corpo">
             </tbody>
           </table>
         </div>
       </section>
 
-      <section id="section-sugerir-jogo" class="account-card section-content" style="display: none;">
-        <h2 class="section-title">Sugerir Jogo para o Catálogo</h2>
-        <p class="account-subtitle">Envie um jogo para análise da curadoria.</p>
-        <form id="form-sugerir-jogo" class="account-form">
-          <div class="form-row">
-            <label for="sug_nome">Nome do Jogo *</label>
-            <input id="sug_nome" type="text" required />
-          </div>
-          <div class="form-row">
-            <label for="sug_link">Link de Acesso *</label>
-            <input id="sug_link" type="url" required />
-          </div>
-          <div class="form-row">
-            <label for="sug_justificativa">Justificativa Pedagógica</label>
-            <textarea id="sug_justificativa" rows="4" placeholder="Como este jogo contribui para o ensino?"></textarea>
-          </div>
-          <div class="form-actions">
-            <button type="submit" class="btn-primary">Enviar Sugestão</button>
-          </div>
-        </form>
-      </section>
+      <div id="modal-editar-usuario" class="modal" style="display:none;">
+        <div class="modal-content">
+          <h3>Editar Usuário</h3>
+          <form id="form-editar-usuario">
+            <input type="hidden" id="edit-user-id">
 
-      <section id="section-meus-envios" class="account-card section-content" style="display: none;">
-        <h2 class="section-title">Acompanhar Minhas Sugestões</h2>
-        <div class="table-container">
-          <table class="admin-table">
-            <caption>Histórico de sugestões enviadas e seus status</caption>
-            <thead>
-              <tr>
-                <th scope="col">Jogo</th>
-                <th scope="col">Data de Envio</th>
-                <th scope="col">Status</th>
-              </tr>
-            </thead>
-            <tbody id="tabela-meus-envios">
-              <tr>
-                <td colspan="3">Nenhum dado carregado.</td>
-              </tr>
-            </tbody>
-          </table>
+            <div class="form-row">
+              <label for="edit-user-nome">Nome</label>
+              <input type="text" id="edit-user-nome" required>
+            </div>
+
+            <div class="form-row">
+              <label for="edit-user-email">E-mail</label>
+              <input type="email" id="edit-user-email" required>
+            </div>
+
+            <div class="form-row">
+              <label for="edit-user-perfil">Perfil no Sistema</label>
+              <select id="edit-user-perfil">
+                <option value="aluno">Aluno</option>
+                <option value="professor">Professor</option>
+                <option value="profissional_ti">Profissional de TI</option>
+                <option value="administrador">Administrador</option>
+              </select>
+            </div>
+
+            <div class="modal-actions">
+              <button type="button" onclick="fecharModalUser()" class="btn-secondary">Cancelar</button>
+              <button type="submit" class="btn-primary">Salvar Alterações</button>
+            </div>
+          </form>
         </div>
-      </section>
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" onclick="fecharModalUser()" class="btn-secondary">Cancelar</button>
+        <button type="submit" class="btn-primary">Salvar Alterações</button>
+      </div>
+      </form>
+    </div>
+    </div>
+
+    <section id="section-cadastro-jogo" class="account-card section-content" style="display: none;">
+      <h2 class="section-title">Cadastrar Novo Jogo (Admin)</h2>
+      <p class="account-subtitle">Preencha os dados técnicos e selecione as competências do IFF.</p>
+
+      <form id="formCadastroJogo" class="account-form">
+        <div class="form-row">
+          <label for="NOME">Nome do Jogo *</label>
+          <input id="NOME" type="text" placeholder="Ex: Minecraft Education" required />
+        </div>
+
+        <div class="form-row">
+          <label for="LINK">Link de Acesso *</label>
+          <input id="LINK" type="url" placeholder="https://..." required />
+        </div>
+
+        <div class="form-grid-3">
+          <div class="form-row">
+            <label for="LINKIMAGEM">URL da Imagem</label>
+            <input id="LINKIMAGEM" type="text" placeholder="caminho/foto.png" />
+          </div>
+          <div class="form-row">
+            <label for="IDIOMA">Idioma</label>
+            <input id="IDIOMA" type="text" placeholder="Português" />
+          </div>
+          <div class="form-row">
+            <label for="LICENSA">Licença</label>
+            <input id="LICENSA" type="text" placeholder="Gratuito / Pago" />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <label for="INTERACAO">Interação Principal</label>
+          <select id="INTERACAO">
+            <option value="Single Player">Single Player</option>
+            <option value="Multiplayer">Multiplayer</option>
+          </select>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="multi-select-container">
+          <div class="select-group">
+            <h3>🎭 Gêneros</h3>
+            <div id="lista-generos" class="checkbox-grid">
+              <label><input type="checkbox" name="GENERO" value="1"> Quiz</label>
+              <label><input type="checkbox" name="GENERO" value="2"> Puzzle</label>
+              <label><input type="checkbox" name="GENERO" value="3"> Estratégia</label>
+              <label><input type="checkbox" name="GENERO" value="4"> Simulação</label>
+              <label><input type="checkbox" name="GENERO" value="5"> Ação</label>
+              <label><input type="checkbox" name="GENERO" value="6"> Aventura</label>
+              <label><input type="checkbox" name="GENERO" value="7"> Estratégia Tower Defense</label>
+              <label><input type="checkbox" name="GENERO" value="8"> Jogos de Plataforma</label>
+              <label><input type="checkbox" name="GENERO" value="9"> RPG</label>
+              <label><input type="checkbox" name="GENERO" value="10"> Competição</label>
+              <label><input type="checkbox" name="GENERO" value="11"> Battles Royale</label>
+              <label><input type="checkbox" name="GENERO" value="12"> Jogo de Tabuleiro</label>
+              <label><input type="checkbox" name="GENERO" value="13"> Casual</label>
+              <label><input type="checkbox" name="GENERO" value="14"> Indie</label>
+              <label><input type="checkbox" name="GENERO" value="15"> Cibersegurança</label>
+              <label><input type="checkbox" name="GENERO" value="16"> Física</label>
+              <label><input type="checkbox" name="GENERO" value="17"> Trivia</label>
+              <label><input type="checkbox" name="GENERO" value="18"> Programação</label>
+              <label><input type="checkbox" name="GENERO" value="19"> Educacional</label>
+              <label><input type="checkbox" name="GENERO" value="20"> Eletrônica</label>
+              <label><input type="checkbox" name="GENERO" value="21"> Economia</label>
+              <label><input type="checkbox" name="GENERO" value="22"> Simulação de Gestão</label>
+              <label><input type="checkbox" name="GENERO" value="23"> Matemática</label>
+              <label><input type="checkbox" name="GENERO" value="24"> Design e Ilustração</label>
+            </div>
+          </div>
+
+          <div class="select-group">
+            <h3>📚 Componentes Curriculares</h3>
+            <div id="lista-componentes" class="checkbox-grid">
+              <label><input type="checkbox" name="COMPONENTE" value="1"> Matemática</label>
+              <label><input type="checkbox" name="COMPONENTE" value="2"> Lógica</label>
+              <label><input type="checkbox" name="COMPONENTE" value="3"> Programação</label>
+              <label><input type="checkbox" name="COMPONENTE" value="4"> Segurança da informação</label>
+              <label><input type="checkbox" name="COMPONENTE" value="5"> Física</label>
+              <label><input type="checkbox" name="COMPONENTE" value="6"> Economia</label>
+              <label><input type="checkbox" name="COMPONENTE" value="7"> Gerenciamento</label>
+              <label><input type="checkbox" name="COMPONENTE" value="8"> Gerência de tempo</label>
+              <label><input type="checkbox" name="COMPONENTE" value="9"> Eletrônica Analógica</label>
+              <label><input type="checkbox" name="COMPONENTE" value="10"> Eletrônica Digital</label>
+              <label><input type="checkbox" name="COMPONENTE" value="11"> Hardware</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="multi-select-container">
+          <div class="select-group">
+            <h3>🎮 Plataformas</h3>
+            <div id="lista-plataformas" class="checkbox-grid">
+              <label><input type="checkbox" name="PLATAFORMA" value="1"> Windows</label>
+              <label><input type="checkbox" name="PLATAFORMA" value="2"> Android</label>
+              <label><input type="checkbox" name="PLATAFORMA" value="3"> iOS</label>
+              <label><input type="checkbox" name="PLATAFORMA" value="4"> MacOS</label>
+              <label><input type="checkbox" name="PLATAFORMA" value="5"> Linux</label>
+            </div>
+          </div>
+
+          <div class="select-group">
+            <h3>🎯 Habilidades (Busca)</h3>
+            <div class="search-container">
+              <input type="text" id="buscaHabilidade" placeholder="Digite o código (ex: EC8, EF...)"
+                autocomplete="off" />
+              <div id="resultadosBusca" class="dropdown-results"></div>
+            </div>
+            <div id="habilidadesSelecionadas" class="tags-container"></div>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn-primary">Finalizar Cadastro no MySQL</button>
+        </div>
+      </form>
+    </section>
+
+    <section id="section-curadoria" class="account-card section-content" style="display: none;">
+      <h2 class="section-title">Sugestões de Jogos Pendentes</h2>
+      <div class="table-container">
+        <table class="admin-table">
+          <caption>Lista de sugestões enviadas aguardando revisão</caption>
+          <thead>
+            <tr>
+              <th scope="col">Jogo</th>
+              <th scope="col">Link</th>
+              <th scope="col">Ações</th>
+            </tr>
+          </thead>
+          <tbody id="tabela-sugestoes">
+            <tr>
+              <td colspan="3">Nenhum dado carregado.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="section-sugerir-jogo" class="account-card section-content" style="display: none;">
+      <h2 class="section-title">Sugerir Jogo para o Catálogo</h2>
+      <p class="account-subtitle">Envie um jogo para análise da curadoria.</p>
+      <form id="form-sugerir-jogo" class="account-form">
+        <div class="form-row">
+          <label for="sug_nome">Nome do Jogo *</label>
+          <input id="sug_nome" type="text" required />
+        </div>
+        <div class="form-row">
+          <label for="sug_link">Link de Acesso *</label>
+          <input id="sug_link" type="url" required />
+        </div>
+        <div class="form-row">
+          <label for="sug_justificativa">Justificativa Pedagógica</label>
+          <textarea id="sug_justificativa" rows="4" placeholder="Como este jogo contribui para o ensino?"></textarea>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn-primary">Enviar Sugestão</button>
+        </div>
+      </form>
+    </section>
+
+    <section id="section-meus-envios" class="account-card section-content" style="display: none;">
+      <h2 class="section-title">Acompanhar Minhas Sugestões</h2>
+      <div class="table-container">
+        <table class="admin-table">
+          <caption>Histórico de sugestões enviadas e seus status</caption>
+          <thead>
+            <tr>
+              <th scope="col">Jogo</th>
+              <th scope="col">Data de Envio</th>
+              <th scope="col">Status</th>
+            </tr>
+          </thead>
+          <tbody id="tabela-meus-envios">
+            <tr>
+              <td colspan="3">Nenhum dado carregado.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
 
     </div>
   </main>

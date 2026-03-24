@@ -134,8 +134,12 @@ window.showSection = function (sectionId, btn) {
     document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
     if (btn) btn.classList.add('active');
 
+    // Gatilhos de carregamento de dados
     if (sectionId === 'section-curadoria') carregarSugestoes();
     if (sectionId === 'section-meus-envios') carregarMeusEnvios();
+    
+    // ADICIONE ESTA LINHA:
+    if (sectionId === 'section-gerenciar-usuarios') carregarUsuariosAdmin();
 };
 
 // --- CADASTRO DE JOGO (ADMIN) ---
@@ -263,6 +267,101 @@ window.prepararAprovacao = function (id, nome, link) {
     window.idSugestaoEmFoco = id;
     setStatus("Sugestão carregada.", "info");
 };
+
+// --- GERENCIAMENTO DE USUÁRIOS (ADMIN) ---
+
+async function carregarUsuariosAdmin() {
+    const tabelaCorpo = document.getElementById('tabela-usuarios-corpo');
+    if (!tabelaCorpo) return;
+
+    try {
+        const res = await fetch('/api/admin/users');
+        const usuarios = await res.json();
+
+        if (!Array.isArray(usuarios)) throw new Error("Erro ao receber lista de usuários");
+
+        tabelaCorpo.innerHTML = usuarios.map(u => {
+            // Criamos uma string segura do objeto para passar no onclick
+            const userJson = JSON.stringify(u).replace(/'/g, "&apos;");
+            
+            return `
+                <tr>
+                    <td>${u.id}</td>
+                    <td>${u.nome}</td>
+                    <td>${u.email}</td>
+                    <td><span class="badge-${u.perfil}">${u.perfil}</span></td>
+                    <td>
+                        <button class="btn-edit" onclick='abrirModalEditarUsuario(${userJson})'>✏️ Editar</button>
+                    </td>
+                </tr>
+            `;
+        }).join('');
+    } catch (err) {
+        console.error("Erro ao carregar usuários:", err);
+        tabelaCorpo.innerHTML = '<tr><td colspan="5">Erro ao carregar dados.</td></tr>';
+    }
+}
+
+window.abrirModalEditarUsuario = function(user) {
+    // Exibe o modal (certifique-se de ter o ID correspondente no HTML)
+    const modal = document.getElementById('modal-editar-usuario');
+    if (!modal) return;
+
+    modal.style.display = 'flex';
+
+    // Preenche os campos
+    document.getElementById('edit-user-id').value = user.id;
+    document.getElementById('edit-user-nome').value = user.nome;
+    document.getElementById('edit-user-email').value = user.email;
+    document.getElementById('edit-user-perfil').value = user.perfil;
+};
+
+window.fecharModalUser = function() {
+    const modal = document.getElementById('modal-editar-usuario');
+    if (modal) modal.style.display = 'none';
+};
+
+// Event Listener para o formulário de edição do modal
+document.getElementById('form-editar-usuario')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const id = document.getElementById('edit-user-id').value;
+    const payload = {
+        nome: document.getElementById('edit-user-nome').value,
+        perfil: document.getElementById('edit-user-perfil').value,
+        email: document.getElementById('edit-user-email').value
+    };
+
+    // Validação básica (Passo 4a do seu Caso de Uso)
+    if (payload.nome.trim().length < 3) {
+        alert("O nome deve ter pelo menos 3 caracteres.");
+        return;
+    }
+
+    try {
+        const res = await fetch(`/api/admin/users/${id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+
+        if (res.ok) {
+            alert("Usuário atualizado com sucesso!");
+            fecharModalUser();
+            carregarUsuariosAdmin(); // Atualiza a tabela
+
+            // Se o admin editou a si mesmo, atualiza a sessão local
+            if (Number(id) === usuarioLogado.id) {
+                usuarioLogado = { ...usuarioLogado, ...payload };
+            }
+        } else {
+            const err = await res.json();
+            alert("Erro: " + err.error);
+        }
+    } catch (err) {
+        console.error("Erro ao atualizar usuário:", err);
+    }
+});
 
 // --- EVENT LISTENERS ---
 

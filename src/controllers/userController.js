@@ -125,3 +125,34 @@ exports.getUserFavorites = async (req, res) => {
     res.status(404).json({ error: error.message });
   }
 };
+
+exports.listAllUsersAdmin = (req, res) => {
+    if (req.session.user.perfil !== 'administrador') {
+        return res.status(403).json({ error: "Acesso negado." });
+    }
+
+    try {
+        const users = userService.getAllUsers(); 
+        
+        const safeUsers = users.map(({ senha, ...u }) => u);
+        res.json(safeUsers);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+};
+
+exports.updateUserAdmin = async (req, res) => {
+    const { id } = req.params;
+
+    if (req.session.user.perfil !== 'administrador') {
+        return res.status(403).json({ error: "Acesso negado." });
+    }
+
+    try {
+        const updatedUser = await userService.adminUpdateUser(id, req.body);
+        
+        res.json({ message: "Usuário atualizado com sucesso!", user: updatedUser });
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+};
