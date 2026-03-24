@@ -34,5 +34,403 @@
     "nota": 5,
     "comentario": "",
     "createdAt": "2026-02-24T11:59:44.822Z"
+  },
+  {
+    "id": "b8ed2bda-ea61-4010-93ac-aef53a0583b7",
+    "jogoId": 1,
+    "usuarioId": 9,
+    "usuarioNome": "euprof2",
+    "nota": 4.5,
+    "comentario": "",
+    "createdAt": "2026-03-24T02:01:56.020Z",
+    "dataCriacao": "2026-03-24T02:01:56.020Z"
+  },
+  {
+    "id": "f2133104-4e11-4215-88fa-ea0ee3d07a78",
+    "jogoId": 1,
+    "usuarioId": 9,
+    "usuarioNome": "euprof2",
+    "nota": 4.5,
+    "comentario": "",
+    "createdAt": "2026-03-24T02:01:57.548Z",
+    "dataCriacao": "2026-03-24T02:01:57.549Z"
+  },
+  {
+    "id": "257e32e4-9908-4f9b-8dd9-270f29d4aaf7",
+    "jogoId": 1,
+    "usuarioId": 9,
+    "usuarioNome": "euprof2",
+    "nota": 4.5,
+    "comentario": "",
+    "createdAt": "2026-03-24T02:01:58.422Z",
+    "dataCriacao": "2026-03-24T02:01:58.422Z"
+  },
+  {
+    "id": "b871ccc0-d0e0-4f66-a5d8-507696218ff3",
+    "jogoId": 1,
+    "usuarioId": 9,
+    "usuarioNome": "euprof2",
+    "nota": 5,
+    "comentario": "",
+    "createdAt": "2026-03-24T02:01:59.033Z",
+    "dataCriacao": "2026-03-24T02:01:59.033Z"
+  },
+  {
+    "id": "9fc387b2-023f-4ecf-be33-749cbf06a477",
+    "jogoId": 1,
+    "usuarioId": 9,
+    "usuarioNome": "euprof2",
+    "nota": 5,
+    "comentario": "",
+    "createdAt": "2026-03-24T02:01:59.469Z",
+    "dataCriacao": "2026-03-24T02:01:59.470Z"
+  },
+  {
+    "id": "11d7043a-718f-4720-bb86-514db58d5c71",
+    "jogoId": 1,
+    "usuarioId": 9,
+    "usuarioNome": "euprof2",
+    "nota": 5,
+    "comentario": "",
+    "createdAt": "2026-03-24T02:01:59.638Z",
+    "dataCriacao": "2026-03-24T02:01:59.639Z"
+  },
+  {
+    "id": "00281aa5-3f41-4a70-83f0-97238147a032",
+    "jogoId": 1,
+    "usuarioId": 9,
+    "usuarioNome": "euprof2",
+    "nota": 5,
+    "comentario": "",
+    "createdAt": "2026-03-24T02:01:59.788Z",
+    "dataCriacao": "2026-03-24T02:01:59.788Z"
+  },
+  {
+    "id": "7be983a7-5dca-4e36-9462-6280d07bf852",
+    "jogoId": 1,
+    "usuarioId": 9,
+    "usuarioNome": "euprof2",
+    "nota": 5,
+    "comentario": "",
+    "createdAt": "2026-03-24T02:01:59.921Z",
+    "dataCriacao": "2026-03-24T02:01:59.921Z"
+  },
+  {
+    "id": "cca04bec-435c-41e5-918c-8541f0caa06c",
+    "jogoId": 1,
+    "usuarioId": 9,
+    "usuarioNome": "euprof2",
+    "nota": 5,
+    "comentario": "",
+    "createdAt": "2026-03-24T02:02:00.980Z",
+    "dataCriacao": "2026-03-24T02:02:00.980Z"
+  },
+  {
+    "id": "0ce95bf1-d347-4ae8-a410-60a59acbd7d7",
+    "jogoId": 1,
+    "usuarioId": 9,
+    "usuarioNome": "euprof2",
+    "nota": 4.5,
+    "comentario": "",
+    "createdAt": "2026-03-24T02:02:01.538Z",
+    "dataCriacao": "2026-03-24T02:02:01.539Z"
+  },
+  {
+    "id": "829f03ea-08e9-4dee-ba52-ffdffbe52706",
+    "jogoId": 1,
+    "usuarioId": 9,
+    "usuarioNome": "euprof2",
+    "nota": 5,
+    "comentario": "",
+    "createdAt": "2026-03-24T02:02:01.981Z",
+    "dataCriacao": "2026-03-24T02:02:01.982Z"
+  },
+  {
+    "id": "cc63b187-4e8f-443b-9db6-cf462a2ca697",
+    "jogoId": 1,
+    "usuarioId": 9,
+    "usuarioNome": "euprof2",
+    "nota": 5,
+    "comentario": "",
+    "createdAt": "2026-03-24T02:02:02.462Z",
+    "dataCriacao": "2026-03-24T02:02:02.463Z"
+  },
+  {
+    "id": "1dd1d00a-9924-4b68-8bb9-cb3050028a90",
+    "jogoId": 1,
+    "usuarioId": 9,
+    "usuarioNome": "euprof2",
+    "nota": 5,
+    "comentario": "",
+    "createdAt": "2026-03-24T02:02:02.943Z",
+    "dataCriacao": "2026-03-24T02:02:02.944Z"
+  },
+  {
+    "id": "9319af31-8e16-4157-b75c-21b91d3079c2",
+    "jogoId": 1,
+    "usuarioId": 9,
+    "usuarioNome": "euprof2",
+    "nota": 5,
+    "comentario": "",
+    "createdAt": "2026-03-24T02:02:03.423Z",
+    "dataCriacao": "2026-03-24T02:02:03.423Z"
+  },
+  {
+    "id": "23efaa5c-4c7d-47f5-bc22-8c0d8fe34600",
+    "jogoId": 1,
+    "usuarioId": 9,
+    "usuarioNome": "euprof2",
+    "nota": 5,
+    "comentario": "",
+    "createdAt": "2026-03-24T02:02:03.710Z",
+    "dataCriacao": "2026-03-24T02:02:03.710Z"
+  },
+  {
+    "id": "23794c68-c8e4-4ac2-9fb3-99caf71af413",
+    "jogoId": 1,
+    "usuarioId": 9,
+    "usuarioNome": "euprof2",
+    "nota": 5,
+    "comentario": "",
+    "createdAt": "2026-03-24T02:02:03.866Z",
+    "dataCriacao": "2026-03-24T02:02:03.866Z"
+  },
+  {
+    "id": "e4daa265-ca56-4b03-9207-60a6958213fb",
+    "jogoId": 1,
+    "usuarioId": 9,
+    "usuarioNome": "euprof2",
+    "nota": 4.5,
+    "comentario": "",
+    "createdAt": "2026-03-24T02:02:04.960Z",
+    "dataCriacao": "2026-03-24T02:02:04.961Z"
+  },
+  {
+    "id": "94150ae8-8435-4daf-a455-7ff6b901a34e",
+    "jogoId": 1,
+    "usuarioId": 9,
+    "usuarioNome": "euprof2",
+    "nota": 4.5,
+    "comentario": "",
+    "createdAt": "2026-03-24T02:02:08.429Z",
+    "dataCriacao": "2026-03-24T02:02:08.429Z"
+  },
+  {
+    "id": "d7a809e3-0b8b-4e1a-ad70-b76c8e507896",
+    "jogoId": 1,
+    "usuarioId": 9,
+    "usuarioNome": "euprof2",
+    "nota": 4.5,
+    "comentario": "",
+    "createdAt": "2026-03-24T02:02:09.168Z",
+    "dataCriacao": "2026-03-24T02:02:09.169Z"
+  },
+  {
+    "id": "66299967-e18f-4191-b942-616f37f2646d",
+    "jogoId": 1,
+    "usuarioId": 9,
+    "usuarioNome": "euprof2",
+    "nota": 4.5,
+    "comentario": "",
+    "createdAt": "2026-03-24T02:03:25.815Z",
+    "dataCriacao": "2026-03-24T02:03:25.815Z"
+  },
+  {
+    "id": "b58ca05d-b741-41bb-b9ca-867ba131ee8a",
+    "jogoId": 2,
+    "usuarioId": 9,
+    "usuarioNome": "euprof2",
+    "nota": 4.5,
+    "comentario": "",
+    "createdAt": "2026-03-24T02:05:36.216Z",
+    "dataCriacao": "2026-03-24T02:05:36.217Z"
+  },
+  {
+    "id": "b201f323-dded-4211-be1f-88d61eec243e",
+    "jogoId": 2,
+    "usuarioId": 9,
+    "usuarioNome": "euprof2",
+    "nota": 5,
+    "comentario": "",
+    "createdAt": "2026-03-24T02:05:47.709Z",
+    "dataCriacao": "2026-03-24T02:05:47.710Z"
+  },
+  {
+    "id": "8099d415-8a6e-4ee9-81b3-7a2087168cfc",
+    "jogoId": 2,
+    "usuarioId": 9,
+    "usuarioNome": "euprof2",
+    "nota": 4,
+    "comentario": "",
+    "createdAt": "2026-03-24T02:16:29.201Z",
+    "dataCriacao": "2026-03-24T02:16:29.201Z"
+  },
+  {
+    "id": "b0997d84-cd4e-4a12-b90b-c879cc807041",
+    "jogoId": 2,
+    "usuarioId": 9,
+    "usuarioNome": "euprof2",
+    "nota": 2.5,
+    "comentario": "",
+    "createdAt": "2026-03-24T02:16:31.523Z",
+    "dataCriacao": "2026-03-24T02:16:31.524Z"
+  },
+  {
+    "id": "a53f7973-8f2d-438e-9c8a-ffacdf63f6f5",
+    "jogoId": 2,
+    "usuarioId": 9,
+    "usuarioNome": "euprof2",
+    "nota": 4.5,
+    "comentario": "",
+    "createdAt": "2026-03-24T02:16:43.462Z",
+    "dataCriacao": "2026-03-24T02:16:43.463Z"
+  },
+  {
+    "id": "5fc4bb4c-2f35-46c2-aa1e-327202a0fcf5",
+    "jogoId": 2,
+    "usuarioId": 9,
+    "usuarioNome": "euprof2",
+    "nota": 4,
+    "comentario": "",
+    "createdAt": "2026-03-24T02:16:45.328Z",
+    "dataCriacao": "2026-03-24T02:16:45.329Z"
+  },
+  {
+    "id": "ac1831d7-8c18-4733-a2cd-c8fe946dca72",
+    "jogoId": 2,
+    "usuarioId": 9,
+    "usuarioNome": "euprof2",
+    "nota": 2.5,
+    "comentario": "",
+    "createdAt": "2026-03-24T02:16:51.612Z",
+    "dataCriacao": "2026-03-24T02:16:51.613Z"
+  },
+  {
+    "id": "d2a77a31-331a-479f-9b0b-451e521802b9",
+    "jogoId": 2,
+    "usuarioId": 9,
+    "usuarioNome": "euprof2",
+    "nota": 2.5,
+    "comentario": "",
+    "createdAt": "2026-03-24T02:16:56.303Z",
+    "dataCriacao": "2026-03-24T02:16:56.304Z"
+  },
+  {
+    "id": "1798a895-d6b1-44e7-8661-883129e8641e",
+    "jogoId": 2,
+    "usuarioId": 9,
+    "usuarioNome": "euprof2",
+    "nota": 4.5,
+    "comentario": "",
+    "createdAt": "2026-03-24T02:24:03.492Z",
+    "dataCriacao": "2026-03-24T02:24:03.493Z"
+  },
+  {
+    "id": "23dc4698-e345-41fc-92ca-0ed1a4d2dcc1",
+    "jogoId": 2,
+    "usuarioId": 9,
+    "usuarioNome": "euprof2",
+    "nota": 5,
+    "comentario": "",
+    "createdAt": "2026-03-24T02:24:13.574Z",
+    "dataCriacao": "2026-03-24T02:24:13.575Z"
+  },
+  {
+    "id": "233bae17-6605-4d1a-abd1-dac5ef8fceba",
+    "jogoId": 2,
+    "usuarioId": 9,
+    "usuarioNome": "euprof2",
+    "nota": 4.5,
+    "comentario": "",
+    "createdAt": "2026-03-24T02:24:19.251Z",
+    "dataCriacao": "2026-03-24T02:24:19.251Z"
+  },
+  {
+    "id": "27c34c2d-124b-49eb-af25-7f396cd40721",
+    "jogoId": 2,
+    "usuarioId": 9,
+    "usuarioNome": "euprof2",
+    "nota": 5,
+    "comentario": "",
+    "createdAt": "2026-03-24T02:28:13.152Z",
+    "dataCriacao": "2026-03-24T02:28:13.152Z"
+  },
+  {
+    "id": "b6384060-2eee-49cd-8f64-e8b2b43308d2",
+    "jogoId": 3,
+    "usuarioId": 9,
+    "usuarioNome": "euprof2",
+    "nota": 5,
+    "comentario": "",
+    "createdAt": "2026-03-24T02:37:37.214Z",
+    "dataCriacao": "2026-03-24T02:37:37.215Z"
+  },
+  {
+    "id": "64a3b33d-692d-47a0-aaf0-6cc5c3baf5e2",
+    "jogoId": 3,
+    "usuarioId": 9,
+    "usuarioNome": "euprof2",
+    "nota": 2.5,
+    "comentario": "",
+    "createdAt": "2026-03-24T02:37:43.792Z",
+    "dataCriacao": "2026-03-24T02:37:43.792Z"
+  },
+  {
+    "id": "80388e6f-73f2-4f67-bd77-e1eb2532b1d0",
+    "jogoId": 3,
+    "usuarioId": 9,
+    "usuarioNome": "euprof2",
+    "nota": 3,
+    "comentario": "",
+    "createdAt": "2026-03-24T02:37:45.382Z",
+    "dataCriacao": "2026-03-24T02:37:45.383Z"
+  },
+  {
+    "id": "46a3fc6a-ef39-4768-899d-39b378cf7987",
+    "jogoId": 1,
+    "usuarioId": 9,
+    "usuarioNome": "euprof2",
+    "nota": 4.5,
+    "comentario": "",
+    "createdAt": "2026-03-24T02:37:51.078Z",
+    "dataCriacao": "2026-03-24T02:37:51.079Z"
+  },
+  {
+    "id": "44c5b48a-9d75-45dd-8eef-44eac4b3232d",
+    "jogoId": 6,
+    "usuarioId": 9,
+    "usuarioNome": "euprof2",
+    "nota": 4,
+    "comentario": "",
+    "createdAt": "2026-03-24T02:38:19.911Z",
+    "dataCriacao": "2026-03-24T02:38:19.912Z"
+  },
+  {
+    "id": "8bf3803d-7a94-44d4-a624-fff98f3f8a81",
+    "jogoId": 3,
+    "usuarioId": 9,
+    "usuarioNome": "euprof2",
+    "nota": 3.5,
+    "comentario": "",
+    "dataCriacao": "2026-03-24T02:58:21.815Z"
+  },
+  {
+    "id": "b2a18db6-cede-490e-80fe-06481c620439",
+    "jogoId": 3,
+    "usuarioId": 9,
+    "usuarioNome": "euprof2",
+    "nota": 5,
+    "comentario": "",
+    "dataCriacao": "2026-03-24T02:58:34.156Z"
+  },
+  {
+    "id": "9443702c-7030-4065-bf5e-1c717fde49f3",
+    "jogoId": 4,
+    "usuarioId": 9,
+    "usuarioNome": "euprof2",
+    "nota": 4,
+    "comentario": "",
+    "createdAt": "2026-03-24T03:00:27.422Z",
+    "dataCriacao": "2026-03-24T03:00:27.423Z"
   }
 ]

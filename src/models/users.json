@@ -89,7 +89,9 @@
       2,
       3,
       4,
-      5
+      5,
+      1,
+      6
     ]
   },
   {
@@ -128,5 +130,29 @@
       4,
       3
     ]
+  },
+  {
+    "id": 13,
+    "nome": "admin",
+    "email": "admin123@gmail.com",
+    "senha": "$2b$10$LRkHntzX2IfalvAb7oFE7uAda4zCJImX1cFySG/HwUKI5zgferwnG",
+    "perfil": "usuario",
+    "favoritos": []
+  },
+  {
+    "id": 14,
+    "nome": "ad",
+    "email": "admin1223@gmail.com",
+    "senha": "$2b$10$9nDw5hDlXKZ0zsbLO1LZje6eJScou1Cddf1hfO7U7AwjZ0iVbrGUS",
+    "perfil": "usuario",
+    "favoritos": []
+  },
+  {
+    "id": 15,
+    "nome": "123",
+    "email": "12342@gmail.com",
+    "senha": "$2b$10$MRH0fdUh9y9..VPrsbY7TO56sj3D9PAibeZC5G4X9GNfVK0khOcr2",
+    "perfil": "usuario",
+    "favoritos": []
   }
 ]

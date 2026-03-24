@@ -29,24 +29,26 @@
         <h1 class="sr-only">Meus Jogos Favoritos e Avaliados</h1>
 
         <section class="bloco-personalizado">
-            <div id="filtros">
-                <div style="width: 100%; margin-bottom: 15px;">
-                    <label for="filtroStatus"
-                        style="display: block; font-size: 0.75rem; color: var(--iff-red-dark); margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px; font-weight: bold;">Exibir:</label>
-                    <select id="filtroStatus" onchange="filtrarMeusJogos()"
-                        style="max-width: 250px; padding: 10px; border: 1px solid var(--iff-border); border-radius: 4px; background-color: #fff; cursor: pointer;">
-                        <option value="tudo">Tudo</option>
-                        <option value="favoritados">❤️ Meus Favoritos</option>
-                        <option value="avaliados">⭐ Meus Avaliados</option>
-                    </select>
-                </div>
+           <form id="filtros" class="filtro-wrapper">
 
-                <input id="filtroCurso" placeholder="Curso" aria-label="Filtrar por Curso">
-                <input id="filtroComponente" placeholder="Componente" aria-label="Filtrar por Componente">
-                <input id="filtroHabilidade" placeholder="Habilidade" aria-label="Filtrar por Habilidade">
-                <input id="filtroPlataforma" placeholder="Plataforma" aria-label="Filtrar por Plataforma">
-                <button onclick="filtrarMeusJogos()">Filtrar</button>
-            </div>
+    <div class="select-container">
+        <label for="filtroStatus">EXIBIR:</label>
+        <select id="filtroStatus">
+            <option value="tudo">Tudo</option>
+            <option value="favoritados">❤️ Meus Favoritos</option>
+            <option value="avaliados">⭐ Meus Avaliados</option>
+        </select>
+    </div>
+
+    <div class="filtros-linha">
+        <input id="filtroComponente" placeholder="Componente">
+        <input id="filtroHabilidade" placeholder="Habilidade">
+        <input id="filtroPlataforma" placeholder="Plataforma">
+
+        <button type="submit">Filtrar</button>
+    </div>
+
+</form>
         </section>
 
         <section class="bloco-personalizado">

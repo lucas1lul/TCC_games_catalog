@@ -68,7 +68,6 @@ async function carregarJogos() {
 
   // Pegar valores dos filtros
   const nome = (document.getElementById("filtroNome")?.value || "").trim();
-  const curso = (document.getElementById("filtroCurso")?.value || "").trim();
   const componente = (document.getElementById("filtroComponente")?.value || "").trim();
   const habilidade = (document.getElementById("filtroHabilidade")?.value || "").trim();
   const plataforma = (document.getElementById("filtroPlataforma")?.value || "").trim();
@@ -80,7 +79,6 @@ async function carregarJogos() {
   // Construir URL com parâmetros
   const params = new URLSearchParams();
   if (nome) params.set("nome", nome);
-  if (curso) params.set("curso", curso);
   if (componente) params.set("componente", componente);
   if (habilidade) params.set("habilidade", habilidade);
   if (plataforma) params.set("plataforma", plataforma);

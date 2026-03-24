@@ -23,7 +23,14 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // Listeners de filtro
     document.getElementById("filtroStatus")?.addEventListener("change", filtrarMeusJogos);
-    document.getElementById("filtroCurso")?.addEventListener("input", filtrarMeusJogos);
+
+     const form = document.getElementById("filtros");
+    if (form) {
+        form.addEventListener("submit", (e) => {
+            e.preventDefault();
+            filtrarMeusJogos();
+        });
+    }
 
     // Delegação de clique nos cards
     const container = document.getElementById("listaFavoritos");
@@ -140,13 +147,26 @@ async function toggleFavorito(jogoId, elementoEstrela) {
 
 function filtrarMeusJogos() {
     const status = document.getElementById("filtroStatus")?.value || "tudo";
-    const busca = (document.getElementById("filtroCurso")?.value || "").toLowerCase().trim();
+    const componente = (document.getElementById("filtroComponente")?.value || "").toLowerCase();
+    const habilidade = (document.getElementById("filtroHabilidade")?.value || "").toLowerCase();
+    const plataforma = (document.getElementById("filtroPlataforma")?.value || "").toLowerCase();
 
     jogosFiltrados = meusJogosOriginais.filter((jogo) => {
-        const matchStatus = status === "tudo" || status === "favoritados" || (status === "avaliados" && jogo.isAvaliado);
-        const nome = (jogo.NOME || "").toLowerCase();
-        const matchTexto = !busca || nome.includes(busca);
-        return matchStatus && matchTexto;
+        const matchStatus =
+            status === "tudo" ||
+            status === "favoritados" ||
+            (status === "avaliados" && jogo.isAvaliado);
+
+        const matchComponente =
+            !componente || (jogo.COMPONENTES || "").toLowerCase().includes(componente);
+
+        const matchHabilidade =
+            !habilidade || (jogo.HABILIDADES_CODIGOS || "").toLowerCase().includes(habilidade);
+
+        const matchPlataforma =
+            !plataforma || (jogo.PLATAFORMA_DESCRICAO || "").toLowerCase().includes(plataforma);
+
+        return matchStatus && matchComponente && matchHabilidade && matchPlataforma;
     });
 
     renderizarJogos(jogosFiltrados);
