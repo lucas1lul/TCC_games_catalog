@@ -76,33 +76,34 @@
 
     </main>
 
-    <div id="modalDetalhes" class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitulo">
-        <div class="modal-content">
-            <button class="close-modal" aria-label="Fechar detalhes" onclick="fecharModal()">&times;</button>
-            
-            <div class="modal-grid">
-                <div class="modal-img-container">
-                    <img id="modalImg" src="" alt="Capa do Jogo">
-                </div>
-                <div class="modal-info">
-                    <h2 id="modalTitulo">Carregando detalhes...</h2>
-                    <hr>
-                    <div class="info-item"><strong>🎯 Habilidades:</strong> <span id="modalHabilidades"></span></div>
-                    <div class="info-item"><strong>🎭 Gênero:</strong> <span id="modalGenero"></span></div>
-                    <div class="info-item"><strong>🌐 Idioma:</strong> <span id="modalIdioma"></span></div>
-                    <div class="info-item"><strong>🎮 Plataforma:</strong> <span id="modalPlataforma"></span></div>
-                    <div class="info-item"><strong>📜 Licença:</strong> <span id="modalLicenca"></span></div>
-                    <div class="info-item"><strong>🤝 Interação:</strong> <span id="modalInteracao"></span></div>
-                </div>
+    <div id="modalDetalhes" class="modal">
+    <div class="modal-content">
+        <button class="close-modal" onclick="fecharModal()">&times;</button>
+        
+        <div class="modal-grid">
+            <div class="modal-img-container">
+                <img id="modalImg" src="" alt="Capa do Jogo" style="width: 100%; height: auto; display: block; border-radius: 8px;">
             </div>
-        </div>
-        <hr style="margin:15px 0;">
-        <div class="info-item">
-            <strong>⭐ Média:</strong> <span id="detalheMedia">Carregando...</span>
-        </div>
 
-        <h3 style="margin:15px 0 8px;">💬 Comentários</h3>
-        <div id="listaComentarios"></div>
+            <div class="modal-info">
+                <h2 id="modalTitulo" style="margin-top:0; color: var(--iff-green-dark);">Detalhes do jogo</h2>
+                <hr>
+                <div class="info-item"><strong>🎯 Habilidades:</strong> <span id="modalHabilidades"></span></div>
+                <div class="info-item"><strong>🎭 Gênero:</strong> <span id="modalGenero"></span></div>
+                <div class="info-item"><strong>🌐 Idioma:</strong> <span id="modalIdioma"></span></div>
+                <div class="info-item"><strong>🎮 Plataforma:</strong> <span id="modalPlataforma"></span></div>
+                <div class="info-item"><strong>📜 Licença:</strong> <span id="modalLicenca"></span></div>
+                <div class="info-item"><strong>🤝 Interação:</strong> <span id="modalInteracao"></span></div>
+
+                <hr style="margin:15px 0;">
+                <div class="info-item">
+                    <strong>⭐ Média de Avaliações:</strong> <span id="detalheMedia"></span>
+                </div>
+
+                <h3 style="margin:15px 0 8px;">💬 Comentários</h3>
+                <div id="listaComentarios" style="max-height: 250px; overflow-y: auto; padding-right: 10px; border-top: 1px solid #eee;"></div>
+            </div>
+        </div> </div> </div>
 
     </div>
 

@@ -251,6 +251,83 @@ main .page-title {
     color: #999;
 }
 
+#estrelasAvaliacao {
+    display: flex;
+    gap: 8px;
+    cursor: pointer;
+    font-size: 1.8rem;
+    color: #ccc; /* Cor da estrela vazia */
+    transition: transform 0.2s;
+}
+#estrelasAvaliacao .estrela-btn {
+    transition: color 0.2s, transform 0.2s;
+}
+
+#estrelasAvaliacao .estrela-btn:hover {
+    transform: scale(1.2);
+}
+
+/* Cor da estrela quando selecionada ou com hover */
+#estrelasAvaliacao .estrela-btn.ativa,
+#estrelasAvaliacao .estrela-btn:hover,
+#estrelasAvaliacao .estrela-btn:hover ~ .estrela-btn {
+    color: #ffc107; /* Amarelo ouro padrão para estrelas */
+}
+/* Ajustes no Modal de Avaliação */
+#modalAvaliar .modal-content {
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    border-top: 5px solid #007f3d; /* Verde IFF */
+    padding: 30px;
+}
+
+#modalAvaliar h2 {
+    color: #333;
+    font-size: 1.5rem;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+#comentarioAvaliacao {
+    border: 1.5px solid #eee;
+    background-color: #f9f9f9;
+    resize: none;
+    transition: border-color 0.3s;
+}
+
+#comentarioAvaliacao:focus {
+    outline: none;
+    border-color: #007f3d;
+    background-color: #fff;
+}
+
+/* Botões do Modal */
+.btn-cancelar {
+    background: #f1f1f1;
+    color: #666;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.btn-enviar {
+    background: #9d1a11; /* Vermelho IFF */
+    color: white;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: filter 0.2s;
+}
+
+.btn-enviar:hover {
+    filter: brightness(1.2);
+}
+
 #infoPagina {
     font-weight: bold;
     margin: 0 10px;
@@ -452,4 +529,36 @@ padding: 15px;
     font-size: 0.9rem;
     line-height: 1.4;
     color: #444;
+}
+
+/* Garante que o modal não ultrapasse a altura da tela */
+#modalDetalhes .modal-content {
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+/* Estilização da barra de rolagem para os comentários */
+#listaComentarios::-webkit-scrollbar {
+    width: 6px;
+}
+
+#listaComentarios::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+#listaComentarios::-webkit-scrollbar-thumb {
+    background: #007f3d; /* Verde IFF */
+    border-radius: 10px;
+}
+
+#listaComentarios::-webkit-scrollbar-thumb:hover {
+    background: #005f2d;
+}
+
+/* Garante que a imagem no catálogo também se comporte bem no grid */
+#modalImg {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    object-fit: contain;
 }

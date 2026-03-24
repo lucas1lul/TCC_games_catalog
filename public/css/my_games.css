@@ -219,3 +219,37 @@ h2 {
     transform: translateY(-5px);
     box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
 }
+
+/* Limita o tamanho do modal e permite scroll interno */
+#modalDetalhes .modal-content {
+    max-height: 90vh; /* Não ultrapassa 90% da altura da tela */
+    overflow-y: auto; /* Cria o scroll vertical se necessário */
+    display: flex;
+    flex-direction: column;
+}
+
+/* Container específico para a lista de comentários */
+#listaComentarios {
+    max-height: 300px; /* Altura máxima da área de comentários */
+    overflow-y: auto;  /* Scroll apenas nos comentários */
+    padding-right: 10px;
+    margin-top: 10px;
+    border-top: 1px solid #eee;
+}
+
+/* Garante que a imagem mantenha proporção e não quebre o layout */
+.modal-img-container img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+/* Estilo para a barra de rolagem (opcional, para ficar mais bonito) */
+#listaComentarios::-webkit-scrollbar {
+    width: 6px;
+}
+#listaComentarios::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 10px;
+}

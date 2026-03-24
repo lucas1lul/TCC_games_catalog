@@ -208,4 +208,49 @@ function logout() {
         .then(() => window.location.href = "/catalogo.html");
 }
 
+// Adicione esta função ao seu my_games.js
+window.abrirDetalhes = async function(id) {
+    try {
+        const res = await fetch(`/api/games/${id}`);
+        if (!res.ok) throw new Error("Jogo não encontrado");
+        const jogo = await res.json();
+
+        // LOG para você conferir no F12 qual o nome exato do campo da imagem
+        console.log("Dados do jogo recebidos:", jogo);
+
+        // Tenta pegar o link da imagem em diferentes propriedades comuns
+        const linkImagem = jogo.LINKIMAGEM || jogo.linkImagem || jogo.capa || "/img/placeholder.png";
+        
+        const imgElement = document.getElementById("modalImg");
+        if (imgElement) {
+            imgElement.src = linkImagem;
+            imgElement.alt = `Capa do jogo ${jogo.NOME}`;
+        }
+
+        document.getElementById("modalTitulo").textContent = jogo.NOME || "Sem nome";
+        document.getElementById("modalHabilidades").textContent = jogo.HABILIDADES_CODIGOS || "N/A";
+        document.getElementById("modalGenero").textContent = jogo.GENERO || "N/A";
+        document.getElementById("modalIdioma").textContent = jogo.IDIOMA || "N/A";
+        document.getElementById("modalPlataforma").textContent = jogo.PLATAFORMA_DESCRICAO || "N/A";
+        document.getElementById("modalLicenca").textContent = jogo.LICENCA || "N/A";
+        document.getElementById("modalInteracao").textContent = jogo.INTERACAO || "N/A";
+
+        // Carrega os comentários usando a função global
+        if (typeof window.carregarAvaliacoesNoDetalhe === "function") {
+            await window.carregarAvaliacoesNoDetalhe(id);
+        }
+
+        const modal = document.getElementById("modalDetalhes");
+        if (modal) modal.style.display = "flex";
+        
+    } catch (err) {
+        console.error("Erro ao carregar detalhes:", err);
+    }
+};
+
+// Função para fechar (caso não tenha)
+window.fecharModal = function() {
+    document.getElementById("modalDetalhes").style.display = "none";
+};
+
 window.logout = logout;
