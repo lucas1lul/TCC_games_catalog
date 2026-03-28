@@ -7,22 +7,32 @@
     <title>Catálogo de Serious Games | IFF</title>
     <link rel="stylesheet" href="/css/catalogo.css">
     <link rel="stylesheet" href="/css/navbar.css">
+    <link rel="stylesheet" href="/css/styles.css">
 </head>
 
 <body>
-    <a href="#conteudo-principal" class="skip-link">
+    <a href="#conteudo-principal" class="sr-only skip-link">
         Ir para o conteúdo principal
     </a>
+    
     <div id="navbar-placeholder"></div>
 
     <main id="conteudo-principal" style="padding: 20px;">
         <h1 class="page-title">Explorar Jogos Educativos</h1>
 
         <form id="filtros">
+            <label for="filtroNome" class="sr-only">Nome do jogo</label>
             <input id="filtroNome" placeholder="Nome do jogo">
+            
+            <label for="filtroComponente" class="sr-only">Componente</label>
             <input id="filtroComponente" placeholder="Componente">
+            
+            <label for="filtroHabilidade" class="sr-only">Habilidade</label>
             <input id="filtroHabilidade" placeholder="Habilidade">
+            
+            <label for="filtroPlataforma" class="sr-only">Plataforma</label>
             <input id="filtroPlataforma" placeholder="Plataforma">
+            
             <button type="submit">Filtrar</button>
         </form>
 
@@ -60,9 +70,10 @@
                     </div>
 
                     <h3 style="margin:15px 0 8px;">💬 Comentários</h3>
-<div id="listaComentarios" style="max-height: 250px; overflow-y: auto; padding-right: 10px; border-top: 1px solid #eee;">
-    Nenhum comentário ainda.
-</div>
+                    <div id="listaComentarios" style="max-height: 250px; overflow-y: auto; padding-right: 10px; border-top: 1px solid #eee;">
+                        Nenhum comentário ainda.
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -100,5 +111,4 @@
     <script src="/js/catalogo.js"></script>
 
 </body>
-
 </html>
