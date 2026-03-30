@@ -13,13 +13,25 @@
     border-width: 0;
 }
 
-/* Estilo do link de salto (Skip Link) - Fica visível apenas quando focado pelo teclado (TAB) */
+/* Estado base do link de salto (escondido fora da tela) */
+.skip-link {
+    position: absolute;
+    top: -1000px;
+    left: -1000px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}
+
+/* Estado focado do link de salto (visível, mas flutuando) */
 .skip-link:focus {
-    position: static;
+    position: absolute; /* Mudado de static para absolute */
+    top: 0;
+    left: 0;
     width: auto;
     height: auto;
-    clip: auto;
-    background-color: #2E7D32; /* Cor principal (ajuste se necessário) */
+    overflow: visible; /* Garante que o texto apareça */
+    background-color: #2E7D32; 
     color: white;
     padding: 10px;
     text-decoration: none;

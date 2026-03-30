@@ -1,7 +1,7 @@
 [
   {
     "id": 1,
-    "nome": "lucas",
+    "nome": "Lucas Corrado",
     "email": "lucascorrado@hotmail.com",
     "senha": "$2b$10$f8yB8aqDGJmGeTlJet.X/OS/Bfk1LPA8LZaKTYEspmS9/B2ZqjNyW",
     "perfil": "administrador",
@@ -13,8 +13,8 @@
   },
   {
     "id": 2,
-    "nome": "barbara",
-    "email": "b@gmail.com",
+    "nome": "Barbara",
+    "email": "barbara@gmail.com",
     "senha": "$2b$10$CXpJ2kBSzry011iQiGosfOPTZ7q5MCGgS/u358DdIK2CTnKcHz5pe",
     "perfil": "profissional_ti",
     "favoritos": [
@@ -23,8 +23,8 @@
   },
   {
     "id": 3,
-    "nome": "OLA",
-    "email": "victor@gmail.com",
+    "nome": "Victor Hugo",
+    "email": "vh@gmail.com",
     "senha": "$2b$10$BUL4pBUoL9EHkxngI9r7FOdy/vfwWHZ7JWejo3WNRESZAbLKN0yfO",
     "perfil": "profissional_ti",
     "favoritos": [
@@ -33,34 +33,34 @@
   },
   {
     "id": 4,
-    "nome": "ju",
-    "email": "JUJU@gmail.com",
+    "nome": "Juliana",
+    "email": "juju@gmail.com",
     "senha": "$2b$10$eAx2TLnobo80d0ZpanNo/uoVAFfY3I8NCCIZgb1XEwmTACPu/2vzy",
-    "perfil": "administrador",
+    "perfil": "aluno",
     "favoritos": [
       1
     ]
   },
   {
     "id": 5,
-    "nome": "eusou",
-    "email": "eusou@gmail.com",
+    "nome": "João",
+    "email": "joao@gmail.com",
     "senha": "$2b$10$OpTWOxzH3FXopxjcjeJNk.ee3NG39COTC3F2ZX.W0M1FD/A4Voouy",
-    "perfil": "administrador"
+    "perfil": "aluno"
   },
   {
     "id": 6,
-    "nome": "teste",
+    "nome": "Lais",
     "email": "lala@gmail.com",
     "senha": "$2b$10$Apa/gzfdnDd5u3yJhrRd/O71LnreSDmvu6rx1A7RsjM2vWsbuAFAC",
-    "perfil": "administrador"
+    "perfil": "aluno"
   },
   {
     "id": 7,
-    "nome": "oie",
-    "email": "oie@gmail.com",
+    "nome": "Oliver",
+    "email": "ollie@gmail.com",
     "senha": "$2b$10$NxOlIjNb2M6fIMRJ2RehYuYcy6bj3OMR5GlqDFLGxcj/3p5rrMbt2",
-    "perfil": "professor",
+    "perfil": "aluno",
     "favoritos": [
       83,
       84,
@@ -114,15 +114,17 @@
     "senha": "$2b$10$PbYv8/YNeLm4pUaCCj54XeZYb0m4AcRvCNWKMo5KoeKNQkUahjzf2",
     "perfil": "profissional_ti",
     "favoritos": [
-      1,
-      2,
-      152
+      116,
+      120,
+      114,
+      121,
+      125
     ]
   },
   {
     "id": 12,
     "nome": "Sumério",
-    "email": "123@gmail.com",
+    "email": "su@gmail.com",
     "senha": "$2b$10$6apTSdcRH2rQvfugrZUE0e9CFFYHNjPSjbORWtT.E/yenJ7F7g9pG",
     "perfil": "aluno",
     "favoritos": [
