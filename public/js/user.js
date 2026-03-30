@@ -53,7 +53,7 @@ async function carregarDadosIniciais() {
         document.getElementById("menu-admin").hidden = false;
     } 
     
-    if (usuarioLogado.perfil === 'profissional_ti' || usuarioLogado.perfil === 'administrador') {
+    if (usuarioLogado.perfil === 'profissional_ti') {
         const menuTi = document.getElementById("menu-ti");
         if (menuTi) menuTi.hidden = false;
     }
