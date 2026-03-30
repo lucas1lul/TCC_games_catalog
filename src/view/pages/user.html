@@ -5,51 +5,47 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Minha Conta | IFF</title>
-
   <link rel="stylesheet" href="/css/styles.css">
   <link rel="stylesheet" href="/css/navbar.css">
   <link rel="stylesheet" href="/css/user.css">
 </head>
 
 <body>
-  <a href="#conteudo-principal" class="sr-only skip-link">Saltar para o conteúdo principal</a>
+  <a href="#conteudo-principal" class="skip-link">Saltar para o conteúdo principal</a>
 
   <div id="navbar-placeholder"></div>
 
   <main id="conteudo-principal" class="dashboard-container" tabindex="-1">
 
-    <!-- SIDEBAR -->
     <aside class="sidebar">
       <nav class="sidebar-nav">
-
-        <a href="#" class="nav-btn active" onclick="showSection('section-perfil', this)">
+        <a href="#section-perfil" class="nav-btn active" onclick="showSection('section-perfil', this); return false;">
           👤 Meus Dados
         </a>
 
         <div id="menu-admin" hidden>
           <p class="menu-label">Administração</p>
-
-          <a href="#" class="nav-btn" onclick="showSection('section-cadastro-jogo', this)">
+          <a href="#section-cadastro-jogo" class="nav-btn"
+            onclick="showSection('section-cadastro-jogo', this); return false;">
             🎮 Cadastrar Jogo
           </a>
-
-          <a href="#" class="nav-btn" onclick="showSection('section-curadoria', this)">
+          <a href="#section-curadoria" class="nav-btn" onclick="showSection('section-curadoria', this); return false;">
             📋 Analisar Sugestões
           </a>
-
-          <a href="#" class="nav-btn" onclick="showSection('section-gerenciar-usuarios', this)">
+          <a href="#section-gerenciar-usuarios" class="nav-btn"
+            onclick="showSection('section-gerenciar-usuarios', this); return false;">
             👥 Gerenciar Usuários
           </a>
         </div>
 
         <div id="menu-ti" hidden>
           <p class="menu-label">Colaboração</p>
-
-          <a href="#" class="nav-btn" onclick="showSection('section-sugerir-jogo', this)">
+          <a href="#section-sugerir-jogo" class="nav-btn"
+            onclick="showSection('section-sugerir-jogo', this); return false;">
             💡 Sugerir Jogo
           </a>
-
-          <a href="#" class="nav-btn" onclick="showSection('section-meus-envios', this)">
+          <a href="#section-meus-envios" class="nav-btn"
+            onclick="showSection('section-meus-envios', this); return false;">
             📑 Meus Envios
           </a>
         </div>
@@ -57,114 +53,103 @@
         <div class="nav-footer">
           <a href="/" class="nav-btn nav-home">🏠 Início</a>
         </div>
-
       </nav>
     </aside>
 
-    <!-- CONTEÚDO -->
     <div class="account-page">
-
-      <div id="status" class="status"></div>
-
+      <div id="status" class="status" aria-live="polite"></div>
       <h1 class="section-title">Painel da Minha Conta</h1>
 
-      <!-- PERFIL -->
       <section id="section-perfil" class="section-content">
         <div class="account-card">
           <h2>Dados da Conta</h2>
-
           <form id="formDadosBasicos" class="account-form">
             <div class="form-row">
-              <label>Nome</label>
+              <label for="nome">Nome</label>
               <input id="nome" type="text" required />
             </div>
-
             <div class="form-row">
-              <label>Email</label>
+              <label for="email">Email</label>
               <input id="email" type="email" required />
             </div>
-
             <div class="form-actions">
-              <button class="btn btn-primary">Atualizar Perfil</button>
+              <button type="submit" class="btn btn-primary">Atualizar Perfil</button>
             </div>
           </form>
         </div>
 
         <div class="account-card security-card">
           <h2>Segurança</h2>
-
           <form id="formSenha" class="account-form">
             <div class="form-row">
-              <label>Senha Atual</label>
+              <label for="senhaAtual">Senha Atual</label>
               <input id="senhaAtual" type="password" required />
             </div>
-
             <div class="form-row">
-              <label>Nova Senha</label>
+              <label for="novaSenha">Nova Senha</label>
               <input id="novaSenha" type="password" required />
             </div>
-
             <div class="form-row">
-              <label>Confirmar</label>
+              <label for="confirmarNovaSenha">Confirmar Nova Senha</label>
               <input id="confirmarNovaSenha" type="password" required />
             </div>
-
             <div class="form-actions">
-              <button class="btn btn-primary">Alterar Senha</button>
+              <button type="submit" class="btn btn-primary">Alterar Senha</button>
             </div>
           </form>
         </div>
       </section>
 
-      <!-- GERENCIAR USUÁRIOS -->
       <section id="section-gerenciar-usuarios" class="account-card section-content" hidden>
-        <h2>Gerenciar Usuários</h2>
-
-        <table class="admin-table">
-          <tbody id="tabela-usuarios-corpo"></tbody>
-        </table>
+        <h2 class="section-title">Gerenciar Usuários</h2>
+        <div class="table-container">
+          <table class="admin-table">
+            <caption>Lista de usuários cadastrados no sistema</caption>
+            <thead>
+              <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Nome</th>
+                <th scope="col">Email</th>
+                <th scope="col">Perfil</th>
+                <th scope="col">Ações</th>
+              </tr>
+            </thead>
+            <tbody id="tabela-usuarios-corpo">
+              <tr>
+                <td colspan="5" style="text-align: center;">Carregando dados dos usuários...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </section>
 
-      <!-- CADASTRAR JOGO -->
-      <<section id="section-cadastro-jogo" class="account-card section-content" hidden>
-
+      <section id="section-cadastro-jogo" class="account-card section-content" hidden>
         <h2 class="section-title">Cadastrar Novo Jogo</h2>
-        <p class="account-subtitle">Preencha os dados conforme a taxonomia do catálogo.</p>
-
         <form id="formCadastroJogo" class="account-form">
-
-          <!-- ========================= -->
-          <!-- IDENTIFICAÇÃO -->
-          <!-- ========================= -->
           <div class="form-section">
             <h3 class="form-section-title">Identificação</h3>
-
             <div class="form-row">
               <label for="NOME">Título do Jogo *</label>
               <input id="NOME" type="text" required />
             </div>
-
             <div class="form-row">
               <label for="LINK">Link de Acesso *</label>
               <input id="LINK" type="url" required />
             </div>
-
             <div class="form-grid-3">
               <div class="form-row">
-                <label for="LINKIMAGEM">Imagem (URL)</label>
+                <label for="LINKIMAGEM">Caminho da Imagem</label>
                 <input id="LINKIMAGEM" type="text" />
               </div>
-
               <div class="form-row">
                 <label for="IDIOMA">Idioma</label>
                 <input id="IDIOMA" type="text" />
               </div>
-
               <div class="form-row">
                 <label for="LICENSA">Licença</label>
                 <select id="LICENSA">
-                  <option value="Freeware">Freeware / Free to Play</option>
-                  <option value="Proprietaria">Proprietária / Comercial</option>
+                  <option value="Freeware">Freeware</option>
+                  <option value="Proprietaria">Proprietária</option>
                   <option value="OpenSource">Open Source</option>
                   <option value="BSD">BSD</option>
                   <option value="Apache">Apache</option>
@@ -176,33 +161,24 @@
             </div>
           </div>
 
-          <!-- ========================= -->
-          <!-- ÁREA DE APLICAÇÃO -->
-          <!-- ========================= -->
           <div class="form-section">
             <h3 class="form-section-title">Área de Aplicação</h3>
-
             <div class="multi-select-container">
-
-              <!-- GÊNEROS -->
               <div class="select-group">
                 <h4>Gêneros</h4>
-                <div id="lista-generos" class="checkbox-grid">
-                  <label><input type="checkbox" name="GENERO" value="1"> Ação</label>
-                  <label><input type="checkbox" name="GENERO" value="2"> Aventura</label>
+                <div class="checkbox-grid">
+                  <label><input type="checkbox" name="GENERO" value="1"> Quiz</label>
+                  <label><input type="checkbox" name="GENERO" value="2"> Puzzle</label>
                   <label><input type="checkbox" name="GENERO" value="3"> Estratégia</label>
-                  <label><input type="checkbox" name="GENERO" value="4"> Puzzle</label>
-                  <label><input type="checkbox" name="GENERO" value="5"> Quiz</label>
-                  <label><input type="checkbox" name="GENERO" value="6"> RPG</label>
-                  <label><input type="checkbox" name="GENERO" value="7"> Simulação</label>
-                  <label><input type="checkbox" name="GENERO" value="8"> Competição</label>
+                  <label><input type="checkbox" name="GENERO" value="4"> Simulação</label>
+                  <label><input type="checkbox" name="GENERO" value="5"> Ação</label>
+                  <label><input type="checkbox" name="GENERO" value="6"> Aventura</label>
+                  <label><input type="checkbox" name="GENERO" value="9"> RPG</label>
                 </div>
               </div>
-
-              <!-- COMPONENTES -->
               <div class="select-group">
                 <h4>Componentes Curriculares</h4>
-                <div id="lista-componentes" class="checkbox-grid">
+                <div class="checkbox-grid">
                   <label><input type="checkbox" name="COMPONENTE" value="1"> Matemática</label>
                   <label><input type="checkbox" name="COMPONENTE" value="2"> Lógica</label>
                   <label><input type="checkbox" name="COMPONENTE" value="3"> Programação</label>
@@ -210,28 +186,21 @@
                   <label><input type="checkbox" name="COMPONENTE" value="5"> Eletrônica</label>
                 </div>
               </div>
-
             </div>
 
-            <!-- HABILIDADES -->
-            <div class="form-row" style="margin-top:20px;">
+            <div class="form-row" style="margin-top: 20px;">
               <label for="buscaHabilidade">Habilidades (DCN)</label>
-
               <div class="search-container">
-                <input type="text" id="buscaHabilidade" placeholder="Buscar habilidade..." />
+                <input type="text" id="buscaHabilidade" placeholder="Buscar habilidade..." aria-autocomplete="list"
+                  aria-controls="resultadosBusca" />
                 <div id="resultadosBusca" class="dropdown-results"></div>
               </div>
-
               <div id="habilidadesSelecionadas" class="tags-container"></div>
             </div>
           </div>
 
-          <!-- ========================= -->
-          <!-- INTERAÇÃO -->
-          <!-- ========================= -->
           <div class="form-section">
             <h3 class="form-section-title">Interação</h3>
-
             <div class="form-row">
               <label for="INTERACAO">Tipo de Interação</label>
               <select id="INTERACAO">
@@ -242,65 +211,120 @@
             </div>
           </div>
 
-          <!-- ========================= -->
-          <!-- INFRAESTRUTURA -->
-          <!-- ========================= -->
           <div class="form-section">
             <h3 class="form-section-title">Infraestrutura</h3>
-
-            <div class="select-group">
-              <h4>Plataformas</h4>
-              <div id="lista-plataformas" class="checkbox-grid">
-                <label><input type="checkbox" name="PLATAFORMA" value="1"> Windows</label>
-                <label><input type="checkbox" name="PLATAFORMA" value="2"> Android</label>
-                <label><input type="checkbox" name="PLATAFORMA" value="3"> iOS</label>
-                <label><input type="checkbox" name="PLATAFORMA" value="4"> Linux</label>
-                <label><input type="checkbox" name="PLATAFORMA" value="5"> macOS</label>
-              </div>
+            <div class="checkbox-grid">
+              <label><input type="checkbox" name="PLATAFORMA" value="1"> Windows</label>
+              <label><input type="checkbox" name="PLATAFORMA" value="2"> Android</label>
+              <label><input type="checkbox" name="PLATAFORMA" value="3"> iOS</label>
+              <label><input type="checkbox" name="PLATAFORMA" value="4"> Linux</label>
+              <label><input type="checkbox" name="PLATAFORMA" value="5"> macOS</label>
             </div>
           </div>
 
-          <!-- ========================= -->
-          <!-- SUBMIT -->
-          <!-- ========================= -->
           <div class="form-actions">
-            <button type="submit" class="btn btn-primary">
-              Finalizar Cadastro
-            </button>
+            <button type="submit" class="btn btn-primary">Cadastrar Jogo</button>
           </div>
-
         </form>
-        </section>
+      </section>
 
-        <!-- CURADORIA -->
-        <section id="section-curadoria" class="account-card section-content" hidden>
-          <table>
-            <tbody id="tabela-sugestoes"></tbody>
+      <section id="section-curadoria" class="account-card section-content" hidden>
+        <h2 class="section-title">Sugestões Pendentes</h2>
+        <div class="table-container">
+          <table class="admin-table">
+            <caption>Sugestões enviadas por colaboradores</caption>
+            <thead>
+              <tr>
+                <th scope="col">Jogo</th>
+                <th scope="col">Link</th>
+                <th scope="col">Ações</th>
+              </tr>
+            </thead>
+            <tbody id="tabela-sugestoes">
+              <tr>
+                <td colspan="3" style="text-align: center;">Buscando sugestões...</td>
+              </tr>
+            </tbody>
           </table>
-        </section>
+        </div>
+      </section>
 
-        <!-- SUGERIR -->
-        <section id="section-sugerir-jogo" class="account-card section-content" hidden>
-          <form id="form-sugerir-jogo">
-            <input id="sug_nome" required />
-            <input id="sug_link" required />
-            <button class="btn btn-primary">Enviar</button>
-          </form>
-        </section>
+      <section id="section-sugerir-jogo" class="account-card section-content" hidden>
+        <h2 class="section-title">Sugerir Novo Jogo</h2>
+        <form id="form-sugerir-jogo" class="account-form">
+          <div class="form-row">
+            <label for="sug_nome">Nome do Jogo</label>
+            <input id="sug_nome" type="text" required />
+          </div>
+          <div class="form-row">
+            <label for="sug_link">Link</label>
+            <input id="sug_link" type="url" required />
+          </div>
+          <div class="form-row">
+            <label for="sug_justificativa">Por que este jogo deve estar no catálogo?</label>
+            <textarea id="sug_justificativa" rows="4" required></textarea>
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Enviar Sugestão</button>
+          </div>
+        </form>
+      </section>
 
-        <!-- MEUS ENVIOS -->
-        <section id="section-meus-envios" class="account-card section-content" hidden>
-          <table>
-            <tbody id="tabela-meus-envios"></tbody>
+      <section id="section-meus-envios" class="account-card section-content" hidden>
+        <h2 class="section-title">Meus Envios</h2>
+        <div class="table-container">
+          <table class="admin-table">
+            <caption>Histórico de suas colaborações</caption>
+            <thead>
+              <tr>
+                <th scope="col">Jogo</th>
+                <th scope="col">Data</th>
+                <th scope="col">Status</th>
+              </tr>
+            </thead>
+            <tbody id="tabela-meus-envios">
+              <tr>
+                <td colspan="3" style="text-align: center;">Carregando histórico...</td>
+              </tr>
+            </tbody>
           </table>
-        </section>
-
+        </div>
+      </section>
     </div>
   </main>
 
+  <div id="modal-editar-usuario" class="modal" hidden role="dialog">
+    <div class="modal-content">
+      <h3>Editar Usuário</h3>
+      <form id="form-editar-usuario">
+        <input type="hidden" id="edit-user-id">
+        <div class="form-row">
+          <label for="edit-user-nome">Nome</label>
+          <input id="edit-user-nome" type="text" required>
+        </div>
+        <div class="form-row">
+          <label for="edit-user-email">Email</label>
+          <input id="edit-user-email" type="email" required>
+        </div>
+        <div class="form-row">
+          <label for="edit-user-perfil">Perfil</label>
+          <select id="edit-user-perfil">
+            <option value="aluno">Aluno</option>
+            <option value="professor">Professor</option>
+            <option value="profissional_ti">Profissional de TI</option>
+            <option value="administrador">Administrador</option>
+          </select>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary" onclick="fecharModalUser()">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <script src="/js/navbar.js"></script>
   <script src="/js/user.js"></script>
-
 </body>
 
 </html>

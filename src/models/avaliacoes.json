@@ -134,5 +134,35 @@
     "comentario": "123",
     "createdAt": "2026-03-24T19:50:56.952Z",
     "dataCriacao": "2026-03-24T19:50:56.953Z"
+  },
+  {
+    "id": "9c5bfd11-bd63-41d3-a05e-9619b0c3d876",
+    "jogoId": 85,
+    "usuarioId": 8,
+    "usuarioNome": "euprof",
+    "nota": 5,
+    "comentario": "Excelente conteúdo!",
+    "createdAt": "2026-03-30T17:29:58.500Z",
+    "dataCriacao": "2026-03-30T17:29:58.501Z"
+  },
+  {
+    "id": "fb0777b4-9532-40ab-a0de-01bfea0a7dfb",
+    "jogoId": 85,
+    "usuarioId": 8,
+    "usuarioNome": "euprof",
+    "nota": 4,
+    "comentario": "Bom jogo!",
+    "createdAt": "2026-03-30T17:31:31.793Z",
+    "dataCriacao": "2026-03-30T17:31:31.794Z"
+  },
+  {
+    "id": "d17d39c4-b819-47c7-9a53-e0ee0ef16bb6",
+    "jogoId": 116,
+    "usuarioId": 8,
+    "usuarioNome": "euprof",
+    "nota": 5,
+    "comentario": "Excelente!",
+    "createdAt": "2026-03-30T17:35:14.436Z",
+    "dataCriacao": "2026-03-30T17:35:14.437Z"
   }
 ]

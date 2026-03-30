@@ -74,9 +74,8 @@
     "senha": "$2b$10$09x9FY9f3WXLPfmZm5ER8uvYq0oHIHvKAL3cBEzjcHtn4NG5Zq9dK",
     "perfil": "professor",
     "favoritos": [
-      3,
-      5,
-      1
+      85,
+      116
     ]
   },
   {
@@ -152,7 +151,7 @@
   {
     "id": 15,
     "nome": "123",
-    "email": "12342@gmail.com",
+    "email": "1234@gmail.com",
     "senha": "$2b$10$MRH0fdUh9y9..VPrsbY7TO56sj3D9PAibeZC5G4X9GNfVK0khOcr2",
     "perfil": "aluno",
     "favoritos": []

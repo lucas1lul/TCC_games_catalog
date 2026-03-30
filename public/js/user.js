@@ -3,6 +3,14 @@ let habilidadesSelecionadas = [];
 
 // --- UTILITÁRIOS ---
 
+function debounce(func, delay) {
+    let timer;
+    return (...args) => {
+        clearTimeout(timer);
+        timer = setTimeout(() => func.apply(this, args), delay);
+    };
+}
+
 function setStatus(msg, type = "info") {
     const el = document.getElementById("status");
     if (!el) return;
@@ -37,13 +45,17 @@ async function carregarDadosIniciais() {
         return;
     }
 
-    document.getElementById("nome") && (document.getElementById("nome").value = usuarioLogado.nome || "");
-    document.getElementById("email") && (document.getElementById("email").value = usuarioLogado.email || "");
+    if (document.getElementById("nome")) document.getElementById("nome").value = usuarioLogado.nome || "";
+    if (document.getElementById("email")) document.getElementById("email").value = usuarioLogado.email || "";
 
+    // Mostra menus baseados no perfil
     if (usuarioLogado.perfil === 'administrador') {
         document.getElementById("menu-admin").hidden = false;
-    } else if (usuarioLogado.perfil === 'profissional_ti') {
-        document.getElementById("menu-ti").hidden = false;
+    } 
+    
+    if (usuarioLogado.perfil === 'profissional_ti' || usuarioLogado.perfil === 'administrador') {
+        const menuTi = document.getElementById("menu-ti");
+        if (menuTi) menuTi.hidden = false;
     }
 }
 
@@ -55,7 +67,8 @@ function configurarBuscaHabilidades() {
 
     if (!input) return;
 
-    input.addEventListener('input', async (e) => {
+    // Aplicação de Debounce para performance e economia de API
+    input.addEventListener('input', debounce(async (e) => {
         const termo = e.target.value;
 
         if (termo.length < 2) {
@@ -68,10 +81,12 @@ function configurarBuscaHabilidades() {
             const dados = await res.json();
 
             lista.innerHTML = '';
+            lista.setAttribute('role', 'listbox');
 
             dados.forEach(h => {
                 const div = document.createElement('div');
                 div.className = 'result-item';
+                div.setAttribute('role', 'option');
                 div.textContent = `${h.CODIGO} - ${h.NOME}`;
                 div.onclick = () => adicionarTagHabilidade(h);
                 lista.appendChild(div);
@@ -79,9 +94,9 @@ function configurarBuscaHabilidades() {
 
             lista.style.display = dados.length ? 'block' : 'none';
         } catch (err) {
-            console.error(err);
+            console.error("Erro na busca:", err);
         }
-    });
+    }, 300));
 }
 
 function adicionarTagHabilidade(hab) {
@@ -109,7 +124,7 @@ function renderizarTags() {
         const span = document.createElement('span');
         span.className = 'tag';
         span.innerHTML = `${h.CODIGO} 
-            <span class="remove-btn" onclick="removerTagHabilidade(${h.ID})">&times;</span>`;
+            <span class="remove-btn" role="button" aria-label="Remover" onclick="removerTagHabilidade(${h.ID})">&times;</span>`;
         container.appendChild(span);
     });
 }
@@ -117,14 +132,13 @@ function renderizarTags() {
 // --- NAVEGAÇÃO ---
 
 window.showSection = function (sectionId, btn) {
-
     document.querySelectorAll('.section-content').forEach(s => s.hidden = true);
 
     const target = document.getElementById(sectionId);
     if (target) target.hidden = false;
 
     document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-    btn && btn.classList.add('active');
+    if (btn) btn.classList.add('active');
 
     if (sectionId === 'section-curadoria') carregarSugestoes();
     if (sectionId === 'section-meus-envios') carregarMeusEnvios();
@@ -160,21 +174,21 @@ async function cadastrarJogo(e) {
             body: JSON.stringify(jogo)
         });
 
-        if (!res.ok) throw new Error();
+        if (!res.ok) throw new Error("Falha no servidor");
 
         if (window.idSugestaoEmFoco) {
             await fetch(`/api/games/suggest/${window.idSugestaoEmFoco}/approve`, { method: 'PUT' });
         }
 
-        alert("Cadastro realizado!");
+        alert("Cadastro realizado com sucesso!");
         location.reload();
 
-    } catch {
-        alert("Erro ao cadastrar jogo.");
+    } catch (err) {
+        alert("Erro ao cadastrar jogo: " + err.message);
     }
 }
 
-// --- PERFIL ---
+// --- PERFIL E CONFIGURAÇÕES ---
 
 async function atualizarDadosBasicos(e) {
     e.preventDefault();
@@ -192,11 +206,10 @@ async function atualizarDadosBasicos(e) {
         });
 
         if (!res.ok) throw new Error();
-
-        setStatus("Atualizado!", "success");
+        setStatus("Dados atualizados!", "success");
 
     } catch {
-        setStatus("Erro ao atualizar", "error");
+        setStatus("Erro ao atualizar dados", "error");
     }
 }
 
@@ -208,7 +221,7 @@ async function atualizarSenha(e) {
     const confirmar = document.getElementById("confirmarNovaSenha").value;
 
     if (novaSenha !== confirmar) {
-        setStatus("Senhas não coincidem", "error");
+        setStatus("As novas senhas não coincidem", "error");
         return;
     }
 
@@ -219,13 +232,13 @@ async function atualizarSenha(e) {
             body: JSON.stringify({ senhaAtual, novaSenha })
         });
 
-        if (!res.ok) throw new Error();
+        if (!res.ok) throw new Error("Senha atual incorreta");
 
-        setStatus("Senha atualizada!", "success");
+        setStatus("Senha alterada com sucesso!", "success");
         e.target.reset();
 
-    } catch {
-        setStatus("Erro ao atualizar senha", "error");
+    } catch (err) {
+        setStatus(err.message, "error");
     }
 }
 
@@ -240,14 +253,18 @@ async function enviarSugestao(e) {
         justificativa: document.getElementById("sug_justificativa").value
     };
 
-    await fetch('/api/suggest', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(dados)
-    });
-
-    alert("Enviado!");
-    e.target.reset();
+    try {
+        const res = await fetch('/api/suggest', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(dados)
+        });
+        if (!res.ok) throw new Error();
+        alert("Sugestão enviada para análise!");
+        e.target.reset();
+    } catch {
+        alert("Erro ao enviar sugestão.");
+    }
 }
 
 async function carregarSugestoes() {
@@ -259,14 +276,14 @@ async function carregarSugestoes() {
         const dados = await res.json();
 
         if (!dados.length) {
-            tabela.innerHTML = `<tr><td colspan="3">Nenhuma sugestão</td></tr>`;
+            tabela.innerHTML = `<tr><td colspan="3" style="text-align:center">Nenhuma sugestão pendente</td></tr>`;
             return;
         }
 
         tabela.innerHTML = dados.map(s => `
             <tr>
                 <td>${s.NOME_JOGO}</td>
-                <td><a href="${s.LINK_ACESSO}" target="_blank">Abrir</a></td>
+                <td><a href="${s.LINK_ACESSO}" target="_blank" rel="noopener">Abrir Link</a></td>
                 <td>
                     <button class="btn btn-primary"
                         onclick="prepararAprovacao('${s.ID_SUGESTAO}','${s.NOME_JOGO}','${s.LINK_ACESSO}')">
@@ -275,9 +292,8 @@ async function carregarSugestoes() {
                 </td>
             </tr>
         `).join('');
-
     } catch {
-        tabela.innerHTML = `<tr><td colspan="3">Erro ao carregar</td></tr>`;
+        tabela.innerHTML = `<tr><td colspan="3">Erro ao carregar sugestões</td></tr>`;
     }
 }
 
@@ -288,8 +304,6 @@ window.prepararAprovacao = function (id, nome, link) {
     window.idSugestaoEmFoco = id;
 };
 
-// --- MEUS ENVIOS (NOVO) ---
-
 async function carregarMeusEnvios() {
     const tabela = document.getElementById("tabela-meus-envios");
     if (!tabela) return;
@@ -299,49 +313,50 @@ async function carregarMeusEnvios() {
         const dados = await res.json();
 
         if (!dados.length) {
-            tabela.innerHTML = `<tr><td colspan="3">Nenhum envio</td></tr>`;
+            tabela.innerHTML = `<tr><td colspan="3" style="text-align:center">Você ainda não enviou sugestões</td></tr>`;
             return;
         }
 
         tabela.innerHTML = dados.map(s => `
             <tr>
                 <td>${s.nome}</td>
-                <td>${new Date(s.data_envio).toLocaleDateString()}</td>
-                <td>${s.status}</td>
+                <td>${new Date(s.data_envio).toLocaleDateString('pt-BR')}</td>
+                <td><span class="status-badge">${s.status}</span></td>
             </tr>
         `).join('');
-
     } catch {
-        tabela.innerHTML = `<tr><td colspan="3">Erro</td></tr>`;
+        tabela.innerHTML = `<tr><td colspan="3">Erro ao carregar histórico</td></tr>`;
     }
 }
 
-// --- USUÁRIOS ---
+// --- ADMINISTRAÇÃO DE USUÁRIOS ---
 
 async function carregarUsuariosAdmin() {
     const tabela = document.getElementById('tabela-usuarios-corpo');
     if (!tabela) return;
 
-    const res = await fetch('/api/admin/users');
-    const usuarios = await res.json();
+    try {
+        const res = await fetch('/api/admin/users');
+        const usuarios = await res.json();
 
-    tabela.innerHTML = usuarios.map(u => `
-        <tr>
-            <td>${u.id}</td>
-            <td>${u.nome}</td>
-            <td>${u.email}</td>
-            <td>${u.perfil}</td>
-            <td>
-                <button class="btn btn-primary"
-                    onclick='abrirModalEditarUsuario(${JSON.stringify(u)})'>
-                    Editar
-                </button>
-            </td>
-        </tr>
-    `).join('');
+        tabela.innerHTML = usuarios.map(u => `
+            <tr>
+                <td>${u.id}</td>
+                <td>${u.nome}</td>
+                <td>${u.email}</td>
+                <td>${u.perfil}</td>
+                <td>
+                    <button class="btn btn-primary"
+                        onclick='abrirModalEditarUsuario(${JSON.stringify(u)})'>
+                        Editar
+                    </button>
+                </td>
+            </tr>
+        `).join('');
+    } catch {
+        tabela.innerHTML = `<tr><td colspan="5">Erro ao carregar usuários</td></tr>`;
+    }
 }
-
-// --- MODAL ---
 
 window.abrirModalEditarUsuario = function (user) {
     const modal = document.getElementById('modal-editar-usuario');
@@ -353,18 +368,50 @@ window.abrirModalEditarUsuario = function (user) {
     document.getElementById('edit-user-perfil').value = user.perfil;
 };
 
+// SOLUÇÃO DO BUG: Função para salvar a edição do administrador
+async function atualizarUsuarioAdmin(e) {
+    e.preventDefault();
+
+    const id = document.getElementById('edit-user-id').value;
+    const payload = {
+        nome: document.getElementById('edit-user-nome').value,
+        email: document.getElementById('edit-user-email').value,
+        perfil: document.getElementById('edit-user-perfil').value
+    };
+
+    try {
+        const res = await fetch(`/api/admin/users/${id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+
+        if (!res.ok) throw new Error();
+
+        fecharModalUser();
+        carregarUsuariosAdmin(); // Atualiza a tabela sem recarregar a página
+        alert("Usuário atualizado com sucesso!");
+    } catch {
+        alert("Erro ao atualizar usuário.");
+    }
+}
+
 window.fecharModalUser = function () {
     document.getElementById('modal-editar-usuario').hidden = true;
 };
 
-// --- INIT ---
+// --- INICIALIZAÇÃO ---
 
 document.addEventListener("DOMContentLoaded", () => {
     carregarDadosIniciais();
     configurarBuscaHabilidades();
 
+    // Listeners de Formulários
     document.getElementById("formDadosBasicos")?.addEventListener("submit", atualizarDadosBasicos);
     document.getElementById("formSenha")?.addEventListener("submit", atualizarSenha);
     document.getElementById("formCadastroJogo")?.addEventListener("submit", cadastrarJogo);
     document.getElementById("form-sugerir-jogo")?.addEventListener("submit", enviarSugestao);
+    
+    // Fix do bug de edição: Adicionando o listener no formulário do modal
+    document.getElementById("form-editar-usuario")?.addEventListener("submit", atualizarUsuarioAdmin);
 });
