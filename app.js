@@ -12,21 +12,18 @@ const app = express();
 
 const PAGES_DIR = path.join(__dirname, 'src', 'view', 'pages');
 
-/* necessário para sessões funcionarem bem em alguns ambientes */
 app.set("trust proxy", 1);
 
 /* CORS */
 app.use(cors({
-  origin: "http://localhost:3002", // Ou a porta que você digita na URL
+  origin: "http://localhost:3002",
   credentials: true
 }));
 
-/* body parser */
 app.use(express.json());
 
-/* sessão */
 app.use(session({
-  name: "connect.sid", // volta para o padrão
+  name: "connect.sid",
   secret: "segredo-super-seguro-aqui",
   resave: false,
   saveUninitialized: false,
