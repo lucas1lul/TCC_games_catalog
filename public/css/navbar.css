@@ -130,6 +130,7 @@
 /* Dropdown Menu */
 .dropdown { position: relative; }
 
+/* Mantém a estrutura do container */
 .dropdown-content {
     display: none;
     position: absolute;
@@ -142,22 +143,45 @@
     list-style: none;
     padding: 8px 0;
     border: 1px solid #eee;
+    z-index: 1000;
 }
 
 .dropdown-content.show { display: block; }
 
-.dropdown-content li a, .btn-logout-item {
+/* ESTA É A PARTE IMPORTANTE: 
+   Mesclamos os estilos para que o <a> e o <button> sejam idênticos 
+*/
+.dropdown-content li a, 
+.btn-logout-item {
     padding: 12px 20px;
     text-decoration: none;
     display: block;
+    width: 100%;           /* Ocupa toda a largura */
     color: #333;
     font-size: 0.9rem;
     transition: 0.2s;
+    text-align: left;      /* Alinha o texto à esquerda */
+    
+    /* Reset total do botão */
+    background: none;      /* Remove o fundo cinza */
+    border: none;          /* Remove as bordas 3D */
+    cursor: pointer;       /* Coloca a "mãozinha" do mouse */
+    font-family: inherit;  /* Usa a mesma fonte do site */
+    outline: none;
 }
 
-.dropdown-content li a:hover, .btn-logout-item:hover {
+/* Efeito Hover unificado */
+.dropdown-content li a:hover, 
+.btn-logout-item:hover {
     background-color: #f8f8f8;
     color: var(--iff-green);
+}
+
+/* Estilo para a linha divisória */
+.divider {
+    height: 1px;
+    background-color: #eee;
+    margin: 8px 0;
 }
 
 .menu-item-profile {

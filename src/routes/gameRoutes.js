@@ -69,4 +69,10 @@ router.delete(
   gameController.deleteGame
 );
 
+router.patch('/games/suggestion/:id/status', 
+    authMiddleware.isAuthenticated,
+    authMiddleware.authorizeRoles("administrador"), 
+    gameController.updateGameStatus
+);
+
 module.exports = router;

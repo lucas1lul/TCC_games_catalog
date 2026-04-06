@@ -1,0 +1,92 @@
+:root {
+    --iff-green: #32a041;
+    --iff-dark-green: #257a31;
+    --text-dark: #333;
+    --bg-light: #f4f7f6;
+}
+
+.intro-main {
+    padding-top: 80px; /* Evita ficar embaixo da navbar fixa */
+}
+
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Hero */
+.intro-hero {
+    background: linear-gradient(135deg, var(--iff-green) 0%, var(--iff-dark-green) 100%);
+    color: white;
+    padding: 60px 0;
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.intro-hero h1 { font-size: 2.8rem; margin-bottom: 10px; }
+.intro-hero .subtitle { font-size: 1.2rem; opacity: 0.9; font-weight: 300; }
+
+/* Content Grid */
+.intro-content {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 40px;
+    align-items: center;
+    margin-bottom: 60px;
+}
+
+.text-block h2 { color: var(--iff-green); margin-bottom: 20px; }
+.text-block p { margin-bottom: 15px; line-height: 1.8; color: #555; }
+
+.image-showcase img {
+    width: 100%;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+/* ODS Section */
+.ods-section {
+    background-color: #e9f5eb;
+    padding: 40px 0;
+    margin-bottom: 60px;
+}
+
+.ods-grid {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.ods-icon img { width: 100px; height: 100px; }
+.ods-text h3 { color: #d32f2f; margin-bottom: 10px; } /* Cor oficial da ODS 4 */
+
+/* Team */
+.team-section { text-align: center; margin-bottom: 80px; }
+.team-context { color: #888; margin-top: -10px; margin-bottom: 40px; font-style: italic; }
+
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+.team-card {
+    background: white;
+    padding: 25px;
+    border-radius: 8px;
+    border-left: 5px solid var(--iff-green);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    transition: transform 0.3s;
+    text-align: left;
+}
+
+.team-card:hover { transform: translateY(-5px); }
+.member-info strong { display: block; color: var(--text-dark); font-size: 1.05rem; }
+.member-info span { color: var(--iff-green); font-size: 0.9rem; font-weight: bold; }
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .intro-content { grid-template-columns: 1fr; }
+    .ods-grid { flex-direction: column; text-align: center; }
+}

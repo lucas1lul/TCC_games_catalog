@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="/css/styles.css">
   <link rel="stylesheet" href="/css/navbar.css">
   <link rel="stylesheet" href="/css/user.css">
+  <link rel="stylesheet" href="/css/footer.css">
 </head>
 
 <body>
@@ -31,6 +32,10 @@
           </a>
           <a href="#section-curadoria" class="nav-btn" onclick="showSection('section-curadoria', this); return false;">
             📋 Analisar Sugestões
+          </a>
+          <a href="#section-gerenciar-jogos" class="nav-btn"
+            onclick="showSection('section-gerenciar-jogos', this); return false;">
+            🕹️ Gerenciar Jogos
           </a>
           <a href="#section-gerenciar-usuarios" class="nav-btn"
             onclick="showSection('section-gerenciar-usuarios', this); return false;">
@@ -100,6 +105,35 @@
         </div>
       </section>
 
+      <section id="section-gerenciar-jogos" class="account-card section-content" hidden>
+        <h2 class="section-title">Gerenciar Catálogo de Jogos</h2>
+
+        <div class="form-row" style="margin-bottom: 20px;">
+          <label for="filtro-nome-jogo">Filtrar por nome:</label>
+          <input type="text" id="filtro-nome-jogo" placeholder="Digite o nome do jogo..."
+            onkeyup="filtrarJogosAdmin()" />
+        </div>
+
+        <div class="table-container">
+          <table class="admin-table" id="tabela-admin-jogos">
+            <caption>Lista oficial de Serious Games cadastrados</caption>
+            <thead>
+              <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Nome do Jogo</th>
+                <th scope="col">Gênero / Interação</th>
+                <th scope="col">Ações</th>
+              </tr>
+            </thead>
+            <tbody id="tabela-jogos-corpo">
+              <tr>
+                <td colspan="4" style="text-align: center;">Carregando catálogo de jogos...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
       <section id="section-gerenciar-usuarios" class="account-card section-content" hidden>
         <h2 class="section-title">Gerenciar Usuários</h2>
         <div class="table-container">
@@ -129,11 +163,11 @@
           <div class="form-section">
             <h3 class="form-section-title">Identificação</h3>
             <div class="form-row">
-              <label for="NOME">Título do Jogo *</label>
+              <label for="NOME">Título do Jogo</label>
               <input id="NOME" type="text" required />
             </div>
             <div class="form-row">
-              <label for="LINK">Link de Acesso *</label>
+              <label for="LINK">Link de Acesso</label>
               <input id="LINK" type="url" required />
             </div>
             <div class="form-grid-3">
@@ -325,6 +359,7 @@
 
   <script src="/js/navbar.js"></script>
   <script src="/js/user.js"></script>
-</body>
+  <script src="/js/footer.js"></script>
 
+</body>
 </html>

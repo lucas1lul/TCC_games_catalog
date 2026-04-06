@@ -169,11 +169,20 @@ exports.listPending = async (req, res) => {
 exports.updateGameStatus = async (req, res) => {
     try {
         const { id } = req.params;
-        const { status } = req.body; // 'aprovado' ou 'rejeitado'
-        
+        const { status } = req.body;
+
+        if (!['aprovado', 'rejeitado'].includes(status)) {
+            return res.status(400).json({ error: "Status inválido. Use 'aprovado' ou 'rejeitado'." });
+        }
+
         const response = await gameService.atualizarStatusSugestao(id, status);
-        res.json(response);
+        
+        res.json({ 
+            mensagem: `Sugestão ${status} com sucesso!`,
+            resultado: response 
+        });
     } catch (error) {
+        console.error("Erro ao atualizar status:", error);
         res.status(500).json({ error: "Erro ao atualizar o status da sugestão." });
     }
 };

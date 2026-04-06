@@ -1,0 +1,42 @@
+.main-footer {
+    background-color: #f9f9f9;
+    border-top: 1px solid #eee;
+    padding: 20px 0;
+    margin-top: 40px;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+}
+
+.btn-footer {
+    background-color: transparent;
+    border: 1px solid var(--iff-green, #28a745);
+    color: var(--iff-green, #28a745);
+    padding: 8px 16px;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: 0.3s;
+    font-weight: 500;
+}
+
+.btn-footer:hover {
+    background-color: var(--iff-green, #28a745);
+    color: white;
+}
+
+/* Garante que em telas pequenas o rodapé fique empilhado */
+@media (max-width: 600px) {
+    .footer-container {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+}

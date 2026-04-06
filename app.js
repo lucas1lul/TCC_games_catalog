@@ -71,7 +71,7 @@ app.get('/my_game', (req, res) =>
   res.sendFile(path.join(PAGES_DIR, 'my_games.html'))
 );
 
-app.get('/intro', (req, res) =>
+app.get('/introducao', (req, res) =>
   res.sendFile(path.join(PAGES_DIR, 'introducao.html'))
 );
 

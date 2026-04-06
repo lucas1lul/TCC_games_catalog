@@ -1,5 +1,6 @@
 let usuarioLogado = null;
 let habilidadesSelecionadas = [];
+let todosOsJogosAdmin = [];
 
 // --- UTILITÁRIOS ---
 
@@ -143,6 +144,7 @@ window.showSection = function (sectionId, btn) {
     if (sectionId === 'section-curadoria') carregarSugestoes();
     if (sectionId === 'section-meus-envios') carregarMeusEnvios();
     if (sectionId === 'section-gerenciar-usuarios') carregarUsuariosAdmin();
+    if (sectionId === 'section-gerenciar-jogos') carregarJogosAdmin();
 };
 
 // --- CADASTRO JOGO ---
@@ -289,6 +291,10 @@ async function carregarSugestoes() {
                         onclick="prepararAprovacao('${s.ID_SUGESTAO}','${s.NOME_JOGO}','${s.LINK_ACESSO}')">
                         Aprovar
                     </button>
+                    <button class="btn btn-primary"
+                        onclick="reprovarSugestao('${s.ID_SUGESTAO}')">
+                        Reprovar
+                    </button>
                 </td>
             </tr>
         `).join('');
@@ -304,30 +310,126 @@ window.prepararAprovacao = function (id, nome, link) {
     window.idSugestaoEmFoco = id;
 };
 
+window.reprovarSugestao = async function(id) {
+    if (!confirm("Tem certeza que deseja reprovar esta sugestão? Ela sairá da lista de pendentes.")) return;
+
+    try {
+        const res = await fetch(`/api/games/suggestion/${id}/status`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ status: 'rejeitado' })
+        });
+
+        if (res.ok) {
+            alert("Sugestão reprovada com sucesso! ❌");
+            carregarSugestoes(); // Recarrega a tabela
+        } else {
+            alert("Erro ao reprovar sugestão.");
+        }
+    } catch (err) {
+        console.error("Erro:", err);
+    }
+};
+
 async function carregarMeusEnvios() {
     const tabela = document.getElementById("tabela-meus-envios");
     if (!tabela) return;
 
     try {
-        const res = await fetch('/api/suggest/mine');
+        const res = await fetch('/api/my-suggestions'); 
         const dados = await res.json();
 
-        if (!dados.length) {
+        if (!dados || dados.length === 0) {
             tabela.innerHTML = `<tr><td colspan="3" style="text-align:center">Você ainda não enviou sugestões</td></tr>`;
             return;
         }
 
-        tabela.innerHTML = dados.map(s => `
-            <tr>
-                <td>${s.nome}</td>
-                <td>${new Date(s.data_envio).toLocaleDateString('pt-BR')}</td>
-                <td><span class="status-badge">${s.status}</span></td>
-            </tr>
-        `).join('');
-    } catch {
+        tabela.innerHTML = dados.map(s => {
+            // Tratamento da data para evitar "Invalid Date"
+            const dataFormatada = s.DATA_ENVIO 
+                ? new Date(s.DATA_ENVIO).toLocaleDateString('pt-BR') 
+                : "---";
+
+            return `
+                <tr>
+                    <td>${s.NOME_JOGO || "Sem nome"}</td>
+                    <td>${dataFormatada}</td>
+                    <td>
+                        <span class="status-badge status-${(s.STATUS || 'pendente').toLowerCase()}">
+                            ${s.STATUS || "Pendente"}
+                        </span>
+                    </td>
+                </tr>
+            `;
+        }).join('');
+    } catch (err) {
+        console.error("Erro ao carregar envios:", err);
         tabela.innerHTML = `<tr><td colspan="3">Erro ao carregar histórico</td></tr>`;
     }
 }
+
+// --- ADMINISTRAÇÃO DO CATÁLOGO ---
+
+async function carregarJogosAdmin() {
+    const tbody = document.getElementById("tabela-jogos-corpo");
+    if (!tbody) return;
+
+    try {
+        const res = await fetch('/api/games'); 
+        todosOsJogosAdmin = await res.json();
+        renderizarTabelaJogos(todosOsJogosAdmin);
+    } catch (err) {
+        console.error("Erro ao carregar jogos:", err);
+        tbody.innerHTML = `<tr><td colspan="4" style="text-align: center;">Erro ao carregar os jogos.</td></tr>`;
+    }
+}
+
+function renderizarTabelaJogos(jogos) {
+    const tbody = document.getElementById("tabela-jogos-corpo");
+    if (!tbody) return;
+    
+    if (jogos.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="4" style="text-align: center;">Nenhum jogo encontrado.</td></tr>`;
+        return;
+    }
+
+    tbody.innerHTML = jogos.map(jogo => `
+        <tr>
+            <td>${jogo.IDJOGO}</td>
+            <td><strong>${jogo.NOME}</strong></td>
+            <td>${jogo.INTERACAO || 'N/A'}</td>
+            <td>
+                <button class="btn btn-danger" onclick="removerJogo('${jogo.IDJOGO}')" style="padding: 4px 8px; font-size: 0.8rem;">
+                    🗑️ Excluir
+                </button>
+            </td>
+        </tr>
+    `).join('');
+}
+
+window.filtrarJogosAdmin = function() {
+    const termo = document.getElementById("filtro-nome-jogo").value.toLowerCase();
+    const filtrados = todosOsJogosAdmin.filter(j => 
+        j.NOME && j.NOME.toLowerCase().includes(termo)
+    );
+    renderizarTabelaJogos(filtrados);
+};
+
+window.removerJogo = async function(id) {
+    if (!confirm("⚠️ Tem certeza que deseja remover este jogo permanentemente do catálogo?")) return;
+
+    try {
+        const res = await fetch(`/api/games/${id}`, { method: 'DELETE' });
+        if (res.ok) {
+            alert("Jogo removido!");
+            carregarJogosAdmin(); // Atualiza a lista
+        } else {
+            alert("Erro ao remover o jogo.");
+        }
+    } catch (err) {
+        console.error(err);
+    }
+};
 
 // --- ADMINISTRAÇÃO DE USUÁRIOS ---
 
@@ -368,7 +470,6 @@ window.abrirModalEditarUsuario = function (user) {
     document.getElementById('edit-user-perfil').value = user.perfil;
 };
 
-// SOLUÇÃO DO BUG: Função para salvar a edição do administrador
 async function atualizarUsuarioAdmin(e) {
     e.preventDefault();
 
@@ -415,3 +516,4 @@ document.addEventListener("DOMContentLoaded", () => {
     // Fix do bug de edição: Adicionando o listener no formulário do modal
     document.getElementById("form-editar-usuario")?.addEventListener("submit", atualizarUsuarioAdmin);
 });
+

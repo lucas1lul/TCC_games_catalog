@@ -1,31 +1,108 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Objetivo</title>
-    <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="css/navbar.css">
+    <title>Sobre o Projeto - Catálogo de Jogos Educativos | IFF</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/navbar.css">
+    <link rel="stylesheet" href="/css/footer.css">
+    <link rel="stylesheet" href="/css/introducao.css">
 </head>
+
 <body>
     <div id="navbar-placeholder"></div>
 
-    <div class="content" style="margin-top: 30px;">
-        <h1>Bem-vindo ao Catálogo de Serious Games</h1>
-        <img src="images/gamificacao.png" alt="Gamificação na Educação">
-        <p>O <strong>Catálogo de Serious Games</strong> foi desenvolvido para auxiliar alunos e professores...</p>
-        
-        <h2>Como Funciona?</h2>
-        <img src="images/2_pessoas_programando.png" alt="Professor e Aluno Interagindo">
-        <ul>
-            <li><strong>Professores:</strong> Podem acessar jogos específicos para suas disciplinas...</li>
-            <li><strong>Alunos:</strong> Têm acesso a jogos educativos organizados por áreas...</li>
-        </ul>
+    <main class="intro-main">
+        <section class="intro-hero">
+            <div class="container">
+                <h1>Catálogo de Jogos Educativos</h1>
+                <p class="subtitle">Engenharia da Computação e Educação Básica: Uma Ponte Tecnológica para a
+                    Aprendizagem</p>
+            </div>
+        </section>
 
-        <h2>Nosso Objetivo</h2>
-        <p>Tornar o aprendizado mais acessível e inovador...</p>
-    </div>
+        <section class="intro-content container">
+            <div class="text-block">
+                <h2>O Projeto</h2>
+                <p>
+                    Embora os jogos digitais possuam um potencial transformador para motivar alunos e desenvolver
+                    habilidades cognitivas, a seleção de ferramentas adequadas demanda um esforço analítico exaustivo
+                    por parte dos docentes.
+                </p>
+                <p>
+                    Este projeto, desenvolvido como <strong>Trabalho de Conclusão de Curso (TCC)</strong> no Instituto
+                    Federal Fluminense, propõe um artefato tecnológico baseado no método <strong>Design Science Research
+                        (DSR)</strong>. O catálogo sistematiza jogos digitais educacionais, classificando-os através da
+                    taxonomia <strong>CSG (Comprehensive Serious Game)</strong> e relacionando-os diretamente às
+                    competências das <strong>Diretrizes Curriculares Nacionais (CES/CNE 2016, CES/CNE 2019, CES/CNE
+                        2021)</strong>.
+                </p>
+                <p>
+                    A plataforma foi construída com tecnologias modernas de desenvolvimento full-stack, garantindo uma
+                    interface intuitiva para que professores de Engenharia e Educação Básica encontrem recursos
+                    validados para suas práticas pedagógicas.
+                </p>
+            </div>
 
-    <script src="js/navbar.js"></script>
+            <div class="image-showcase">
+                <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=800&q=80"
+                    alt="Interface do Catálogo de Serious Games">
+            </div>
+        </section>
+
+        <section class="accessibility-section">
+            <div class="container accessibility-content">
+                <div class="accessibility-header">
+                    <h2>Acessibilidade e Conformidade Digital</h2>
+                </div>
+
+                <div class="accessibility-body">
+                    <p>
+                        O desenvolvimento desta plataforma foi pautado pelo rigor técnico das diretrizes do <strong>eMAG
+                            (Modelo de Acessibilidade em Governo Eletrônico)</strong> e pelas recomendações
+                        internacionais <strong>WCAG 2.1 (nível AA)</strong>.
+                    </p>
+                    <p>
+                        Para assegurar a inclusão e a usabilidade, toda a interface foi auditada através do
+                        <strong>AccessMonitor</strong>. Essa validação garante que a estrutura semântica, a
+                        navegabilidade por teclado e o suporte a tecnologias assistivas cumpram os critérios de sucesso
+                        exigidos para sistemas de informação modernos e acessíveis.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section class="team-section container">
+            <h2>Equipe de Pesquisa</h2>
+            <p class="team-context">Curso de Engenharia de Computação - IFF Campos Centro</p>
+
+            <div class="team-grid">
+                <div class="team-card">
+                    <div class="member-info">
+                        <strong>Profa. Maria Alciléia Alves Rocha</strong>
+                        <span>Orientadora e Pesquisadora</span>
+                    </div>
+                </div>
+                <div class="team-card">
+                    <div class="member-info">
+                        <strong>Lucas Corrado Albertão</strong>
+                        <span>Desenvolvedor Full-Stack e Pesquisador</span>
+                    </div>
+                </div>
+                <div class="team-card">
+                    <div class="member-info">
+                        <strong>Victor Soares</strong>
+                        <span>Desenvolvedor Full-Stack e Pesquisador</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="/js/navbar.js"></script>
+    <script src="/js/footer.js"></script>
 </body>
+
 </html>

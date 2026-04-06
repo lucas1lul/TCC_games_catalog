@@ -84,12 +84,11 @@ function navbarLogado(usuario) {
 
         <ul id="dropdownMenu" class="dropdown-content">
           <li><a href="/user">Perfil</a></li>
-          <li><a href="/catalogo">Catálogo</a></li>
-          <li><a href="/my_game">Meus jogos</a></li>
-          <li class="divider"></li>
-          <li><button onclick="logoutSistema()">Sair</button></li>
-        </ul>
-
+            <li><a href="/catalogo">Catálogo</a></li>
+            <li><a href="/my_game">Meus jogos</a></li>
+            <li class="divider"></li>
+            <li><button onclick="logoutSistema()" class="btn-logout-item">Sair</button></li>
+          </ul>
       </div>
 
     </div>
