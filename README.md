@@ -1,50 +1,96 @@
-# Catálogo de Serious Games 🎮📚
+# 🎮 Catálogo de Serious Games Educativos
 
-Este projeto é um **Catálogo de Serious Games Educativos**, desenvolvido como parte de um trabalho acadêmico, utilizando **Node.js, Express, HTML, CSS, MySQL e JavaScript**.
+Este projeto consiste em um **Catálogo Eletrônico de Serious Games Educativos**, desenvolvido como Trabalho de Conclusão de Curso (TCC) em Engenharia da Computação.
 
-Atualmente, a aplicação utiliza **dados em JSON** para simular persistência de usuários e o MySQL para os dados sobre os jogos. A integração completa com banco de dados será adicionada futuramente.
+A aplicação tem como objetivo **organizar, classificar e disponibilizar jogos digitais educativos**, relacionando-os com **competências e habilidades curriculares**, servindo como apoio a professores e alunos.
 
 ---
 
-## 🚀 Como executar o projeto em uma máquina nova
+## 🧠 Principais Funcionalidades
+
+* 🔎 Filtro avançado de jogos (nome, componente, habilidade, plataforma)
+* ❤️ Sistema de favoritos persistente por usuário
+* ⭐ Sistema de avaliação com:
+
+  * Avaliação por estrelas (incluindo meia estrela)
+  * Persistência em JSON
+  * Recuperação automática após reload
+* 👤 Sistema de autenticação com sessão
+* 📄 Modal de detalhes dos jogos
+* 📊 Associação de jogos com habilidades e competências educacionais
+* 📁 Paginação de resultados
+* 🎯 Interface responsiva e baseada na identidade visual do IFF
+
+---
+
+## 🏗️ Arquitetura do Projeto
+
+O sistema segue uma arquitetura organizada em camadas:
+
+```
+Frontend (HTML, CSS, JS)
+        ↓
+Controller (Express)
+        ↓
+Service (regras de negócio)
+        ↓
+Repository (acesso a dados JSON)
+```
+
+---
+
+## 🧪 Tecnologias Utilizadas
+
+### 🔧 Backend
+
+* Node.js
+* Express
+* Express Session
+* File System (JSON como banco temporário)
+
+### 🎨 Frontend
+
+* HTML5
+* CSS3
+* JavaScript (Vanilla)
+
+### 🗄️ Banco de Dados
+
+* MySQL (dados dos jogos)
+* JSON (usuários e avaliações)
+
+---
+
+## 🚀 Como executar o projeto
 
 ### 📋 Pré-requisitos
 
-Antes de executar o projeto em uma máquina nova, instale:
-
-- Node.js (LTS)  
-  https://nodejs.org
-- Git  
-  https://git-scm.com
-- MySQL Server 8.x
-
-Verifique se o Node está instalado:
-
-```
-node -v  
-npm -v
-```
+* Node.js (LTS) → https://nodejs.org
+* Git → https://git-scm.com
+* MySQL Server 8+
 
 ---
 
-### 📁 Clonando o projeto
+### 📁 Clonar o repositório
 
-git clone https://github.com/lucas1lul/TCC_games_catalog.git  
+```
+git clone https://github.com/lucas1lul/TCC_games_catalog.git
 cd TCC_games_catalog
+```
 
 ---
 
-### 📦 Instalando as dependências
+### 📦 Instalar dependências
 
-Na pasta raiz do projeto, execute:
-
-`npm install`
+```
+npm install
+```
 
 ---
 
-## ⚙️ Configuração do ambiente (.env)
+### ⚙️ Configurar variáveis de ambiente
 
-Crie um arquivo chamado `.env` na raiz do projeto e adicione o seguinte conteúdo:
+Crie um arquivo `.env` na raiz:
 
 ```
 PORT=3002
@@ -55,66 +101,140 @@ DB_PASSWORD=root
 DB_NAME=jogosdb  
 DB_PORT=3306
 ```
-Observação: as variáveis de ambiente devem ser ajustadas de acordo com o seu banco local.
 
 ---
 
-### ▶️ Executando o projeto
+### ▶️ Executar o projeto
 
 Modo desenvolvimento:
 
-`npm run dev`
+```
+npm run dev
+```
 
-O servidor será iniciado em:
-
-`http://localhost:3002`
-
----
-
-### 🌐 Acessando o sistema
-
-Página inicial / Catálogo de jogos:  
-`http://localhost:3002/catalogo.html`
-
-login:  
-`http://localhost:3002/login.html`
-
-
----
-
-### 👤 Usuários (modo JSON)
-
-Atualmente, os dados de usuário são armazenados no arquivo:
-
-models/usuarios.json
-
-Exemplo de estrutura de usuário:
+ou
 
 ```
+node app.js
+```
+
+---
+
+### 🌐 Acessar aplicação
+
+* Catálogo:
+
+```
+http://localhost:3002/catalogo.html
+```
+
+* Login:
+
+```
+http://localhost:3002/login.html
+```
+
+* Meus jogos:
+
+```
+http://localhost:3002/my_game
+```
+
+---
+
+## 👤 Sistema de Usuários
+
+Os usuários são armazenados em:
+
+```
+src/models/usuarios.json
+```
+
+Exemplo:
+
+```json
 {
-    "id": 1,
-    "nome": "lucas",
-    "email": "lucascorrado@hotmail.com",
-    "senha": "$2b$10$f8yB8aqDGJmGeTlJet.X/OS/Bfk1LPA8LZaKTYEspmS9/B2ZqjNyW",
-    "perfil": "administrador",
-    "favoritos": [
-      1,
-      49
-    ]
-  }
-
+  "id": 1,
+  "nome": "lucas",
+  "email": "lucas@email.com",
+  "senha": "hash",
+  "perfil": "professor",
+  "favoritos": [1, 49]
+}
 ```
 
 ---
 
-### 🧠 Observações importantes
+## ⭐ Sistema de Avaliações
 
-- O projeto utiliza arquivos estáticos (HTML, CSS e JavaScript) no frontend.
-- A navbar é dinâmica e lê os dados do usuário logado via localStorage.
-- A persistência em banco de dados MySQL será integrada por completo futuramente, substituindo o uso de arquivos JSON.
-- As senhas não estão criptografadas nesta fase, pois o objetivo é apenas prototipação e testes locais.
-- O projeto foi desenvolvido para execução local e não requer configurações adicionais de ambiente além do Node.js.
+As avaliações são armazenadas em:
+
+```
+data/avaliacoes.json
+```
+
+Estrutura:
+
+```json
+{
+  "id": "uuid",
+  "jogoId": 2,
+  "usuarioId": 9,
+  "usuarioNome": "professor",
+  "nota": 4.5,
+  "comentario": "",
+  "dataCriacao": "2026-03-24T02:28:13.152Z"
+}
+```
+
+### ✔ Funcionalidades
+
+* Avaliação com estrelas (0.5 até 5)
+* Persistência em arquivo JSON
+* Carregamento automático ao abrir a página
+* Atualização visual imediata
 
 ---
 
-Projeto desenvolvido para fins acadêmicos (TCC).
+## 🔐 Autenticação
+
+* Utiliza `express-session`
+* Sessão mantida via cookie
+* Endpoint principal:
+
+```
+GET /api/me
+```
+
+---
+
+## 📌 Observações Importantes
+
+* Projeto voltado para **uso acadêmico**
+* Persistência híbrida (MySQL + JSON)
+* Backend estruturado em camadas
+* Código preparado para futura migração completa para banco relacional
+* Sistema de avaliações permite evolução para média e ranking
+
+---
+
+## 🚧 Melhorias Futuras
+
+* 🔄 Migrar avaliações para MySQL
+* 📊 Exibir média de avaliações por jogo
+* 🧠 Sistema de recomendação de jogos
+* 🌍 Deploy em ambiente cloud
+
+---
+
+## 👨‍💻 AutorES
+
+Lucas Corrado
+Victor Silva Soares
+Engenharia da Computação – IFF
+
+---
+
+## 📄 Licença
+
+Projeto desenvolvido exclusivamente para fins acadêmicos.
